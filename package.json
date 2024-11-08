@@ -1,6 +1,13 @@
 {
+  "scripts": {
+    "dev": "node .",
+    "deploy": "node deploy-commands.js"
+  },
   "dependencies": {
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "wrangler": "^3.86.0"
   }
 }
