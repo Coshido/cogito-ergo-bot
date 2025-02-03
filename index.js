@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
+const BirthdayHandler = require('./utils/birthday/birthday-handler');
 
 // required to access .env
 require("dotenv").config();
@@ -24,7 +25,9 @@ const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	const commandFiles = fs.readdirSync(commandsPath)
+		.filter(file => file.endsWith('.js'))
+		.filter(file => !['index.js', 'birthday-handler.js'].includes(file));
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
@@ -61,6 +64,12 @@ client.on(Events.InteractionCreate, async interaction => {
 
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+	
+	// Initialize birthday handler
+	const birthdayHandler = new BirthdayHandler(client);
+	birthdayHandler.startChecking();
+	
+	console.log('Birthday handler initialized!');
 });
 
 client.login(token)
