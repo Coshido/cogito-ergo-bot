@@ -1,3 +1,26 @@
 {
-  "weekly_reservations": {}
+  "weekly_reservations": {
+    "2025-02-02": {
+      "127455315636649985": [
+        {
+          "id": "212448",
+          "name": "Medaglione dei Ricordi Spezzati",
+          "boss": "Rasha'nan",
+          "type": "Collo Varie",
+          "ilvl": 571,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_nerubian_necklace_02_color3.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=212448"
+        },
+        {
+          "id": "220202",
+          "name": "Ragnatela del Maestro delle Spie",
+          "boss": "Corte della Seta",
+          "type": "Monile Varie",
+          "ilvl": 571,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_11_0_raid_spymastersweb_purple.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=220202"
+        }
+      ]
+    }
+  }
 }

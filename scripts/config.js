@@ -1,6 +1,8 @@
+require('dotenv').config();
+
 module.exports = {
-    clientId: 'd44531200eaf443bb6fbfefcc5344488', // Add your client ID here
-    clientSecret: 'xOSOjlrj4ribUxprHghZZhT2q2dAO6Ph', // Add your client secret here
-    region: 'eu',  // Change this to match your region (us, eu, kr, tw)
-    locale: 'it_IT'  // Change this to match your locale
+    clientId: process.env.BLITZ_CLIENT_ID,
+    clientSecret: process.env.BLITZ_CLIENT_SECRET,
+    region: process.env.BLITZ_REGION || 'eu',
+    locale: process.env.BLITZ_LOCALE || 'it_IT'
 };

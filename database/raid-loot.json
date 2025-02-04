@@ -12,7 +12,8 @@
           "ilvl": 571,
           "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_raid_foulbehemothschelicera_red.jpg",
           "wowhead_url": "https://www.wowhead.com/item=219915",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_raid_foulbehemothschelicera_red.jpg"
+          "emojiId": "1234567890",
+          "emojiName": "item_219915"
         },
         {
           "id": "212424",
@@ -448,15 +449,6 @@
         },
         {
           "id": "225586",
-          "name": "Artigli Grotteschi di Rasha'nan",
-          "type": "Piedi Maglia",
-          "ilvl": 571,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidevokernerubian_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=225586",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidevokernerubian_d_01.jpg"
-        },
-        {
-          "id": "225574",
           "name": "Ali del Dolore Infranto",
           "type": "Schiena Stoffa",
           "ilvl": 571,

@@ -2,6 +2,8 @@ const { SlashCommandBuilder } = require('discord.js');
 const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const ImageComposer = require('../../utils/image-composer');
+const { AttachmentBuilder } = require('discord.js');
 
 // Helper function to get the Monday of the current week
 function getCurrentWeekMonday() {
@@ -33,11 +35,10 @@ function createItemSelectMenu(items, customId) {
         .setCustomId(customId)
         .setPlaceholder('Select an item to reserve')
         .addOptions(
-            items.map(item => ({
-                label: item.name,
-                description: `${item.type} (iLvl ${item.ilvl || 'N/A'})`,
-                value: item.id.toString(),
-                emoji: { id: null, name: '🎁' } // Add gift emoji to all items
+            items.map((item, index) => ({
+                label: `${index + 1}- ${item.name}`,
+                description: item.type.toLowerCase() === 'non equipaggiabile cianfrusaglie' ? 'Emblema' : item.type,
+                value: item.id
             }))
         );
 }
@@ -59,9 +60,24 @@ module.exports = {
         
         const userReservations = reservations.weekly_reservations[currentWeek][userId] || [];
         if (userReservations.length >= 2) {
+            // Create reservation image
+            const reservationImage = await ImageComposer.createReservationImage(userReservations);
+            const attachment = new AttachmentBuilder(reservationImage, { name: 'current-reservations.png' });
+
+            // Create WowHead links
+            const wowheadLinks = userReservations
+                .map((item, index) => `${index + 1}- [${item.name}](${item.wowhead_url})`)
+                .join('\n');
+
+            const embed = new EmbedBuilder()
+                .setColor(0xFF0000)  // Red color to indicate can't add more
+                .setTitle('Maximum Reservations Reached')
+                .setImage('attachment://current-reservations.png')
+                .setDescription(`You have already reserved 2 items this week!\n\n**Link su WowHead**\n${wowheadLinks}`);
+
             return await interaction.reply({
-                content: 'You have already reserved 2 items this week. Your current reservations:\n' +
-                    userReservations.map(item => `- ${item.name} from ${item.boss}`).join('\n'),
+                embeds: [embed],
+                files: [attachment],
                 ephemeral: true
             });
         }
@@ -97,9 +113,6 @@ module.exports = {
             .setColor(0x0099FF)
             .setTitle(`${raidData.raid} - Loot Reservation`)
             .setDescription(`Select a boss to view their loot table.\nYou can reserve up to 2 items per week.\nYou have ${2 - userReservations.length} reservations remaining.`)
-            .addFields(
-                { name: 'Item Levels', value: raidData.difficulties.map(d => `${d.name}: ${d.ilvl_base}`).join('\n') }
-            )
             .setFooter({ text: `Step ${userState.currentStep} of 3: Boss Selection` });
 
         const initialMessage = await interaction.reply({
@@ -114,146 +127,173 @@ module.exports = {
         const collector = initialMessage.createMessageComponentCollector({ filter, time: 300000 }); // 5 minutes
 
         collector.on('collect', async i => {
-            if (i.customId === 'boss_select') {
-                const selectedBoss = raidData.bosses.find(b => b.id.toString() === i.values[0]);
-                userState.currentBoss = selectedBoss;
-                
-                const lootEmbed = new EmbedBuilder()
-                    .setColor(0x0099FF)
-                    .setTitle(`${selectedBoss.name}'s Loot Table`)
-                    .setDescription('Select an item to reserve:')
-                    .setFooter({ text: `Step ${userState.currentStep} of 3: Item Selection` });
+            try {
+                if (i.customId === 'boss_select') {
+                    const selectedBoss = raidData.bosses.find(b => b.id.toString() === i.values[0]);
+                    if (!selectedBoss) {
+                        console.error('Boss not found:', i.values[0]);
+                        return await i.reply({ content: 'Error: Boss not found', ephemeral: true });
+                    }
+                    userState.currentBoss = selectedBoss;
+                    
+                    // Create loot table image
+                    const lootImage = await ImageComposer.createLootTable(selectedBoss.loot);
+                    const attachment = new AttachmentBuilder(lootImage, { name: 'loot-table.png' });
 
-                for (const item of selectedBoss.loot) {
-                    const iconDisplay = item.icon ? `[🎁](${item.icon})` : '🎁';
-                    lootEmbed.addFields({
-                        name: `🎁 ${item.name}`,
-                        value: `${item.type} (iLvl ${item.ilvl || 'N/A'})${item.icon ? `\n[View Icon](${item.icon})` : ''}`,
-                        inline: true
+                    // Create WowHead links list
+                    const wowheadLinks = selectedBoss.loot
+                        .map((item, index) => `${index + 1}- [${item.name}](${item.wowhead_url})`)
+                        .join('\n');
+
+                    const lootEmbed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(`${selectedBoss.name}`)
+                        .setDescription(`**Link su WowHead**\n${wowheadLinks}`)
+                        .setImage('attachment://loot-table.png')
+                        .setFooter({ text: `Step ${userState.currentStep} of 3: Item Selection` });
+
+                    // Create item selection menu
+                    const itemSelect = createItemSelectMenu(selectedBoss.loot, 'item_select');
+                    
+                    // Add back button
+                    const backButton = new ButtonBuilder()
+                        .setCustomId('back_to_bosses')
+                        .setLabel('← Select Different Boss')
+                        .setStyle(ButtonStyle.Secondary);
+
+                    // Create two rows: one for the select menu, one for the back button
+                    const selectRow = new ActionRowBuilder().addComponents(itemSelect);
+                    const buttonRow = new ActionRowBuilder().addComponents(backButton);
+
+                    await i.update({
+                        embeds: [lootEmbed],
+                        files: [attachment],
+                        components: [selectRow, buttonRow],
                     });
                 }
 
-                const itemSelect = createItemSelectMenu(selectedBoss.loot, 'item_select');
-
-                const itemRow = new ActionRowBuilder()
-                    .addComponents(itemSelect);
-
-                await i.update({
-                    embeds: [lootEmbed],
-                    components: [itemRow],
-                });
-            }
-            else if (i.customId === 'item_select') {
-                const selectedItem = userState.currentBoss.loot.find(item => item.id === parseInt(i.values[0]));
-                userState.selectedItems.push({
-                    id: selectedItem.id,
-                    name: selectedItem.name,
-                    boss: userState.currentBoss.name,
-                    type: selectedItem.type,
-                    ilvl: selectedItem.ilvl
-                });
-
-                if (userState.selectedItems.length < 2 && userReservations.length === 0) {
-                    // Show boss selection again for second item
-                    userState.currentStep = 2;
-                    const newEmbed = new EmbedBuilder()
+                // Add handler for back button
+                else if (i.customId === 'back_to_bosses') {
+                    userState.currentStep = 1;
+                    const embed = new EmbedBuilder()
                         .setColor(0x0099FF)
-                        .setTitle(`${raidData.raid} - Second Item Selection`)
-                        .setDescription('Select a boss for your second item.\n\nFirst selection:\n' +
-                            `- ${selectedItem.name} from ${userState.currentBoss.name}`)
+                        .setTitle(`${raidData.raid} - Loot Reservation`)
+                        .setDescription(`Select a boss to view their loot table.\nYou can reserve up to 2 items per week.\nYou have ${2 - userReservations.length} reservations remaining.`)
                         .setFooter({ text: `Step ${userState.currentStep} of 3: Boss Selection` });
 
                     await i.update({
-                        embeds: [newEmbed],
-                        components: [row],
-                    });
-                } else {
-                    // Show confirmation screen
-                    userState.currentStep = 3;
-                    const confirmEmbed = new EmbedBuilder()
-                        .setColor(0x0099FF)
-                        .setTitle('Confirm Your Reservations')
-                        .setDescription('Please review and confirm your selections:')
-                        .addFields(
-                            userState.selectedItems.map((item, index) => ({
-                                name: `Item ${index + 1}`,
-                                value: `🎁 ${item.name}\nFrom: ${item.boss}\nType: ${item.type}\nItem Level: ${item.ilvl}`,
-                                inline: true
-                            }))
-                        )
-                        .setFooter({ text: 'Step 3 of 3: Confirmation' });
-
-                    const confirmButton = new ButtonBuilder()
-                        .setCustomId('confirm_reservation')
-                        .setLabel('Confirm Reservations')
-                        .setStyle(ButtonStyle.Success);
-
-                    const cancelButton = new ButtonBuilder()
-                        .setCustomId('cancel_reservation')
-                        .setLabel('Cancel')
-                        .setStyle(ButtonStyle.Danger);
-
-                    const confirmRow = new ActionRowBuilder()
-                        .addComponents(confirmButton, cancelButton);
-
-                    await i.update({
-                        embeds: [confirmEmbed],
-                        components: [confirmRow],
+                        embeds: [embed],
+                        components: [row],  // This is the original boss selection row
+                        files: []  // Remove any previous images
                     });
                 }
-            }
-            else if (i.customId === 'confirm_reservation') {
-                // Save the reservations
-                reservations.weekly_reservations[currentWeek][userId] = [
-                    ...(reservations.weekly_reservations[currentWeek][userId] || []),
-                    ...userState.selectedItems
-                ];
-                saveReservations(reservations);
+                // Add back the item selection handler
+                else if (i.customId === 'item_select') {
+                    const selectedItem = userState.currentBoss.loot.find(item => item.id === i.values[0]);
+                    userState.selectedItems.push({
+                        id: selectedItem.id,
+                        name: selectedItem.name,
+                        boss: userState.currentBoss.name,
+                        type: selectedItem.type,
+                        ilvl: selectedItem.ilvl,
+                        icon: selectedItem.icon,
+                        wowhead_url: selectedItem.wowhead_url
+                    });
 
-                const finalEmbed = new EmbedBuilder()
-                    .setColor(0x00FF00)
-                    .setTitle('Reservations Confirmed!')
-                    .setDescription('Your items have been reserved for this week:')
-                    .addFields(
-                        userState.selectedItems.map((item, index) => ({
-                            name: `Item ${index + 1}`,
-                            value: `🎁 ${item.name} from ${item.boss}`,
-                            inline: true
-                        }))
-                    );
+                    if (userState.selectedItems.length < 2 && userReservations.length === 0) {
+                        // Show boss selection again for second item
+                        userState.currentStep = 2;
+                        const newEmbed = new EmbedBuilder()
+                            .setColor(0x0099FF)
+                            .setTitle(`${raidData.raid} - Second Item Selection`)
+                            .setDescription('Select a boss for your second item.\n\nFirst selection:\n' +
+                                `- ${selectedItem.name} from ${userState.currentBoss.name}`)
+                            .setFooter({ text: `Step ${userState.currentStep} of 3: Boss Selection` });
 
-                await i.update({
-                    embeds: [finalEmbed],
-                    components: [],
-                });
-                collector.stop();
-            }
-            else if (i.customId === 'cancel_reservation') {
-                const cancelEmbed = new EmbedBuilder()
-                    .setColor(0xFF0000)
-                    .setTitle('Reservations Cancelled')
-                    .setDescription('Your item reservations have been cancelled.');
+                        await i.update({
+                            embeds: [newEmbed],
+                            components: [row],
+                            files: []
+                        });
+                    } else {
+                        // Show confirmation screen
+                        userState.currentStep = 3;
+                        const confirmEmbed = new EmbedBuilder()
+                            .setColor(0x0099FF)
+                            .setTitle('Confirm Your Reservations')
+                            .setDescription('Please review and confirm your selections:')
+                            .setFooter({ text: 'Step 3 of 3: Confirmation' });
 
-                await i.update({
-                    embeds: [cancelEmbed],
-                    components: [],
-                });
-                collector.stop();
+                        const confirmButton = new ButtonBuilder()
+                            .setCustomId('confirm_reservation')
+                            .setLabel('Confirm Reservations')
+                            .setStyle(ButtonStyle.Success);
+
+                        const cancelButton = new ButtonBuilder()
+                            .setCustomId('cancel_reservation')
+                            .setLabel('Cancel')
+                            .setStyle(ButtonStyle.Danger);
+
+                        const confirmRow = new ActionRowBuilder()
+                            .addComponents(confirmButton, cancelButton);
+
+                        // Create reservation image
+                        const reservationImage = await ImageComposer.createReservationImage(userState.selectedItems);
+                        const attachment = new AttachmentBuilder(reservationImage, { name: 'reservations.png' });
+
+                        await i.update({
+                            embeds: [confirmEmbed],
+                            components: [confirmRow],
+                            files: [attachment]
+                        });
+                    }
+                }
+                // Add back the confirm/cancel handlers
+                else if (i.customId === 'confirm_reservation') {
+                    // Save the reservations with all the needed data
+                    reservations.weekly_reservations[currentWeek][userId] = [
+                        ...(reservations.weekly_reservations[currentWeek][userId] || []),
+                        ...userState.selectedItems
+                    ];
+                    saveReservations(reservations);
+
+                    // Create final image
+                    const reservationImage = await ImageComposer.createReservationImage(userState.selectedItems);
+                    const attachment = new AttachmentBuilder(reservationImage, { name: 'reservations.png' });
+
+                    const finalEmbed = new EmbedBuilder()
+                        .setColor(0x00FF00)
+                        .setTitle('Reservations Confirmed!')
+                        .setImage('attachment://reservations.png')
+                        .setDescription(`Your items have been reserved for this week!\n\n**Link su WowHead**\n${userState.selectedItems.map((item, index) => `${index + 1}- [${item.name}](${item.wowhead_url})`).join('\n')}`);
+
+                    await i.update({
+                        embeds: [finalEmbed],
+                        files: [attachment],
+                        components: [],
+                    });
+                    collector.stop();
+                }
+                else if (i.customId === 'cancel_reservation') {
+                    const cancelEmbed = new EmbedBuilder()
+                        .setColor(0xFF0000)
+                        .setTitle('Reservations Cancelled')
+                        .setDescription('Your item reservations have been cancelled.');
+
+                    await i.update({
+                        embeds: [cancelEmbed],
+                        components: [],
+                        files: []
+                    });
+                    collector.stop();
+                }
+            } catch (error) {
+                console.error('Error in collector:', error);
+                await i.reply({ 
+                    content: 'An error occurred while processing your selection', 
+                    ephemeral: true 
+                }).catch(console.error);
             }
         });
-
-        collector.on('end', async (collected, reason) => {
-            if (reason === 'time') {
-                const timeoutEmbed = new EmbedBuilder()
-                    .setColor(0xFF0000)
-                    .setTitle('Reservation Timed Out')
-                    .setDescription('The reservation process has timed out. Please try again.');
-
-                await interaction.editReply({
-                    embeds: [timeoutEmbed],
-                    components: [],
-                });
-            }
-        });
-    },
+    }
 };
