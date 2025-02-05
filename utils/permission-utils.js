@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 function loadConfig() {
     const configPath = path.join(__dirname, '..', 'database', 'config.json');
@@ -21,7 +22,20 @@ function isRaider(member) {
     return member.roles.cache.has(config.raiderRoleId);
 }
 
+function isAdminOrAuthorizedUser(interaction) {
+    const ADMIN_USER_ID = process.env.ADMIN_USER_ID;
+    
+    // Check if user is an administrator
+    const isAdmin = interaction.member.permissions.has('Administrator');
+    
+    // Check if user is the specific authorized user
+    const isAuthorizedUser = interaction.user.id === ADMIN_USER_ID;
+
+    return isAdmin || isAuthorizedUser;
+}
+
 module.exports = {
     isRaidLeader,
-    isRaider
+    isRaider,
+    isAdminOrAuthorizedUser
 };

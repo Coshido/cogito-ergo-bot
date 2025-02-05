@@ -1,11 +1,14 @@
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const LeagueConfig = require('../../utils/league-config');
+const { isAdminOrAuthorizedUser } = require('../../utils/permission-utils');
+
+// Define the specific user ID who can use this command
+const AUTHORIZED_USER_ID = process.env.LEAGUE_ADMIN_USER_ID;
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('league-role-setup')
         .setDescription('Configure league manager and participant roles')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addSubcommand(subcommand => 
             subcommand.setName('manager')
                 .setDescription('Set the league manager role')
@@ -23,9 +26,18 @@ module.exports = {
                         .setDescription('Role for league participants')
                         .setRequired(true)
                 )
-        ),
+        )
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async execute(interaction) {
+        // Use the new permission utility function
+        if (!isAdminOrAuthorizedUser(interaction)) {
+            return interaction.reply({
+                content: 'You do not have permission to use this command.',
+                ephemeral: true
+            });
+        }
+
         // Ensure only administrators can use this command
         if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
             return interaction.reply({

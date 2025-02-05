@@ -1,117 +1,64 @@
-const { SlashCommandBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const LeagueManager = require('../../utils/league-utils');
-const { isRaider } = require('../../utils/permission-utils');
+const { isAdminOrAuthorizedUser } = require('../../utils/permission-utils');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('league-match-report')
-        .setDescription('Submit a comprehensive match report')
+        .setDescription('Report a league match result')
         .addStringOption(option => 
-            option.setName('home-team')
-                .setDescription('Home team name')
+            option.setName('team1')
+                .setDescription('First team name')
                 .setRequired(true)
         )
         .addStringOption(option => 
-            option.setName('away-team')
-                .setDescription('Away team name')
+            option.setName('team2')
+                .setDescription('Second team name')
+                .setRequired(true)
+        )
+        .addIntegerOption(option => 
+            option.setName('team1_score')
+                .setDescription('Score for first team')
+                .setRequired(true)
+        )
+        .addIntegerOption(option => 
+            option.setName('team2_score')
+                .setDescription('Score for second team')
                 .setRequired(true)
         ),
 
     async execute(interaction) {
-        // Check if user has permission
-        if (!await isRaider(interaction.member)) {
+        // Check admin or authorized user permissions
+        if (!isAdminOrAuthorizedUser(interaction)) {
             return interaction.reply({
-                content: 'Only Raiders can record match results.',
-                ephemeral: true
-            });
-        }
-
-        const homeTeam = interaction.options.getString('home-team');
-        const awayTeam = interaction.options.getString('away-team');
-
-        // Create a modal for match result input
-        const modal = new ModalBuilder()
-            .setCustomId('record_match_result')
-            .setTitle(`Match Result: ${homeTeam} vs ${awayTeam}`);
-
-        // Create input fields for home and away team goals
-        const homeGoalsInput = new TextInputBuilder()
-            .setCustomId('home_goals')
-            .setLabel(`${homeTeam} Goals`)
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('Enter number of goals')
-            .setRequired(true);
-
-        const awayGoalsInput = new TextInputBuilder()
-            .setCustomId('away_goals')
-            .setLabel(`${awayTeam} Goals`)
-            .setStyle(TextInputStyle.Short)
-            .setPlaceholder('Enter number of goals')
-            .setRequired(true);
-
-        // Create action rows for the modal
-        const homeGoalsRow = new ActionRowBuilder().addComponents(homeGoalsInput);
-        const awayGoalsRow = new ActionRowBuilder().addComponents(awayGoalsInput);
-
-        // Add components to modal
-        modal.addComponents(homeGoalsRow, awayGoalsRow);
-
-        // Show the modal
-        await interaction.showModal(modal);
-
-        // Wait for modal submission
-        const modalSubmitInteraction = await interaction.awaitModalSubmit({
-            filter: mi => mi.customId === 'record_match_result' && mi.user.id === interaction.user.id,
-            time: 60000
-        });
-
-        // Parse goals
-        const homeGoals = parseInt(modalSubmitInteraction.fields.getTextInputValue('home_goals'));
-        const awayGoals = parseInt(modalSubmitInteraction.fields.getTextInputValue('away_goals'));
-
-        // Validate goals input
-        if (isNaN(homeGoals) || isNaN(awayGoals)) {
-            return modalSubmitInteraction.reply({
-                content: 'Invalid goals input. Please enter numeric values.',
+                content: 'You do not have permission to use this command.',
                 ephemeral: true
             });
         }
 
         try {
-            // Find the specific match
-            const leagueData = await LeagueManager.loadLeagueData();
-            const matchToRecord = leagueData.matches.find(
-                m => (m.home === homeTeam && m.away === awayTeam && m.status === 'scheduled')
-            );
+            const team1 = interaction.options.getString('team1');
+            const team2 = interaction.options.getString('team2');
+            const team1Score = interaction.options.getInteger('team1_score');
+            const team2Score = interaction.options.getInteger('team2_score');
 
-            if (!matchToRecord) {
-                return modalSubmitInteraction.reply({
-                    content: `No scheduled match found between ${homeTeam} and ${awayTeam}.`,
-                    ephemeral: true
-                });
-            }
+            // Report match result
+            const result = await LeagueManager.reportMatchResult(team1, team2, team1Score, team2Score);
 
-            // Record match result
-            await LeagueManager.recordMatchResult(matchToRecord.id, {
-                homeGoals,
-                awayGoals
-            });
+            const embed = new EmbedBuilder()
+                .setColor('#00FF00')
+                .setTitle('Match Result Reported')
+                .setDescription(`Match between ${team1} and ${team2} has been recorded.`)
+                .addFields(
+                    { name: `${team1} Score`, value: team1Score.toString(), inline: true },
+                    { name: `${team2} Score`, value: team2Score.toString(), inline: true }
+                );
 
-            // Create result embed
-            const resultEmbed = new EmbedBuilder()
-                .setTitle('Match Result Recorded')
-                .setDescription(`${homeTeam} ${homeGoals} - ${awayGoals} ${awayTeam}`)
-                .setColor(homeGoals > awayGoals ? 0x00FF00 : (homeGoals < awayGoals ? 0xFF0000 : 0xFFFF00));
-
-            // Reply with the result
-            await modalSubmitInteraction.reply({
-                embeds: [resultEmbed],
-                ephemeral: false
-            });
+            await interaction.reply({ embeds: [embed], ephemeral: false });
         } catch (error) {
-            console.error('Match recording error:', error);
-            await modalSubmitInteraction.reply({
-                content: `Failed to record match result: ${error.message}`,
+            console.error('Match report error:', error);
+            await interaction.reply({
+                content: `Error reporting match: ${error.message}`,
                 ephemeral: true
             });
         }

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+const { isAdminOrAuthorizedUser } = require('../../utils/permission-utils');
 
 const CONFIG_PATH = path.join(__dirname, '..', '..', 'database', 'config.json');
 
@@ -19,10 +20,10 @@ module.exports = {
                 .setRequired(true)),
 
     async execute(interaction) {
-        // Ensure only administrators can use this command
-        if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator)) {
+        // Check admin or authorized user permissions
+        if (!isAdminOrAuthorizedUser(interaction)) {
             return interaction.reply({
-                content: 'Only server administrators can use this command.',
+                content: 'You do not have permission to use this command.',
                 ephemeral: true
             });
         }
@@ -53,20 +54,17 @@ module.exports = {
         // Write updated config
         try {
             fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
+
+            await interaction.reply({
+                content: `Raid Leader role set to ${raidLeaderRole.name} and Raider role set to ${raiderRole.name}`,
+                ephemeral: false
+            });
         } catch (error) {
             console.error('Error writing config file:', error);
-            return interaction.reply({
-                content: 'Failed to save role configuration.',
+            await interaction.reply({
+                content: `Error setting up roles: ${error.message}`,
                 ephemeral: true
             });
         }
-
-        // Confirm successful setup
-        await interaction.reply({
-            content: `✅ Roles successfully configured:\n` +
-                    `🏆 Raid Leader Role: ${raidLeaderRole.name}\n` +
-                    `🛡️ Raider Role: ${raiderRole.name}`,
-            ephemeral: true
-        });
     }
 };

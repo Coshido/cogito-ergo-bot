@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const LeagueManager = require('../../utils/league-utils');
-const { isRaider } = require('../../utils/permission-utils');
+const LeagueConfig = require('../../utils/league-config');
+const { isAdminOrAuthorizedUser } = require('../../utils/permission-utils');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,10 +19,10 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        // Check if user has permission
-        if (!await isRaider(interaction.member)) {
+        // Check admin or authorized user permissions
+        if (!isAdminOrAuthorizedUser(interaction)) {
             return interaction.reply({
-                content: 'Only Raiders can set up a league.',
+                content: 'You do not have permission to use this command.',
                 ephemeral: true
             });
         }
