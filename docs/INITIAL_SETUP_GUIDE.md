@@ -78,6 +78,47 @@ This guide will walk you through the initial configuration of the Discord bot, c
   * `CLIENT_ID`
   * `GUILD_ID`
 
+## 7. Dedicated Channels Strategy
+
+### Recommended Channel Setup
+1. **Tournament Management Channel**
+   - Purpose: All tournament-related commands and announcements
+   - Recommended Name: `#tournament-management`
+   - Access: Administrators and Tournament Managers
+   - Commands to run in this channel:
+     * `/t-config set-manager-role`
+     * `/t-config set-tournament-role`
+     * `/t-create`
+     * `/t-start`
+     * `/t-end`
+
+2. **League Management Channel**
+   - Purpose: All league-related commands and announcements
+   - Recommended Name: `#league-management`
+   - Access: Administrators and League Managers
+   - Commands to run in this channel:
+     * `/league-role-setup manager`
+     * `/league-role-setup participant`
+     * `/league-setup`
+     * `/league-match-report`
+
+### Channel Visibility Recommendations
+- Create these channels as private
+- Limit access to administrators and specific management roles
+- Use these channels exclusively for bot configuration and management
+
+### Benefits of Dedicated Channels
+- Centralized command execution
+- Clear audit trail
+- Reduced channel noise
+- Improved security by limiting command access
+
+### Implementation Steps
+1. Create the dedicated channels
+2. Set appropriate permissions
+3. Communicate channel purpose to server administrators
+4. Configure bot to recognize these channels for specific commands
+
 ## Troubleshooting
 - Verify bot permissions
 - Check role hierarchies
