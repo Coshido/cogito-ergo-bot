@@ -25,6 +25,12 @@ function isRaider(member) {
 function isAdminOrAuthorizedUser(interaction) {
     const ADMIN_USER_ID = process.env.ADMIN_USER_ID;
     
+    console.log('Permission Check Debug:', {
+        adminUserId: ADMIN_USER_ID,
+        interactionUserId: interaction.user.id,
+        isAdminPermission: interaction.member.permissions.has('Administrator')
+    });
+
     // Check if user is an administrator
     const isAdmin = interaction.member.permissions.has('Administrator');
     
