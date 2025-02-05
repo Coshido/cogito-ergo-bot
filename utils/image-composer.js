@@ -5,8 +5,8 @@ class ImageComposer {
     // Common constants at class level
     static ITEM_SIZE = 256;
     static PADDING = 40;
-    static TEXT_WIDTH = 400;
-    static LINE_HEIGHT = 45;
+    static TEXT_WIDTH = 500;
+    static LINE_HEIGHT = 55;
 
     // Add a helper function for text wrapping
     static wrapText(ctx, text, maxWidth) {
@@ -52,8 +52,8 @@ class ImageComposer {
         ctx.fillStyle = '#2f3136';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Larger text settings
-        ctx.font = 'bold 24px Arial';  // Increased from 20px
+        // Remove this initial font setting as it's not needed
+        // ctx.font = 'bold 42px Arial';  // For item names
         ctx.fillStyle = '#FFFFFF';
 
         // Load and draw each item with description
@@ -74,16 +74,16 @@ class ImageComposer {
                 const textX = x + itemSize + padding;
                 let textY = y + 40;
 
-                // Draw wrapped item name
-                ctx.font = 'bold 42px Arial';
+                // Draw wrapped item name with larger font
+                ctx.font = 'bold 48px Arial';  // Increased from 42px
                 const nameLines = this.wrapText(ctx, item.name, textWidth - padding);
                 nameLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
                     textY += lineHeight;
                 });
                 
-                // Draw type with formatted type
-                ctx.font = '36px Arial';
+                // Draw type with slightly smaller font
+                ctx.font = '42px Arial';  // Increased from 36px
                 textY += 5;
                 const typeLines = this.wrapText(ctx, `Tipo: ${this.formatItemType(item.type)}`, textWidth - padding);
                 typeLines.forEach(line => {
@@ -132,7 +132,7 @@ class ImageComposer {
                 let textY = y + 40;
 
                 // Item name
-                ctx.font = 'bold 42px Arial';
+                ctx.font = 'bold 48px Arial';
                 const nameLines = this.wrapText(ctx, items[i].name, textWidth - padding);
                 nameLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
@@ -140,7 +140,7 @@ class ImageComposer {
                 });
                 
                 // Boss name
-                ctx.font = '36px Arial';
+                ctx.font = '42px Arial';
                 textY += 10;
                 const bossLines = this.wrapText(ctx, `From: ${items[i].boss}`, textWidth - padding);
                 bossLines.forEach(line => {

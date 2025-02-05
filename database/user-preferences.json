@@ -1,0 +1,10 @@
+{
+  "127455315636649985": {
+    "reminders": {
+      "enabled": true,
+      "type": "both",
+      "day": 4,
+      "hour": 22
+    }
+  }
+}

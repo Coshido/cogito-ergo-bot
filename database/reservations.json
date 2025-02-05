@@ -1,26 +1,206 @@
 {
   "weekly_reservations": {
     "2025-02-02": {
-      "127455315636649985": [
-        {
-          "id": "212448",
-          "name": "Medaglione dei Ricordi Spezzati",
-          "boss": "Rasha'nan",
-          "type": "Collo Varie",
-          "ilvl": 571,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_nerubian_necklace_02_color3.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=212448"
-        },
-        {
-          "id": "220202",
-          "name": "Ragnatela del Maestro delle Spie",
-          "boss": "Corte della Seta",
-          "type": "Monile Varie",
-          "ilvl": 571,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_11_0_raid_spymastersweb_purple.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=220202"
-        }
-      ]
+      "user_1": {
+        "character_name": "Thorin",
+        "discord_username": "DragonSlayer",
+        "items": [
+          {
+            "boss": "Rasha'nan",
+            "name": "Cinta Erosa del Behemoth"
+          }
+        ]
+      },
+      "user_2": {
+        "character_name": "Luna",
+        "discord_username": "ShadowWalker",
+        "items": [
+          {
+            "boss": "Orrore Vincolasangue",
+            "name": "Cordone dell'Occhio Infranto"
+          }
+        ]
+      },
+      "user_3": {
+        "character_name": "Eldrin",
+        "discord_username": "MoonLight",
+        "items": [
+          {
+            "boss": "Regina Ansurek",
+            "name": "Mandato della Regina Folle"
+          }
+        ]
+      },
+      "user_4": {
+        "character_name": "Soren",
+        "discord_username": "StarBlade",
+        "items": [
+          {
+            "boss": "Rasha'nan",
+            "name": "Manette del Lampionaio Devastato"
+          }
+        ]
+      },
+      "user_5": {
+        "character_name": "Nova",
+        "discord_username": "FireHeart",
+        "items": [
+          {
+            "boss": "Mutastirpe Ovi'nax",
+            "name": "Catalizzatore Tetro del Mutastirpe"
+          }
+        ]
+      },
+      "user_6": {
+        "character_name": "Kael",
+        "discord_username": "WindRider",
+        "items": [
+          {
+            "boss": "Rasha'nan",
+            "name": "Lama da Banchetto del Predatore"
+          }
+        ]
+      },
+      "user_7": {
+        "character_name": "Kai",
+        "discord_username": "StormCaller",
+        "items": [
+          {
+            "boss": "Ulgrax il Divoratore",
+            "name": "Corna del Pasto Finale"
+          }
+        ]
+      },
+      "user_8": {
+        "character_name": "Rowan",
+        "discord_username": "NightWhisper",
+        "items": [
+          {
+            "boss": "Mutastirpe Ovi'nax",
+            "name": "Siringa Terrificante"
+          }
+        ]
+      },
+      "user_9": {
+        "character_name": "Zara",
+        "discord_username": "EarthShaker",
+        "items": [
+          {
+            "boss": "Ulgrax il Divoratore",
+            "name": "Pantaloni di Midollo Secco del Ribelle"
+          }
+        ]
+      },
+      "user_10": {
+        "character_name": "Vex",
+        "discord_username": "IronFist",
+        "items": [
+          {
+            "boss": "Sikran, Capitano dei Sureki",
+            "name": "Arco Setoso della Scheggia"
+          }
+        ]
+      },
+      "user_11": {
+        "character_name": "Rune",
+        "discord_username": "SilverArrow",
+        "items": [
+          {
+            "boss": "Regina Ansurek",
+            "name": "Grinfie della Paranoia"
+          }
+        ]
+      },
+      "user_12": {
+        "character_name": "Dax",
+        "discord_username": "RuneMaster",
+        "items": [
+          {
+            "boss": "Corte della Seta",
+            "name": "Autorità del Signore dello Sciame"
+          }
+        ]
+      },
+      "user_13": {
+        "character_name": "Raven",
+        "discord_username": "SoulBinder",
+        "items": [
+          {
+            "boss": "Rasha'nan",
+            "name": "Organo Corrosivo del Terrore dei Cieli"
+          }
+        ]
+      },
+      "user_14": {
+        "character_name": "Ember",
+        "discord_username": "DarkRider",
+        "items": [
+          {
+            "boss": "Orrore Vincolasangue",
+            "name": "Maschera Oscura dell'Aldilà"
+          }
+        ]
+      },
+      "user_15": {
+        "character_name": "Zen",
+        "discord_username": "LightBringer",
+        "items": [
+          {
+            "boss": "Sikran, Capitano dei Sureki",
+            "name": "Emblema dell'Animoso Mistico"
+          }
+        ]
+      },
+      "user_16": {
+        "character_name": "Ash",
+        "discord_username": "MysticWarden",
+        "items": [
+          {
+            "boss": "Rasha'nan",
+            "name": "Cinta Erosa del Behemoth"
+          }
+        ]
+      },
+      "user_17": {
+        "character_name": "Nyx",
+        "discord_username": "BloodMoon",
+        "items": [
+          {
+            "boss": "Sikran, Capitano dei Sureki",
+            "name": "Emblema dell'Animoso Venerato"
+          }
+        ]
+      },
+      "user_18": {
+        "character_name": "Lyra",
+        "discord_username": "CrimsonTide",
+        "items": [
+          {
+            "boss": "Ulgrax il Divoratore",
+            "name": "Imbracatura Zuppa di Bile"
+          }
+        ]
+      },
+      "user_19": {
+        "character_name": "Iris",
+        "discord_username": "SilentStrike",
+        "items": [
+          {
+            "boss": "Ulgrax il Divoratore",
+            "name": "Emblema Regale di Nerub'ar"
+          }
+        ]
+      },
+      "user_20": {
+        "character_name": "Aria",
+        "discord_username": "EchoReaper",
+        "items": [
+          {
+            "boss": "Rasha'nan",
+            "name": "Organo Corrosivo del Terrore dei Cieli"
+          }
+        ]
+      }
     }
   }
 }

@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const BirthdayHandler = require('./utils/birthday/birthday-handler');
+const ReminderService = require('./services/reminder-service');
 
 // required to access .env
 require("dotenv").config();
@@ -69,7 +70,11 @@ client.once(Events.ClientReady, readyClient => {
 	const birthdayHandler = new BirthdayHandler(client);
 	birthdayHandler.startChecking();
 	
-	console.log('Birthday handler initialized!');
+	// Initialize reminder service
+	const reminderService = new ReminderService(client);
+	reminderService.startReminderScheduler();
+	
+	console.log('Birthday and reminder handlers initialized!');
 });
 
 client.login(token)

@@ -1,44 +1,12 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const ImageComposer = require('../../utils/image-composer');
 const { AttachmentBuilder } = require('discord.js');
-
-// Helper functions
-function getCurrentWeekMonday() {
-    const now = new Date();
-    const monday = new Date(now);
-    monday.setDate(now.getDate() - now.getDay() + 1);
-    monday.setHours(0, 0, 0, 0);
-    return monday.toISOString().split('T')[0];
-}
-
-function loadReservations() {
-    const reservationsPath = path.join(__dirname, '../../database/reservations.json');
-    if (!fs.existsSync(reservationsPath)) {
-        return { weekly_reservations: {} };
-    }
-    return JSON.parse(fs.readFileSync(reservationsPath, 'utf8'));
-}
-
-function saveReservations(reservations) {
-    const reservationsPath = path.join(__dirname, '../../database/reservations.json');
-    fs.writeFileSync(reservationsPath, JSON.stringify(reservations, null, 2));
-}
-
-function createItemSelectMenu(items, customId) {
-    return new StringSelectMenuBuilder()
-        .setCustomId(customId)
-        .setPlaceholder('Select an item to reserve')
-        .addOptions(
-            items.map((item, index) => ({
-                label: `${index + 1}- ${item.name}`,
-                description: item.type.toLowerCase() === 'non equipaggiabile cianfrusaglie' ? 'Emblema' : item.type,
-                value: item.id
-            }))
-        );
-}
+const { getCurrentWeekMonday, loadReservations, saveReservations } = require('../../utils/reservation-utils');
+const { createItemSelectMenu } = require('../../utils/discord-utils');
+const { isRaider } = require('../../utils/permission-utils');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -46,6 +14,14 @@ module.exports = {
         .setDescription('Edit your current week reservations'),
 
     async execute(interaction) {
+        // Check if user is a raider
+        if (!isRaider(interaction.member)) {
+            return interaction.reply({
+                content: 'Only Raiders can edit item reservations.',
+                ephemeral: true
+            });
+        }
+
         const currentWeek = getCurrentWeekMonday();
         const reservations = loadReservations();
         const userId = interaction.user.id;
@@ -57,8 +33,8 @@ module.exports = {
         ));
 
         // Check if user has any reservations this week
-        const userReservations = reservations.weekly_reservations[currentWeek]?.[userId] || [];
-        if (userReservations.length === 0) {
+        const userData = reservations.weekly_reservations[currentWeek]?.[userId];
+        if (!userData || userData.items.length === 0) {
             return await interaction.reply({
                 content: 'You have no reservations for this week!',
                 ephemeral: true
@@ -66,28 +42,37 @@ module.exports = {
         }
 
         // Show current reservations with options to edit
-        const reservationImage = await ImageComposer.createReservationImage(userReservations);
+        const reservationImage = await ImageComposer.createReservationImage(userData.items);
         const attachment = new AttachmentBuilder(reservationImage, { name: 'current-reservations.png' });
 
-        // Create buttons for each item
-        const buttons = userReservations.map((item, index) => 
+        // Create buttons for each item and character name
+        const itemButtons = userData.items.map((item, index) => 
             new ButtonBuilder()
                 .setCustomId(`edit_item_${index}`)
                 .setLabel(`Replace Item ${index + 1}`)
                 .setStyle(ButtonStyle.Primary)
         );
 
-        const buttonRow = new ActionRowBuilder().addComponents(buttons);
+        const characterButton = new ButtonBuilder()
+            .setCustomId('edit_character_name')
+            .setLabel('Change Character Name')
+            .setStyle(ButtonStyle.Secondary);
+
+        const buttonRow1 = new ActionRowBuilder().addComponents(itemButtons);
+        const buttonRow2 = new ActionRowBuilder().addComponents(characterButton);
 
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
             .setTitle('Your Current Reservations')
             .setImage('attachment://current-reservations.png')
-            .setDescription('Select which item you want to replace:');
+            .setDescription(
+                `Current reservations for character **${userData.character_name}**\n` +
+                'Select what you want to edit:'
+            );
 
         const message = await interaction.reply({
             embeds: [embed],
-            components: [buttonRow],
+            components: [buttonRow1, buttonRow2],
             files: [attachment],
             ephemeral: true,
             fetchReply: true
@@ -107,7 +92,53 @@ module.exports = {
 
         collector.on('collect', async i => {
             try {
-                if (i.customId.startsWith('edit_item_')) {
+                if (i.customId === 'edit_character_name') {
+                    // Create a modal for character name input
+                    const modal = new ModalBuilder()
+                        .setCustomId('change_character_name')
+                        .setTitle('Change Character Name');
+
+                    const characterNameInput = new TextInputBuilder()
+                        .setCustomId('new_character_name')
+                        .setLabel('New Character Name')
+                        .setStyle(TextInputStyle.Short)
+                        .setPlaceholder(userData.character_name)
+                        .setRequired(true);
+
+                    const actionRow = new ActionRowBuilder().addComponents(characterNameInput);
+                    modal.addComponents(actionRow);
+
+                    await i.showModal(modal);
+
+                    // Wait for modal submission
+                    const modalSubmitInteraction = await i.awaitModalSubmit({
+                        filter: mi => mi.customId === 'change_character_name' && mi.user.id === interaction.user.id,
+                        time: 60000
+                    });
+
+                    const newCharacterName = modalSubmitInteraction.fields.getTextInputValue('new_character_name');
+
+                    // Update the character name in reservations
+                    userData.character_name = newCharacterName;
+                    reservations.weekly_reservations[currentWeek][userId] = userData;
+                    saveReservations(reservations);
+
+                    await modalSubmitInteraction.reply({
+                        content: `Character name updated to **${newCharacterName}**`,
+                        ephemeral: true
+                    });
+
+                    // Update the original message
+                    await message.edit({
+                        embeds: [
+                            embed.setDescription(
+                                `Current reservations for character **${newCharacterName}**\n` +
+                                'Select what you want to edit:'
+                            )
+                        ]
+                    });
+                }
+                else if (i.customId.startsWith('edit_item_')) {
                     const itemIndex = parseInt(i.customId.split('_')[2]);
                     editState.itemIndex = itemIndex;  // Store in editState instead of i.editItemIndex
                     
@@ -173,36 +204,34 @@ module.exports = {
                     
                     // Update the reservation with all required fields
                     const itemToReplace = editState.itemIndex;
-                    userReservations[itemToReplace] = {
+                    userData.items[itemToReplace] = {
                         id: selectedItem.id,
                         name: selectedItem.name,
                         boss: editState.currentBoss.name,
-                        type: selectedItem.type,        // Make sure type is included
+                        type: selectedItem.type,
                         ilvl: selectedItem.ilvl,
-                        icon: selectedItem.icon,        // Make sure icon is included
+                        icon: selectedItem.icon,
                         wowhead_url: selectedItem.wowhead_url
                     };
 
                     // Save the updated reservations
-                    reservations.weekly_reservations[currentWeek][userId] = userReservations;
+                    reservations.weekly_reservations[currentWeek][userId] = userData;
                     saveReservations(reservations);
 
-                    // Create final image with the complete userReservations array
-                    const reservationImage = await ImageComposer.createReservationImage(userReservations);
+                    // Create final image
+                    const reservationImage = await ImageComposer.createReservationImage(userData.items);
                     const attachment = new AttachmentBuilder(reservationImage, { name: 'reservations.png' });
-
-                    // Add debug logging
-                    console.log('Updated reservations:', JSON.stringify(userReservations, null, 2));
-
-                    const wowheadLinks = userReservations
-                        .map((item, index) => `${index + 1}- [${item.name}](${item.wowhead_url})`)
-                        .join('\n');
 
                     const finalEmbed = new EmbedBuilder()
                         .setColor(0x00FF00)
                         .setTitle('Reservation Updated!')
                         .setImage('attachment://reservations.png')
-                        .setDescription(`Your items have been updated!\n\n**Link su WowHead**\n${wowheadLinks}`);
+                        .setDescription(
+                            `Your items have been updated for character **${userData.character_name}**!\n\n` +
+                            `**Link su WowHead**\n${userData.items.map((item, index) => 
+                                `${index + 1}- [${item.name}](${item.wowhead_url})`
+                            ).join('\n')}`
+                        );
 
                     await i.update({
                         embeds: [finalEmbed],

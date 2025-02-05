@@ -1,64 +1,90 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const ImageComposer = require('../../utils/image-composer');
-const { AttachmentBuilder } = require('discord.js');
-
-// Also need these helper functions
-function getCurrentWeekMonday() {
-    const now = new Date();
-    const monday = new Date(now);
-    monday.setDate(now.getDate() - now.getDay() + 1);
-    monday.setHours(0, 0, 0, 0);
-    return monday.toISOString().split('T')[0];
-}
-
-function loadReservations() {
-    const reservationsPath = path.join(__dirname, '../../database/reservations.json');
-    if (!fs.existsSync(reservationsPath)) {
-        return { weekly_reservations: {} };
-    }
-    return JSON.parse(fs.readFileSync(reservationsPath, 'utf8'));
-}
+const { getCurrentWeekMonday, loadReservations, ensureCurrentWeekReservations } = require('../../utils/reservation-utils');
+const { isRaidLeader } = require('../../utils/permission-utils');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-list')
-        .setDescription('Show your current week reservations'),
+        .setDescription('Show all current week reservations organized by boss'),
 
     async execute(interaction) {
-        const currentWeek = getCurrentWeekMonday();
-        const reservations = loadReservations();
-        const userId = interaction.user.id;
-
-        // Check if user has any reservations this week
-        const userReservations = reservations.weekly_reservations[currentWeek]?.[userId] || [];
-        if (userReservations.length === 0) {
-            return await interaction.reply({
-                content: 'You have no reservations for this week!',
+        // Check if user is a raid leader
+        if (!isRaidLeader(interaction.member)) {
+            return interaction.reply({
+                content: 'Only Raid Leaders can view the reservation list.',
                 ephemeral: true
             });
         }
 
-        // Show current reservations
-        const reservationImage = await ImageComposer.createReservationImage(userReservations);
-        const attachment = new AttachmentBuilder(reservationImage, { name: 'current-reservations.png' });
+        const currentWeek = getCurrentWeekMonday();
+        const reservations = ensureCurrentWeekReservations();
+        const itemReservations = {};
+        
+        // Read raid loot data
+        const raidData = JSON.parse(fs.readFileSync(
+            path.join(__dirname, '../../database/raid-loot.json'),
+            'utf8'
+        ));
 
-        const wowheadLinks = userReservations
-            .map((item, index) => `${index + 1}- [${item.name}](${item.wowhead_url})`)
-            .join('\n');
+        // Initialize the map with all bosses and their items
+        raidData.bosses.forEach(boss => {
+            itemReservations[boss.name] = {};
+            boss.loot.forEach(item => {
+                itemReservations[boss.name][item.name] = [];
+            });
+        });
+
+        // Fill in the reservations
+        Object.entries(reservations.weekly_reservations[currentWeek] || {}).forEach(([userId, userData]) => {
+            userData.items.forEach(item => {
+                if (itemReservations[item.boss]?.[item.name]) {
+                    itemReservations[item.boss][item.name].push({
+                        userId: userId,
+                        characterName: userData.character_name
+                    });
+                }
+            });
+        });
+
+        // Create the embed description
+        let description = '';
+        
+        const guild = interaction.guild;
+
+        Object.entries(itemReservations).forEach(([bossName, items]) => {
+            const bossItems = Object.entries(items)
+                .filter(([_, reservers]) => reservers.length > 0)
+                .map(([itemName, reservers]) => {
+                    const reserversList = reservers
+                        .map(r => {
+                            const member = guild.members.cache.get(r.userId);
+                            const username = member ? member.user.username : 'Unknown User';
+                            return `  └ ${username} (${r.characterName})`;
+                        })
+                        .join('\n');
+                    return `**${itemName}**\n${reserversList}`;
+                });
+
+            if (bossItems.length > 0) {
+                description += `\n\`\`\`ansi\n\u001b[2;34m${bossName.toUpperCase()}\u001b[0m\n\`\`\`\n${bossItems.join('\n\n')}\n`;
+            }
+        });
+
+        if (description === '') {
+            description = 'No reservations for this week yet!';
+        }
 
         const embed = new EmbedBuilder()
-            .setColor(0x0099FF)
-            .setTitle('Your Current Reservations')
-            .setImage('attachment://current-reservations.png')
-            .setDescription(`**Link su WowHead**\n${wowheadLinks}`);
+            .setColor('#87CEEB') // Set embed color to a subtle blue
+            .setTitle('All Current Week Reservations')
+            .setDescription(description)
+            .setFooter({ text: `Week of ${currentWeek}` });
 
         await interaction.reply({
             embeds: [embed],
-            files: [attachment],
             ephemeral: true
         });
     }
-}; 
+};
