@@ -320,7 +320,7 @@ function getHardcodedRaidLootData() {
                 "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_polearm_2h_nerubianraid_d_01.jpg"
               },
               {
-                "id": "225577,
+                "id": "225577",
                 "name": "Fregio dello Zelota Sureki",
                 "type": "Collo Varie",
                 "ilvl": 571,
@@ -512,7 +512,7 @@ function getHardcodedRaidLootData() {
                 "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_qiraj_skinsandworm.jpg"
               },
               {
-                "id": "212387,
+                "id": "212387",
                 "name": "Catalizzatore Tetro del Mutastirpe",
                 "type": "Accessorio Varie",
                 "ilvl": 571,
