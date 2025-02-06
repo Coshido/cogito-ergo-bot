@@ -58,37 +58,42 @@ const rest = new REST().setToken(token);
 // Wrap the deployment in a function with a timeout
 async function deployCommands() {
     return new Promise((resolve, reject) => {
-        // Set a timeout
+        // Increase timeout to 2 minutes
         const deploymentTimer = setTimeout(() => {
-            const timeoutError = new Error('Command deployment timed out after 30 seconds');
+            console.error('🕰️ Command deployment timed out');
+            const timeoutError = new Error('Command deployment timed out after 120 seconds');
             timeoutError.name = 'DeploymentTimeoutError';
             reject(timeoutError);
-        }, 30000);
+        }, 120000);  // 2 minutes instead of 30 seconds
 
         (async () => {
             try {
-                console.log('Starting command deployment process');
+                console.log('🚀 Starting comprehensive command deployment process');
                 console.log('Environment variables:');
                 console.log('CLIENT_ID:', clientId);
                 console.log('Token present:', !!token);
 
-                console.log(`Started refreshing ${commands.length} application (/) commands.`);
-                console.log('Commands to be deployed:', commands.map(cmd => cmd.name));
+                console.log(`🔍 Preparing to deploy ${commands.length} application (/) commands`);
+                console.log('Commands to be deployed:', commands.map(cmd => cmd.name).join(', '));
 
-                // Deploy commands GLOBALLY instead of to a specific guild
+                // Measure deployment time
+                const startTime = Date.now();
+
+                // Deploy commands GLOBALLY
                 const data = await rest.put(
                     Routes.applicationCommands(clientId),
                     { body: commands },
                 );
 
-                console.log(`Successfully reloaded ${data.length} global application (/) commands.`);
+                const deploymentTime = (Date.now() - startTime) / 1000;
+                console.log(`✅ Successfully deployed ${data.length} global application (/) commands`);
+                console.log(`⏱️ Deployment took ${deploymentTime.toFixed(2)} seconds`);
                 
-                // Clear the timeout
                 clearTimeout(deploymentTimer);
                 resolve(data);
             } catch (error) {
-                // Clear the timeout
                 clearTimeout(deploymentTimer);
+                console.error('❌ Command deployment failed:', error);
                 reject(error);
             }
         })();
