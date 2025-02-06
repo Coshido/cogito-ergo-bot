@@ -143,6 +143,8 @@ class ImageComposer {
     }
 
     static async createReservationImage(items) {
+        console.log('Creating reservation image for items:', items.map(item => item.name));
+
         const itemSize = this.ITEM_SIZE;
         const padding = this.PADDING;
         const textWidth = this.TEXT_WIDTH;
@@ -153,6 +155,10 @@ class ImageComposer {
             itemSize + 2 * padding + 50
         );
         const ctx = canvas.getContext('2d');
+
+        // Verify font is available
+        const availableFonts = ctx.font.split(',');
+        console.log('Available fonts:', availableFonts);
 
         ctx.fillStyle = '#2f3136';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -170,7 +176,10 @@ class ImageComposer {
                 const textX = x + itemSize + padding;
                 let textY = y + 40;
 
+                // Explicitly set font before drawing
                 ctx.font = 'bold 42px "DejaVu Sans"';
+                console.log('Current font before drawing:', ctx.font);
+
                 const nameLines = this.wrapText(ctx, items[i].name, textWidth - padding);
                 nameLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
@@ -178,7 +187,6 @@ class ImageComposer {
                 });
 
                 ctx.font = '37px "DejaVu Sans"';
-                textY += 7;
                 const bossLines = this.wrapText(ctx, `From: ${items[i].boss}`, textWidth - padding);
                 bossLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
