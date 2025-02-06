@@ -33,22 +33,30 @@ function getHardcodedRaidLootData() {
         "bosses": [
             {
                 "id": 2607,
-                "name": "Ulgrax il Divoratore",
+                "name": "Ulgrax Divoratore",  
                 "loot": [
                     {
                         "id": "219915",
-                        "name": "Chelicera del Behemoth Corrotto",
+                        "name": "Chelicera Behemoth",  
                         "type": "Monile Varie",
                         "ilvl": 571,
                         "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_raid_foulbehemothschelicera_red.jpg",
-                        "wowhead_url": "https://www.wowhead.com/item=219915",
-                        "emojiId": "1234567890",
-                        "emojiName": "item_219915"
+                        "wowhead_url": "https://www.wowhead.com/item=219915"
                     }
-                    // Add more loot items as needed
+                ]
+            },
+            {
+                "id": 2611,
+                "name": "Orrore Vincolasangue",  
+                "loot": [
+                    {
+                        "id": "219917",
+                        "name": "Coagulo Strisciante",
+                        "type": "Monile Varie",
+                        "ilvl": 571
+                    }
                 ]
             }
-            // Add more bosses as needed
         ],
         "difficulties": [
             {
@@ -181,12 +189,17 @@ async function initializeDatabase(customPath) {
         throw new Error('No valid database path found');
     }
 
-    // Use project root as source path
-    const sourcePath = path.join(__dirname, '..');
-
     await ensureDatabaseDirectory(databasePath);
     
-    await copyExactFiles(sourcePath, databasePath);
+    // Force write hardcoded raid loot data
+    const raidLootPath = path.join(databasePath, 'raid-loot.json');
+    try {
+        const hardcodedRaidLootData = getHardcodedRaidLootData();
+        fsSync.writeFileSync(raidLootPath, JSON.stringify(hardcodedRaidLootData, null, 2));
+        console.log('Forcibly wrote hardcoded raid loot data');
+    } catch (error) {
+        console.error('Error writing hardcoded raid loot data:', error);
+    }
     
     await initializeDatabaseFiles(databasePath);
 
