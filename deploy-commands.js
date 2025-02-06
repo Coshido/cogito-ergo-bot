@@ -3,22 +3,22 @@ const fs = require('node:fs');
 const path = require('node:path');
 require("dotenv").config();
 
+// Set a deployment timeout of 30 seconds
+const DEPLOYMENT_TIMEOUT = 30000;
+
 const clientId = process.env.CLIENT_ID
 const guildId = process.env.GUILD_ID
 const token = process.env.BOT_TOKEN
 
 const commands = [];
-// Grab all the command folders from the commands directory you created earlier
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
 console.log('Command folders found:', commandFolders);
 
 for (const folder of commandFolders) {
-	// Grab all the command files from the commands directory you created earlier
 	const commandsPath = path.join(foldersPath, folder);
 	
-	// Check if it's actually a directory
 	if (!fs.statSync(commandsPath).isDirectory()) {
 		console.log(`Skipping non-directory: ${commandsPath}`);
 		continue;
@@ -27,7 +27,6 @@ for (const folder of commandFolders) {
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 	console.log(`Commands in ${folder}:`, commandFiles);
 
-	// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		try {
@@ -44,24 +43,67 @@ for (const folder of commandFolders) {
 	}
 }
 
-// Construct and prepare an instance of the REST module
 const rest = new REST().setToken(token);
 
-// and deploy your commands!
+// Wrap the deployment in a function with a timeout
+function deployCommands() {
+	return new Promise((resolve, reject) => {
+		// Set a timeout
+		const deploymentTimer = setTimeout(() => {
+			const timeoutError = new Error('Command deployment timed out after 30 seconds');
+			timeoutError.name = 'DeploymentTimeoutError';
+			reject(timeoutError);
+		}, DEPLOYMENT_TIMEOUT);
+
+		(async () => {
+			try {
+				console.log('Starting command deployment process');
+				console.log('Environment variables:');
+				console.log('CLIENT_ID:', clientId);
+				console.log('GUILD_ID:', guildId);
+				console.log('Token present:', !!token);
+
+				console.log(`Started refreshing ${commands.length} application (/) commands.`);
+				console.log('Commands to be deployed:', commands.map(cmd => cmd.name));
+
+				const data = await rest.put(
+					Routes.applicationGuildCommands(clientId, guildId),
+					{ body: commands },
+				);
+
+				console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+				
+				// Clear the timeout
+				clearTimeout(deploymentTimer);
+				resolve(data);
+			} catch (error) {
+				// Clear the timeout
+				clearTimeout(deploymentTimer);
+				reject(error);
+			}
+		})();
+	});
+}
+
+// Main execution with comprehensive error handling
 (async () => {
 	try {
-		console.log(`Started refreshing ${commands.length} application (/) commands.`);
-		console.log('Commands to be deployed:', commands.map(cmd => cmd.name));
-
-		// The put method is used to fully refresh all commands in the guild with the current set
-		const data = await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands },
-		);
-
-		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+		await deployCommands();
+		console.log('Command deployment completed successfully');
+		process.exit(0);
 	} catch (error) {
-		// And of course, make sure you catch and log any errors!
-		console.error('Deployment error:', error);
+		console.error('Deployment failed:', error);
+		
+		// Log specific error details
+		console.error('Error name:', error.name);
+		console.error('Error message:', error.message);
+		
+		if (error.response) {
+			console.error('Response status:', error.response.status);
+			console.error('Response data:', error.response.data);
+		}
+		
+		// Exit with error code
+		process.exit(1);
 	}
 })();

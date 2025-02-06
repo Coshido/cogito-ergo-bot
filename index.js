@@ -80,15 +80,34 @@ client.once(Events.ClientReady, readyClient => {
 // Initialize database before starting the bot
 (async () => {
     try {
-        console.log('Environment DATABASE_PATH:', process.env.DATABASE_PATH);
+        console.log('Starting database initialization');
+        console.log('Current working directory:', process.cwd());
+        console.log('__dirname:', __dirname);
+        console.log('Environment variables:');
+        console.log('DATABASE_PATH:', process.env.DATABASE_PATH);
+        
+        // Ensure all required environment variables are present
+        const requiredEnvVars = ['BOT_TOKEN', 'CLIENT_ID', 'GUILD_ID'];
+        const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+        
+        if (missingVars.length > 0) {
+            console.error('Missing required environment variables:', missingVars);
+            process.exit(1);
+        }
         
         // Use the mounted volume path if available
         const databasePath = await initializeDatabase(process.env.DATABASE_PATH);
         console.log('Database initialized successfully at:', databasePath);
     } catch (error) {
-        console.error('Failed to initialize database:', error);
-        // Optionally, you might want to exit the process if database init is critical
-        // process.exit(1);
+        console.error('CRITICAL: Failed to initialize database:', error);
+        
+        // Log additional context about the error
+        console.error('Error name:', error.name);
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        
+        // Ensure the process exits with an error code
+        process.exit(1);
     }
 })();
 

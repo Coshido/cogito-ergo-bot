@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node deploy-commands.js && node .",
+    "start": "node --trace-warnings deploy-commands.js && node --trace-warnings .",
     "deploy": "node deploy-commands.js",
     "dev": "node deploy-commands.js && node ."
   },
