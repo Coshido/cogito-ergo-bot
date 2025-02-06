@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node .",
+    "start": "node deploy-commands.js && node .",
     "deploy": "node deploy-commands.js",
     "dev": "node deploy-commands.js && node ."
   },
