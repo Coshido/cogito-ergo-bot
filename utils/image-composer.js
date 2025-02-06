@@ -1,23 +1,6 @@
-const { createCanvas, loadImage, registerFont } = require('canvas');
+const { createCanvas, loadImage } = require('canvas');
 const path = require('path');
 const fs = require('fs');
-
-// Detailed font path diagnostics
-const fontPath = path.resolve(__dirname, '../assets/DejaVuSans.ttf');
-
-console.log('Font Registration Diagnostics:');
-console.log('Attempting to register font from:', fontPath);
-console.log('Font file exists:', fs.existsSync(fontPath));
-if (fs.existsSync(fontPath)) {
-    console.log('Font file details:', fs.statSync(fontPath));
-}
-
-try {
-    registerFont(fontPath, { family: 'DejaVu Sans' });
-    console.log('Font registered successfully');
-} catch (error) {
-    console.error('Font registration error:', error);
-}
 
 class ImageComposer {
     // Common constants at class level
@@ -119,14 +102,14 @@ class ImageComposer {
                 const textX = x + itemSize + padding;
                 let textY = y + 40;
 
-                ctx.font = 'bold 48px "DejaVu Sans"';
+                ctx.font = 'bold 48px Arial, Helvetica, sans-serif';
                 const nameLines = this.wrapText(ctx, item.name, textWidth - padding);
                 nameLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
                     textY += lineHeight;
                 });
 
-                ctx.font = '42px "DejaVu Sans"';
+                ctx.font = '42px Arial, Helvetica, sans-serif';
                 textY += 5;
                 const typeLines = this.wrapText(ctx, `Tipo: ${this.formatItemType(item.type)}`, textWidth - padding);
                 typeLines.forEach(line => {
@@ -148,17 +131,13 @@ class ImageComposer {
         const itemSize = this.ITEM_SIZE;
         const padding = this.PADDING;
         const textWidth = this.TEXT_WIDTH;
-        const lineHeight = 45;
+        const lineHeight = this.LINE_HEIGHT;
 
         const canvas = createCanvas(
             2 * (itemSize + textWidth + padding) + padding,
-            itemSize + 2 * padding + 50
+            itemSize + 2 * padding
         );
         const ctx = canvas.getContext('2d');
-
-        // Verify font is available
-        const availableFonts = ctx.font.split(',');
-        console.log('Available fonts:', availableFonts);
 
         ctx.fillStyle = '#2f3136';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -176,17 +155,14 @@ class ImageComposer {
                 const textX = x + itemSize + padding;
                 let textY = y + 40;
 
-                // Explicitly set font before drawing
-                ctx.font = 'bold 42px "DejaVu Sans"';
-                console.log('Current font before drawing:', ctx.font);
-
+                ctx.font = 'bold 42px Arial, Helvetica, sans-serif';
                 const nameLines = this.wrapText(ctx, items[i].name, textWidth - padding);
                 nameLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
                     textY += lineHeight;
                 });
 
-                ctx.font = '37px "DejaVu Sans"';
+                ctx.font = '37px Arial, Helvetica, sans-serif';
                 const bossLines = this.wrapText(ctx, `From: ${items[i].boss}`, textWidth - padding);
                 bossLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
