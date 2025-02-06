@@ -6,11 +6,10 @@ require("dotenv").config();
 // Log environment variables for debugging
 console.log('Environment Variables:');
 console.log('CLIENT_ID:', process.env.CLIENT_ID ? 'SET' : 'UNSET');
-console.log('GUILD_ID:', process.env.GUILD_ID ? 'SET' : 'UNSET');
 console.log('BOT_TOKEN:', process.env.BOT_TOKEN ? 'SET (masked)' : 'UNSET');
 
 // Validate required environment variables
-const requiredEnvVars = ['CLIENT_ID', 'GUILD_ID', 'BOT_TOKEN'];
+const requiredEnvVars = ['CLIENT_ID', 'BOT_TOKEN'];
 const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingVars.length > 0) {
@@ -19,7 +18,6 @@ if (missingVars.length > 0) {
 }
 
 const clientId = process.env.CLIENT_ID
-const guildId = process.env.GUILD_ID
 const token = process.env.BOT_TOKEN
 
 const commands = [];
@@ -58,69 +56,67 @@ for (const folder of commandFolders) {
 const rest = new REST().setToken(token);
 
 // Wrap the deployment in a function with a timeout
-function deployCommands() {
-	return new Promise((resolve, reject) => {
-		// Set a timeout
-		const deploymentTimer = setTimeout(() => {
-			const timeoutError = new Error('Command deployment timed out after 30 seconds');
-			timeoutError.name = 'DeploymentTimeoutError';
-			reject(timeoutError);
-		}, 30000);
+async function deployCommands() {
+    return new Promise((resolve, reject) => {
+        // Set a timeout
+        const deploymentTimer = setTimeout(() => {
+            const timeoutError = new Error('Command deployment timed out after 30 seconds');
+            timeoutError.name = 'DeploymentTimeoutError';
+            reject(timeoutError);
+        }, 30000);
 
-		(async () => {
-			try {
-				console.log('Starting command deployment process');
-				console.log('Environment variables:');
-				console.log('CLIENT_ID:', clientId);
-				console.log('GUILD_ID:', guildId);
-				console.log('Token present:', !!token);
+        (async () => {
+            try {
+                console.log('Starting command deployment process');
+                console.log('Environment variables:');
+                console.log('CLIENT_ID:', clientId);
+                console.log('Token present:', !!token);
 
-				console.log(`Started refreshing ${commands.length} application (/) commands.`);
-				console.log('Commands to be deployed:', commands.map(cmd => cmd.name));
+                console.log(`Started refreshing ${commands.length} application (/) commands.`);
+                console.log('Commands to be deployed:', commands.map(cmd => cmd.name));
 
-				const data = await rest.put(
-					Routes.applicationGuildCommands(clientId, guildId),
-					{ body: commands },
-				);
+                // Deploy commands GLOBALLY instead of to a specific guild
+                const data = await rest.put(
+                    Routes.applicationCommands(clientId),
+                    { body: commands },
+                );
 
-				console.log(`Successfully reloaded ${data.length} application (/) commands.`);
-				
-				// Clear the timeout
-				clearTimeout(deploymentTimer);
-				resolve(data);
-			} catch (error) {
-				// Clear the timeout
-				clearTimeout(deploymentTimer);
-				reject(error);
-			}
-		})();
-	});
+                console.log(`Successfully reloaded ${data.length} global application (/) commands.`);
+                
+                // Clear the timeout
+                clearTimeout(deploymentTimer);
+                resolve(data);
+            } catch (error) {
+                // Clear the timeout
+                clearTimeout(deploymentTimer);
+                reject(error);
+            }
+        })();
+    });
 }
 
-async function clearAllGuildCommands() {
-    console.log('Starting to clear existing guild commands...');
+async function clearAllGlobalCommands() {
+    console.log('Starting to clear existing commands...');
     try {
         const rest = new REST().setToken(token);
         
-        // Fetch existing commands
-        const commands = await rest.get(
-            Routes.applicationGuildCommands(clientId, guildId)
+        // Clear global commands
+        const globalCommands = await rest.get(
+            Routes.applicationCommands(clientId)
         );
 
-        console.log(`Found ${commands.length} existing commands to clear`);
-
-        // Delete each existing command
-        for (const command of commands) {
+        console.log(`Found ${globalCommands.length} global commands to clear`);
+        for (const command of globalCommands) {
             await rest.delete(
-                Routes.applicationGuildCommand(clientId, guildId, command.id)
+                Routes.applicationCommand(clientId, command.id)
             );
-            console.log(`Deleted command: ${command.name}`);
+            console.log(`Deleted global command: ${command.name}`);
         }
 
-        console.log('All guild commands cleared successfully');
+        console.log('All commands cleared successfully');
     } catch (error) {
-        console.error('Error clearing guild commands:', error);
-        throw error;  // Rethrow to stop deployment if clearing fails
+        console.error('Error clearing commands:', error);
+        throw error;
     }
 }
 
@@ -128,7 +124,7 @@ async function clearAllGuildCommands() {
 (async () => {
     try {
         // Clear existing commands first
-        await clearAllGuildCommands();
+        await clearAllGlobalCommands();
         
         // Then deploy new commands
         await deployCommands();

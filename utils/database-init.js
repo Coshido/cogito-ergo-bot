@@ -1239,4 +1239,53 @@ async function initializeDatabase(customPath) {
     }
 }
 
+async function getDatabaseStats(databasePath) {
+    const fs = require('fs').promises;
+    const path = require('path');
+    
+    const files = await fs.readdir(databasePath);
+    const jsonFiles = files.filter(file => file.endsWith('.json'));
+    
+    let totalEntries = 0;
+    for (const file of jsonFiles) {
+        const filePath = path.join(databasePath, file);
+        const content = JSON.parse(await fs.readFile(filePath, 'utf8'));
+        
+        // Count entries based on common structures
+        if (content.reservations) totalEntries += content.reservations.length;
+        if (content.birthdays) totalEntries += content.birthdays.length;
+        if (content.leagues) totalEntries += content.leagues.length;
+    }
+    
+    return {
+        totalFiles: jsonFiles.length,
+        totalEntries
+    };
+}
+
+async function initializeDatabase(customPath) {
+    console.log('Starting comprehensive database initialization...');
+    
+    try {
+        const databasePath = await ensureDatabaseDirectory(customPath);
+        console.log(`Database directory secured at: ${databasePath}`);
+        
+        await initializeDatabaseFiles(databasePath);
+        console.log('Database files successfully initialized and populated');
+        
+        // Optional: Add some summary statistics
+        const stats = await getDatabaseStats(databasePath);
+        console.log('Database Initialization Summary:');
+        console.log(`   - Total files: ${stats.totalFiles}`);
+        console.log(`   - Total entries: ${stats.totalEntries}`);
+        
+        console.log('Database initialization COMPLETE! Bot is ready to rock!');
+        
+        return databasePath;
+    } catch (error) {
+        console.error('Critical error during database initialization:', error);
+        throw error;
+    }
+}
+
 module.exports = { initializeDatabase };
