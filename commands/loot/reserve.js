@@ -29,15 +29,11 @@ module.exports = {
         // Initialize user's weekly reservations if not exists
         ensureCurrentWeekReservations(reservations, userId);
 
-        const userData = reservations.weekly_reservations[currentWeek][userId];
-        if (!userData) {
-            // Create a default user data structure if it doesn't exist
-            reservations.weekly_reservations[currentWeek][userId] = {
-                character_name: null,
-                discord_username: null,
-                items: []
-            };
-        }
+        const userData = reservations.weekly_reservations[currentWeek][userId] || {
+            character_name: null,
+            discord_username: null,
+            items: []
+        };
 
         if (userData && userData.items.length >= 2) {
             // Create reservation image

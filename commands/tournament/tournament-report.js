@@ -4,7 +4,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('tournament-report')
+        .setName('t-report')
         .setDescription('Report a match result')
         .addIntegerOption(option =>
             option

@@ -38,7 +38,7 @@ function generateMatches(participants, format) {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('tournament-bracket')
+        .setName('t-bracket')
         .setDescription('Generate tournament brackets'),
 
     async execute(interaction) {

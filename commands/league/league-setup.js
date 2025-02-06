@@ -11,11 +11,6 @@ module.exports = {
             option.setName('league-name')
                 .setDescription('Name of the league')
                 .setRequired(true)
-        )
-        .addStringOption(option => 
-            option.setName('participants')
-                .setDescription('Comma-separated list of participants')
-                .setRequired(true)
         ),
 
     async execute(interaction) {
@@ -28,65 +23,43 @@ module.exports = {
         }
 
         const leagueName = interaction.options.getString('league-name');
-        const participantsInput = interaction.options.getString('participants');
         
-        // Parse participants
-        const participants = participantsInput.split(',')
-            .map(p => p.trim())
-            .filter(p => p.length > 0);
-
-        // Validate number of participants
-        if (participants.length < 2) {
-            return interaction.reply({
-                content: 'You need at least 2 participants to create a league.',
-                ephemeral: true
-            });
-        }
-
         try {
-            // Initialize league
-            const leagueData = await LeagueManager.initializeLeague(leagueName, participants);
+            // Retrieve participants from the database
+            const participants = await LeagueManager.getParticipants();
+
+            // Validate number of participants
+            if (participants.length < 2) {
+                return interaction.reply({
+                    content: 'Not enough participants to create a league. At least 2 participants are required.',
+                    ephemeral: true
+                });
+            }
+
+            // Initialize league with participants from database
+            const leagueData = await LeagueManager.initializeLeague(leagueName);
 
             // Create an embed to show league details
             const embed = new EmbedBuilder()
-                .setTitle(`🏆 ${leagueName} League Setup`)
-                .setDescription('League successfully created!')
+                .setTitle('League Setup')
+                .setDescription(`League "${leagueName}" has been created!`)
                 .addFields(
                     { 
                         name: 'Participants', 
-                        value: participants.join(', ') 
+                        value: leagueData.participants.join(', ') 
                     },
                     { 
-                        name: 'Total Matches', 
-                        value: leagueData.matches.length.toString() 
+                        name: 'Total Participants', 
+                        value: leagueData.participants.length.toString() 
                     }
                 )
-                .setColor(0x00AE86);
+                .setColor(0x00FF00);
 
-            // Create buttons for additional actions
-            const viewScheduleButton = new ButtonBuilder()
-                .setCustomId('view_league_schedule')
-                .setLabel('View Schedule')
-                .setStyle(ButtonStyle.Primary);
-
-            const viewStandingsButton = new ButtonBuilder()
-                .setCustomId('view_league_standings')
-                .setLabel('View Standings')
-                .setStyle(ButtonStyle.Secondary);
-
-            const actionRow = new ActionRowBuilder()
-                .addComponents(viewScheduleButton, viewStandingsButton);
-
-            // Send response
-            await interaction.reply({
-                embeds: [embed],
-                components: [actionRow],
-                ephemeral: false
-            });
+            await interaction.reply({ embeds: [embed], ephemeral: false });
         } catch (error) {
             console.error('League setup error:', error);
             await interaction.reply({
-                content: `Failed to set up league: ${error.message}`,
+                content: `Error setting up league: ${error.message}`,
                 ephemeral: true
             });
         }

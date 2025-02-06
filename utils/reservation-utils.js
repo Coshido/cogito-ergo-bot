@@ -22,9 +22,13 @@ function saveReservations(reservations) {
     fs.writeFileSync(reservationsPath, JSON.stringify(reservations, null, 2));
 }
 
-function ensureCurrentWeekReservations(userId) {
-    const reservations = loadReservations();
+function ensureCurrentWeekReservations(reservations, userId) {
     const currentWeek = getCurrentWeekMonday();
+
+    // If weekly_reservations doesn't exist, create it
+    if (!reservations.weekly_reservations) {
+        reservations.weekly_reservations = {};
+    }
 
     // If current week doesn't exist, create it with carried over reservations
     if (!reservations.weekly_reservations[currentWeek]) {
@@ -37,25 +41,26 @@ function ensureCurrentWeekReservations(userId) {
             
             // Create a new entry for the current week with carried over reservations
             reservations.weekly_reservations[currentWeek] = 
-                JSON.parse(JSON.stringify(reservations.weekly_reservations[latestWeek]));
+                JSON.parse(JSON.stringify(reservations.weekly_reservations[latestWeek] || {}));
         } else {
             // If no previous reservations, create an empty object
             reservations.weekly_reservations[currentWeek] = {};
         }
-
-        // Save the updated reservations
-        saveReservations(reservations);
     }
 
     // Ensure the specific user has an entry for the current week
-    if (userId && !reservations.weekly_reservations[currentWeek][userId]) {
-        reservations.weekly_reservations[currentWeek][userId] = {
-            character_name: null,
-            discord_username: null,
-            items: []
-        };
-        saveReservations(reservations);
+    if (userId) {
+        if (!reservations.weekly_reservations[currentWeek][userId]) {
+            reservations.weekly_reservations[currentWeek][userId] = {
+                character_name: null,
+                discord_username: null,
+                items: []
+            };
+        }
     }
+
+    // Save the updated reservations
+    saveReservations(reservations);
 
     return reservations;
 }
