@@ -70,7 +70,8 @@ module.exports = {
         const userState = {
             selectedItems: [],
             currentStep: 1,
-            characterName: null  // Add this to store character name
+            characterName: null,  // Add this to store character name
+            currentBoss: null
         };
 
         // Create character name input button
@@ -111,6 +112,43 @@ module.exports = {
         const filter = i => i.user.id === interaction.user.id;
         const collector = initialMessage.createMessageComponentCollector({ filter, time: 300000 });
 
+        // Add a client-level modal submit handler
+        interaction.client.on('interactionCreate', async (modalInteraction) => {
+            // Ensure it's a modal submission and for the right user
+            if (!modalInteraction.isModalSubmit() || 
+                modalInteraction.customId !== 'character_name_modal' || 
+                modalInteraction.user.id !== interaction.user.id) return;
+
+            try {
+                console.log('Modal submitted successfully');
+                const characterName = modalInteraction.fields.getTextInputValue('character_name');
+                console.log('Character name:', characterName);
+
+                // Enable boss selection
+                bossSelect.setDisabled(false);
+                const updatedSelectRow = new ActionRowBuilder().addComponents(bossSelect);
+
+                // Update the button to show the character name
+                characterButton
+                    .setLabel(`Character: ${characterName}`)
+                    .setStyle(ButtonStyle.Success);
+                const updatedButtonRow = new ActionRowBuilder().addComponents(characterButton);
+
+                await modalInteraction.update({
+                    components: [updatedButtonRow, updatedSelectRow]
+                });
+
+                // Store the character name in userState
+                userState.characterName = characterName;
+            } catch (error) {
+                console.error('Error handling modal submission:', error);
+                await modalInteraction.reply({
+                    content: `Something went wrong: ${error.message}`,
+                    ephemeral: true
+                });
+            }
+        });
+
         collector.on('collect', async i => {
             try {
                 if (i.customId === 'set_character') {
@@ -130,30 +168,20 @@ module.exports = {
 
                     await i.showModal(modal);
                 }
-                
-                if (i.type === 'ModalSubmit' && i.customId === 'character_name_modal') {
-                    userState.characterName = i.fields.getTextInputValue('character_name');
-
-                    // Enable boss selection
-                    bossSelect.setDisabled(false);
-                    const updatedSelectRow = new ActionRowBuilder().addComponents(bossSelect);
-
-                    // Update the button to show the character name
-                    characterButton
-                        .setLabel(`Character: ${userState.characterName}`)
-                        .setStyle(ButtonStyle.Success);
-                    const updatedButtonRow = new ActionRowBuilder().addComponents(characterButton);
-
-                    await i.update({
-                        components: [updatedButtonRow, updatedSelectRow]
-                    });
-                }
                 else if (i.customId === 'boss_select') {
+                    console.log('Boss selected:', i.values[0]);
+                    
                     const selectedBoss = raidData.bosses.find(b => b.id.toString() === i.values[0]);
+                    
                     if (!selectedBoss) {
                         console.error('Boss not found:', i.values[0]);
-                        return await i.reply({ content: 'Error: Boss not found', ephemeral: true });
+                        return await i.reply({ 
+                            content: 'Error: Boss not found', 
+                            ephemeral: true 
+                        });
                     }
+
+                    console.log('Selected boss details:', selectedBoss);
                     userState.currentBoss = selectedBoss;
                     
                     // Create loot table image
@@ -191,26 +219,24 @@ module.exports = {
                         components: [selectRow, buttonRow],
                     });
                 }
-
-                // Add handler for back button
-                else if (i.customId === 'back_to_bosses') {
-                    userState.currentStep = 1;
-                    const embed = new EmbedBuilder()
-                        .setColor(0x0099FF)
-                        .setTitle(`${raidData.raid} - Loot Reservation`)
-                        .setDescription(`First, set your character name, then select a boss to view their loot table.\nYou can reserve up to 2 items per week.\nYou have ${2 - userData.items.length} reservations remaining.`)
-                        .setFooter({ text: `Step ${userState.currentStep} of 3: Character Selection` });
-
-                    await i.update({
-                        embeds: [embed],
-                        components: [buttonRow, selectRow],
-                        files: []  // Remove any previous images
-                    });
-                }
-                // Add back the item selection handler
                 else if (i.customId === 'item_select') {
+                    console.log('Item selected:', i.values[0]);
+                    console.log('Current boss:', userState.currentBoss);
+
+                    // Find the selected item from the current boss's loot
                     const selectedItem = userState.currentBoss.loot.find(item => item.id === i.values[0]);
                     
+                    if (!selectedItem) {
+                        console.error('Item not found:', i.values[0]);
+                        return await i.reply({ 
+                            content: 'Error: Item not found', 
+                            ephemeral: true 
+                        });
+                    }
+
+                    console.log('Selected item details:', selectedItem);
+                    
+                    // Add the selected item to user's reservations
                     userState.selectedItems.push({
                         id: selectedItem.id,
                         name: selectedItem.name,
@@ -219,10 +245,12 @@ module.exports = {
                         ilvl: selectedItem.ilvl,
                         icon: selectedItem.icon,
                         wowhead_url: selectedItem.wowhead_url,
-                        character_name: userState.characterName  // Use the character name we got in step 1
+                        character_name: userState.characterName
                     });
 
-                    // Create the next screen (either second item selection or confirmation)
+                    console.log('Current selected items:', userState.selectedItems);
+
+                    // Determine next steps based on current reservations
                     if (userState.selectedItems.length < 2 && userData.items.length === 0) {
                         // Show boss selection again for second item
                         userState.currentStep = 2;
@@ -232,6 +260,19 @@ module.exports = {
                             .setDescription('Select a boss for your second item.\n\nFirst selection:\n' +
                                 `- ${selectedItem.name} from ${userState.currentBoss.name}`)
                             .setFooter({ text: `Step ${userState.currentStep} of 3: Boss Selection` });
+
+                        // Recreate the original boss selection rows
+                        const bossSelect = new StringSelectMenuBuilder()
+                            .setCustomId('boss_select')
+                            .setPlaceholder('Select a boss')
+                            .addOptions(
+                                raidData.bosses.map(boss => ({
+                                    label: boss.name,
+                                    value: boss.id.toString(),
+                                    description: `Select loot from ${boss.name}`
+                                }))
+                            );
+                        const selectRow = new ActionRowBuilder().addComponents(bossSelect);
 
                         await i.update({
                             embeds: [newEmbed],
@@ -245,9 +286,11 @@ module.exports = {
                             .setColor(0x0099FF)
                             .setTitle('Confirm Your Reservations')
                             .setDescription(
-                                `Please review and confirm your selections for character **${userState.characterName}**:`
+                                `Please review and confirm your selections for character **${userState.characterName}**:\n\n` +
+                                userState.selectedItems.map((item, index) => 
+                                    `${index + 1}. ${item.name} from ${item.boss}`
+                                ).join('\n')
                             )
-                            .setImage('attachment://reservations.png')
                             .setFooter({ text: 'Step 3 of 3: Confirmation' });
 
                         const confirmButton = new ButtonBuilder()
@@ -274,46 +317,65 @@ module.exports = {
                         });
                     }
                 }
-                // Add back the confirm/cancel handlers
                 else if (i.customId === 'confirm_reservation') {
-                    // Save the reservations with character name at user level
-                    reservations.weekly_reservations[currentWeek][userId] = {
-                        character_name: userState.characterName,
-                        items: userState.selectedItems.map(item => ({
-                            id: item.id,
-                            name: item.name,
-                            boss: item.boss,
-                            type: item.type,
-                            ilvl: item.ilvl,
-                            icon: item.icon,
-                            wowhead_url: item.wowhead_url
-                        }))
-                    };
-                    saveReservations(reservations);
+                    console.log('Confirm reservation clicked');
+                    console.log('Selected items:', userState.selectedItems);
+                    console.log('Character name:', userState.characterName);
 
-                    // Create final image
-                    const reservationImage = await ImageComposer.createReservationImage(userState.selectedItems);
-                    const attachment = new AttachmentBuilder(reservationImage, { name: 'reservations.png' });
+                    try {
+                        // Save the reservations with character name at user level
+                        reservations.weekly_reservations[currentWeek][userId] = {
+                            character_name: userState.characterName,
+                            items: userState.selectedItems.map(item => ({
+                                id: item.id,
+                                name: item.name,
+                                boss: item.boss,
+                                type: item.type,
+                                ilvl: item.ilvl,
+                                icon: item.icon,
+                                wowhead_url: item.wowhead_url
+                            }))
+                        };
 
-                    const finalEmbed = new EmbedBuilder()
-                        .setColor(0x00FF00)
-                        .setTitle('Reservations Confirmed!')
-                        .setImage('attachment://reservations.png')
-                        .setDescription(
-                            `Your items have been reserved for this week for character **${userState.characterName}**!\n\n` +
-                            `**Link su WowHead**\n${userState.selectedItems.map((item, index) => 
-                                `${index + 1}- [${item.name}](${item.wowhead_url})`
-                            ).join('\n')}`
-                        );
+                        console.log('Saving reservations:', reservations.weekly_reservations[currentWeek][userId]);
+                        
+                        // Save the reservations to file
+                        saveReservations(reservations);
+                        console.log('Reservations saved successfully');
 
-                    await i.update({
-                        embeds: [finalEmbed],
-                        files: [attachment],
-                        components: [],
-                    });
-                    collector.stop();
+                        // Create final image
+                        const reservationImage = await ImageComposer.createReservationImage(userState.selectedItems);
+                        const attachment = new AttachmentBuilder(reservationImage, { name: 'reservations.png' });
+
+                        const finalEmbed = new EmbedBuilder()
+                            .setColor(0x00FF00)
+                            .setTitle('Reservations Confirmed!')
+                            .setImage('attachment://reservations.png')
+                            .setDescription(
+                                `Your items have been reserved for this week for character **${userState.characterName}**!\n\n` +
+                                `**Link su WowHead**\n${userState.selectedItems.map((item, index) => 
+                                    `${index + 1}- [${item.name}](${item.wowhead_url})`
+                                ).join('\n')}`
+                            );
+
+                        await i.update({
+                            embeds: [finalEmbed],
+                            files: [attachment],
+                            components: [],
+                        });
+
+                        collector.stop();
+                    } catch (saveError) {
+                        console.error('Error saving reservations:', saveError);
+                        await i.reply({
+                            content: `Failed to save reservations: ${saveError.message}`,
+                            ephemeral: true
+                        });
+                    }
                 }
                 else if (i.customId === 'cancel_reservation') {
+                    console.log('Reservation cancelled');
+
                     const cancelEmbed = new EmbedBuilder()
                         .setColor(0xFF0000)
                         .setTitle('Reservations Cancelled')
@@ -324,14 +386,19 @@ module.exports = {
                         components: [],
                         files: []
                     });
+
                     collector.stop();
                 }
             } catch (error) {
                 console.error('Error in collector:', error);
-                await i.reply({ 
-                    content: 'An error occurred while processing your selection', 
-                    ephemeral: true 
-                }).catch(console.error);
+                try {
+                    await i.reply({
+                        content: `Something went wrong: ${error.message}`,
+                        ephemeral: true
+                    });
+                } catch (replyError) {
+                    console.error('Error replying to interaction:', replyError);
+                }
             }
         });
     }
