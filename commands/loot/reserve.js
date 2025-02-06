@@ -123,9 +123,9 @@ module.exports = {
             .setDisabled(true)  // Disabled until character name is set
             .addOptions(
                 raidData.bosses.map(boss => ({
-                    label: boss.name.length > 25 ? boss.name.substring(0, 22) + '...' : boss.name,
+                    label: boss.name,
                     value: boss.id.toString(),
-                    description: `Loot from ${boss.name.length > 25 ? boss.name.substring(0, 22) + '...' : boss.name}`
+                    description: `Select loot from ${boss.name}`
                 }))
             );
 

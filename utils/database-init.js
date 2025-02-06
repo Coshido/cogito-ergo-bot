@@ -1,14 +1,11 @@
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const path = require('path');
 
 const DEFAULT_CONFIGS = {
     'config.json': {
         raidLeaderRoleId: null,
         raiderRoleId: null
-    },
-    'raid-loot.json': {
-        raid: "Default Raid",
-        bosses: []
     },
     'reservations.json': {
         weekly_reservations: {}
@@ -26,6 +23,10 @@ const DEFAULT_CONFIGS = {
     }
 };
 
+const EXACT_COPY_FILES = [
+    'raid-loot.json'
+];
+
 async function ensureDatabaseDirectory(databasePath) {
     console.log('Attempting to create database directory:', databasePath);
     try {
@@ -34,6 +35,29 @@ async function ensureDatabaseDirectory(databasePath) {
     } catch (error) {
         console.error('Error creating database directory:', error);
         throw error;
+    }
+}
+
+async function copyExactFiles(sourcePath, destPath) {
+    console.log('Copying exact files from:', sourcePath, 'to:', destPath);
+    
+    for (const filename of EXACT_COPY_FILES) {
+        const sourceFile = path.join(sourcePath, filename);
+        const destFile = path.join(destPath, filename);
+        
+        try {
+            // Check if source file exists
+            if (!fsSync.existsSync(sourceFile)) {
+                console.log(`Source file not found: ${sourceFile}`);
+                continue;
+            }
+            
+            // Copy file exactly
+            fsSync.copyFileSync(sourceFile, destFile);
+            console.log(`Copied ${filename} exactly`);
+        } catch (error) {
+            console.error(`Error copying ${filename}:`, error);
+        }
     }
 }
 
@@ -90,7 +114,15 @@ async function initializeDatabase(customPath) {
         throw new Error('No valid database path found');
     }
 
+    // Source path for exact file copies
+    const sourcePath = path.join(__dirname, '../database');
+
     await ensureDatabaseDirectory(databasePath);
+    
+    // Copy exact files first
+    copyExactFiles(sourcePath, databasePath);
+    
+    // Then initialize other files
     await initializeDatabaseFiles(databasePath);
 
     return databasePath;
