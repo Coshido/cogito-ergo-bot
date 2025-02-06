@@ -2,38 +2,104 @@ const { createCanvas, loadImage, registerFont } = require('canvas');
 const path = require('path');
 const fs = require('fs');
 
-// Detailed font registration with comprehensive error handling
-const fontPath = path.resolve(__dirname, '../assets/DejaVuSans.ttf');
+// Potential system font locations
+const SYSTEM_FONT_PATHS = [
+    '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf',
+    '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
+    '/usr/share/fonts/truetype/ubuntu/DejaVuSans-Bold.ttf',
+    '/usr/share/fonts/truetype/ubuntu/DejaVuSans.ttf'
+];
 
-function registerDejaVuFont() {
+function findSystemFonts() {
+    const potentialFontPaths = [
+        '/usr/share/fonts',
+        '/usr/local/share/fonts',
+        '/app/fonts',  // Custom Railway potential location
+        path.join(__dirname, '../assets')  // Local project font directory
+    ];
+
+    const foundFonts = [];
+
+    potentialFontPaths.forEach(fontDir => {
+        try {
+            if (fs.existsSync(fontDir)) {
+                const walkDir = (dir) => {
+                    const files = fs.readdirSync(dir);
+                    files.forEach(file => {
+                        const fullPath = path.join(dir, file);
+                        const stat = fs.statSync(fullPath);
+                        
+                        if (stat.isDirectory()) {
+                            walkDir(fullPath);
+                        } else if (
+                            file.toLowerCase().endsWith('.ttf') || 
+                            file.toLowerCase().endsWith('.otf')
+                        ) {
+                            console.log(`Found font: ${fullPath}`);
+                            foundFonts.push(fullPath);
+                        }
+                    });
+                };
+
+                walkDir(fontDir);
+            }
+        } catch (error) {
+            console.error(`Error scanning ${fontDir}:`, error);
+        }
+    });
+
+    return foundFonts;
+}
+
+function registerSystemFont() {
+    const localFontPath = path.resolve(__dirname, '../assets/DejaVuSans.ttf');
+    const systemFonts = findSystemFonts();
+
     try {
-        // Detailed file checks
-        if (!fs.existsSync(fontPath)) {
-            console.error('Font file does not exist:', fontPath);
-            return false;
+        // First, try local font
+        if (fs.existsSync(localFontPath)) {
+            try {
+                registerFont(localFontPath, { family: 'DejaVu Sans' });
+                console.log('Local font registered successfully');
+                return true;
+            } catch (localError) {
+                console.warn('Local font registration failed:', localError.message);
+            }
         }
 
-        const stats = fs.statSync(fontPath);
-        console.log('Font file details:', {
-            size: stats.size,
-            created: stats.birthtime,
-            modified: stats.mtime
-        });
+        // Then try system fonts
+        for (const fontPath of systemFonts) {
+            try {
+                console.log('Attempting to register system font:', fontPath);
+                registerFont(fontPath, { family: 'System Font' });
+                console.log('System font registered successfully:', fontPath);
+                return true;
+            } catch (systemError) {
+                console.warn(`Failed to register system font ${fontPath}:`, systemError.message);
+            }
+        }
 
-        // Attempt to read file contents
-        const fontBuffer = fs.readFileSync(fontPath);
-        console.log('Font file read successfully. Buffer size:', fontBuffer.length);
+        // Then try system font paths
+        for (const fontPath of SYSTEM_FONT_PATHS) {
+            if (fs.existsSync(fontPath)) {
+                try {
+                    console.log('Attempting to register system font:', fontPath);
+                    registerFont(fontPath, { family: 'DejaVu Sans' });
+                    console.log('System font registered successfully:', fontPath);
+                    return true;
+                } catch (systemError) {
+                    console.warn(`Failed to register system font ${fontPath}:`, systemError.message);
+                }
+            }
+        }
 
-        // Attempt to register font
-        registerFont(fontPath, { family: 'DejaVu Sans' });
-        console.log('Font registered successfully');
-        return true;
+        console.error('No usable system fonts found');
+        return false;
 
     } catch (error) {
-        console.error('Font registration failed:', {
+        console.error('Font registration process failed:', {
             message: error.message,
             name: error.name,
-            code: error.code,
             stack: error.stack
         });
         return false;
@@ -41,7 +107,7 @@ function registerDejaVuFont() {
 }
 
 // Attempt to register font during module load
-const fontRegistered = registerDejaVuFont();
+const fontRegistered = registerSystemFont();
 
 class ImageComposer {
     // Common constants at class level
