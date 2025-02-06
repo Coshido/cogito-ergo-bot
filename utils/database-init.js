@@ -46,17 +46,35 @@ async function copyExactFiles(sourcePath, destPath) {
         const destFile = path.join(destPath, filename);
         
         try {
-            // Check if source file exists
+            console.log(`Attempting to copy ${filename}`);
+            console.log('Source file path:', sourceFile);
+            console.log('Destination file path:', destFile);
+            
             if (!fsSync.existsSync(sourceFile)) {
-                console.log(`Source file not found: ${sourceFile}`);
+                console.error(`Source file NOT FOUND: ${sourceFile}`);
                 continue;
             }
             
-            // Copy file exactly
-            fsSync.copyFileSync(sourceFile, destFile);
-            console.log(`Copied ${filename} exactly`);
+            const sourceFileContents = fsSync.readFileSync(sourceFile, 'utf8');
+            console.log('Source file contents length:', sourceFileContents.length);
+            
+            if (sourceFileContents.trim().length === 0) {
+                console.error(`Source file is empty: ${sourceFile}`);
+                continue;
+            }
+            
+            const parsedContent = JSON.parse(sourceFileContents);
+            console.log('Parsed content:', JSON.stringify(parsedContent, null, 2));
+            
+            fsSync.writeFileSync(destFile, JSON.stringify(parsedContent, null, 2));
+            
+            const destFileContents = fsSync.readFileSync(destFile, 'utf8');
+            console.log('Destination file contents length:', destFileContents.length);
+            
+            console.log(`Successfully copied and validated ${filename}`);
         } catch (error) {
-            console.error(`Error copying ${filename}:`, error);
+            console.error(`CRITICAL ERROR copying ${filename}:`, error);
+            throw error;
         }
     }
 }
@@ -68,11 +86,9 @@ async function initializeDatabaseFiles(databasePath) {
         const filePath = path.join(databasePath, filename);
         
         try {
-            // Check if file exists
             await fs.access(filePath);
             console.log(`File ${filename} already exists`);
         } catch (error) {
-            // File doesn't exist, create it with default content
             try {
                 await fs.writeFile(filePath, JSON.stringify(defaultContent, null, 2));
                 console.log(`Created default ${filename}`);
@@ -86,7 +102,6 @@ async function initializeDatabaseFiles(databasePath) {
 async function initializeDatabase(customPath) {
     console.log('Custom database path received:', customPath);
     
-    // Fallback paths in order of preference
     const possiblePaths = [
         customPath,
         process.env.DATABASE_PATH,
@@ -95,7 +110,6 @@ async function initializeDatabase(customPath) {
         path.join(__dirname, '../database')
     ];
 
-    // Find the first valid path
     let databasePath;
     for (const testPath of possiblePaths) {
         if (testPath) {
@@ -114,15 +128,12 @@ async function initializeDatabase(customPath) {
         throw new Error('No valid database path found');
     }
 
-    // Source path for exact file copies
     const sourcePath = path.join(__dirname, '../database');
 
     await ensureDatabaseDirectory(databasePath);
     
-    // Copy exact files first
     copyExactFiles(sourcePath, databasePath);
     
-    // Then initialize other files
     await initializeDatabaseFiles(databasePath);
 
     return databasePath;
