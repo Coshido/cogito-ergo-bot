@@ -2,27 +2,21 @@ const { createCanvas, loadImage, registerFont } = require('canvas');
 const path = require('path');
 const fs = require('fs');
 
-// Try to register fonts from multiple potential locations
-const fontPaths = [
-    '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',
-    '/usr/share/fonts/dejavu/DejaVuSans.ttf',
-    path.join(__dirname, '../assets/DejaVuSans.ttf')
-];
+// Detailed font path diagnostics
+const fontPath = path.resolve(__dirname, '../assets/DejaVuSans.ttf');
 
-let fontRegistered = false;
-for (const fontPath of fontPaths) {
-    try {
-        registerFont(fontPath, { family: 'DejaVu Sans' });
-        console.log(`Registered font from: ${fontPath}`);
-        fontRegistered = true;
-        break;
-    } catch (error) {
-        console.warn(`Could not register font from ${fontPath}:`, error.message);
-    }
+console.log('Font Registration Diagnostics:');
+console.log('Attempting to register font from:', fontPath);
+console.log('Font file exists:', fs.existsSync(fontPath));
+if (fs.existsSync(fontPath)) {
+    console.log('Font file details:', fs.statSync(fontPath));
 }
 
-if (!fontRegistered) {
-    console.error('Could not register any fonts. Text rendering may be affected.');
+try {
+    registerFont(fontPath, { family: 'DejaVu Sans' });
+    console.log('Font registered successfully');
+} catch (error) {
+    console.error('Font registration error:', error);
 }
 
 class ImageComposer {
