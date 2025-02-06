@@ -2,7 +2,7 @@ const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Act
 const fs = require('fs');
 const path = require('path');
 const ImageComposer = require('../../utils/image-composer');
-const { getCurrentWeekMonday, loadReservations, saveReservations, ensureCurrentWeekReservations } = require('../../utils/reservation-utils');
+const { getCurrentWeekMonday, loadReservations, saveReservations } = require('../../utils/reservation-utils');
 const { createItemSelectMenu } = require('../../utils/discord-utils');
 const { isRaider } = require('../../utils/permission-utils');
 
@@ -21,33 +21,42 @@ module.exports = {
         }
 
         const currentWeek = getCurrentWeekMonday();
-        const reservations = loadReservations();
+        let reservations = loadReservations();
         const userId = interaction.user.id;
 
-        // Initialize user's weekly reservations if not exists
-        ensureCurrentWeekReservations(reservations, userId);
-        
-        const userData = reservations.weekly_reservations[currentWeek][userId];
-        if (userData && userData.items.length >= 2) {
-            // Create reservation image
+        // Ensure weekly reservations structure exists
+        if (!reservations.weekly_reservations) {
+            reservations.weekly_reservations = {};
+        }
+        if (!reservations.weekly_reservations[currentWeek]) {
+            reservations.weekly_reservations[currentWeek] = {};
+        }
+
+        // Get or initialize user's reservation data
+        const userData = reservations.weekly_reservations[currentWeek][userId] || {
+            character_name: null,
+            items: []
+        };
+
+        // Check if user has reached max reservations
+        if (userData.items && userData.items.length >= 2) {
             const reservationImage = await ImageComposer.createReservationImage(userData.items);
             const attachment = new AttachmentBuilder(reservationImage, { name: 'current-reservations.png' });
 
-            // Create WowHead links
             const wowheadLinks = userData.items
                 .map((item, index) => `${index + 1}- [${item.name}](${item.wowhead_url})`)
                 .join('\n');
 
             const embed = new EmbedBuilder()
-                .setColor(0xFF0000)  // Red color to indicate can't add more
+                .setColor(0xFF0000)
                 .setTitle('Maximum Reservations Reached')
                 .setImage('attachment://current-reservations.png')
                 .setDescription(
-                    `You have already reserved 2 items this week for character **${userData.character_name}**!\n\n` +
+                    `You have already reserved 2 items this week for character **${userData.character_name || 'Unknown'}**!\n\n` +
                     `**Link su WowHead**\n${wowheadLinks}`
                 );
 
-            return await interaction.reply({
+            return interaction.reply({
                 embeds: [embed],
                 files: [attachment],
                 ephemeral: true
@@ -55,12 +64,21 @@ module.exports = {
         }
 
         // Read raid loot data
-        const raidData = JSON.parse(fs.readFileSync(
-            path.join(__dirname, '../../database/raid-loot.json'),
-            'utf8'
-        ));
+        let raidData;
+        try {
+            raidData = JSON.parse(fs.readFileSync(
+                path.join(__dirname, '../../database/raid-loot.json'),
+                'utf8'
+            ));
+        } catch (error) {
+            console.error('Failed to read raid loot data:', error);
+            return interaction.reply({
+                content: 'Unable to load raid loot data. Please contact an administrator.',
+                ephemeral: true
+            });
+        }
 
-        // Store user's selection state
+        // Prepare interaction state
         const userState = {
             selectedItems: [],
             currentStep: 1,
@@ -103,7 +121,10 @@ module.exports = {
 
         // Create collectors for the entire flow
         const filter = i => i.user.id === interaction.user.id;
-        const collector = initialMessage.createMessageComponentCollector({ filter, time: 300000 });
+        const collector = initialMessage.createMessageComponentCollector({ 
+            filter, 
+            time: 300000 
+        });
 
         collector.on('collect', async i => {
             try {
@@ -125,19 +146,12 @@ module.exports = {
                     await i.showModal(modal);
                 }
             } catch (error) {
-                console.error('Collector collect error:', error);
-                
-                try {
-                    await i.editReply({
-                        content: 'An unexpected error occurred. Please try your reservation again.',
-                        components: [],
-                        ephemeral: true
-                    }).catch(() => {});
-                } catch (editError) {
-                    console.error('Error editing reply:', editError);
-                }
-                
-                collector.stop('error');
+                console.error('Collector error:', error);
+                await i.reply({
+                    content: 'An unexpected error occurred. Please try again.',
+                    ephemeral: true
+                });
+                collector.stop();
             }
         });
     }
