@@ -188,7 +188,8 @@ module.exports = {
                     userState.currentBoss = selectedBoss;
                     
                     // Create loot table image
-                    const lootImage = await ImageComposer.createLootTable(selectedBoss.loot);
+                    const cachedLootImage = await ImageComposer.loadCachedBossLootImage(selectedBoss.name);
+                    const lootImage = cachedLootImage || await ImageComposer.createLootTable(selectedBoss.loot);
                     const attachment = new AttachmentBuilder(lootImage, { name: 'loot-table.png' });
 
                     // Create WowHead links list
@@ -199,7 +200,10 @@ module.exports = {
                     const lootEmbed = new EmbedBuilder()
                         .setColor(0x0099FF)
                         .setTitle(`${selectedBoss.name}`)
-                        .setDescription(`**Link su WowHead**\n${wowheadLinks}`)
+                        .setDescription(
+                            `**Loot Table**\n\n` +
+                            `**WowHead Links**\n${wowheadLinks}`
+                        )
                         .setImage('attachment://loot-table.png')
                         .setFooter({ text: `Step ${userState.currentStep} of 3: Item Selection` });
 

@@ -1,6 +1,7 @@
 const fs = require('fs').promises;
 const fsSync = require('fs');
 const path = require('path');
+const ImageComposer = require('./image-composer');
 
 // Timeout for database initialization (5 seconds)
 const DATABASE_INIT_TIMEOUT = 5000;
@@ -320,7 +321,7 @@ function getHardcodedRaidLootData() {
                 "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_polearm_2h_nerubianraid_d_01.jpg"
               },
               {
-                "id": "225577",
+                "id": "225577,
                 "name": "Fregio dello Zelota Sureki",
                 "type": "Collo Varie",
                 "ilvl": 571,
@@ -1142,6 +1143,29 @@ async function initializeDatabaseFiles(databasePath) {
             console.error(`CRITICAL: Failed to initialize ${filename}:`, error);
             throw error;
         }
+    }
+
+    // Generate comprehensive boss loot images after database is initialized
+    try {
+        const raidLootData = getHardcodedRaidLootData();
+        const bosses = raidLootData.bosses;
+
+        console.log(`Generating comprehensive loot images for ${bosses.length} bosses...`);
+        const lootImageGenerationResults = await ImageComposer.generateComprehensiveBossLootImages(bosses);
+
+        console.log('Boss Comprehensive Loot Image Generation Summary:');
+        console.log('Generated:', lootImageGenerationResults.filter(r => r.status === 'generated').length);
+        console.log('Skipped:', lootImageGenerationResults.filter(r => r.status === 'skipped').length);
+        console.log('Failed:', lootImageGenerationResults.filter(r => r.status === 'failed').length);
+
+        const failedBosses = lootImageGenerationResults.filter(r => r.status === 'failed');
+        if (failedBosses.length > 0) {
+            console.warn('Failed to generate comprehensive loot images for these bosses:', 
+                failedBosses.map(boss => boss.boss).join(', ')
+            );
+        }
+    } catch (error) {
+        console.error('Error during comprehensive boss loot image generation:', error);
     }
 }
 
