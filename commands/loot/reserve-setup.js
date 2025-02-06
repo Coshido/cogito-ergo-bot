@@ -38,7 +38,19 @@ module.exports = {
             config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) || {};
         } catch (error) {
             console.error('Error reading config file:', error);
-            config = {}; // Initialize empty config if file doesn't exist
+            
+            // Ensure the directory exists
+            const configDir = path.dirname(CONFIG_PATH);
+            if (!fs.existsSync(configDir)) {
+                fs.mkdirSync(configDir, { recursive: true });
+            }
+            
+            // Create a default config file
+            config = {
+                raidLeaderRoleId: null,
+                raiderRoleId: null
+            };
+            fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
         }
 
         // Ensure config has all necessary properties
@@ -52,12 +64,6 @@ module.exports = {
         // Update roles in config
         config.raidLeaderRoleId = raidLeaderRole.id;
         config.raiderRoleId = raiderRole.id;
-
-        // Ensure the directory exists
-        const configDir = path.dirname(CONFIG_PATH);
-        if (!fs.existsSync(configDir)) {
-            fs.mkdirSync(configDir, { recursive: true });
-        }
 
         // Write updated config
         try {

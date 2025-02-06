@@ -3,10 +3,10 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const BirthdayHandler = require('./utils/birthday/birthday-handler');
 const ReminderService = require('./services/reminder-service');
+const { initializeDatabase } = require('./utils/database-init');
 
 // required to access .env
 require("dotenv").config();
-
 
 const token = process.env.BOT_TOKEN
 
@@ -76,5 +76,17 @@ client.once(Events.ClientReady, readyClient => {
 	
 	console.log('Birthday and reminder handlers initialized!');
 });
+
+// Initialize database before starting the bot
+(async () => {
+    try {
+        // Use the mounted volume path if available
+        const databasePath = process.env.DATABASE_PATH || path.join(__dirname, 'database');
+        await initializeDatabase(databasePath);
+        console.log('Database initialized successfully');
+    } catch (error) {
+        console.error('Failed to initialize database:', error);
+    }
+})();
 
 client.login(token)

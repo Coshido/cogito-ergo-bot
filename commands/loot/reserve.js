@@ -61,10 +61,32 @@ module.exports = {
         }
 
         // Read raid loot data
-        const raidData = JSON.parse(fs.readFileSync(
-            path.join(__dirname, '../../database/raid-loot.json'),
-            'utf8'
-        ));
+        let raidData;
+        try {
+            raidData = JSON.parse(fs.readFileSync(
+                path.join(__dirname, '../../database/raid-loot.json'),
+                'utf8'
+            ));
+        } catch (error) {
+            console.error('Error reading raid loot file:', error);
+            
+            // Ensure the directory exists
+            const databaseDir = path.join(__dirname, '../../database');
+            if (!fs.existsSync(databaseDir)) {
+                fs.mkdirSync(databaseDir, { recursive: true });
+            }
+            
+            // Create a default raid loot file
+            raidData = {
+                raid: "Default Raid",
+                bosses: []
+            };
+            
+            fs.writeFileSync(
+                path.join(__dirname, '../../database/raid-loot.json'),
+                JSON.stringify(raidData, null, 2)
+            );
+        }
 
         // Store user's selection state
         const userState = {
