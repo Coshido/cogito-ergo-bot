@@ -27,6 +27,38 @@ const EXACT_COPY_FILES = [
     'raid-loot.json'
 ];
 
+function getHardcodedRaidLootData() {
+    return {
+        "raid": "Palazzo dei Nerub'ar",
+        "bosses": [
+            {
+                "id": 2607,
+                "name": "Ulgrax il Divoratore",
+                "loot": [
+                    {
+                        "id": "219915",
+                        "name": "Chelicera del Behemoth Corrotto",
+                        "type": "Monile Varie",
+                        "ilvl": 571,
+                        "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_raid_foulbehemothschelicera_red.jpg",
+                        "wowhead_url": "https://www.wowhead.com/item=219915",
+                        "emojiId": "1234567890",
+                        "emojiName": "item_219915"
+                    }
+                    // Add more loot items as needed
+                ]
+            }
+            // Add more bosses as needed
+        ],
+        "difficulties": [
+            {
+                "name": "Looking For Raid",
+                "ilvl": 584
+            }
+        ]
+    };
+}
+
 async function ensureDatabaseDirectory(databasePath) {
     console.log('Attempting to create database directory:', databasePath);
     try {
@@ -50,16 +82,37 @@ async function copyExactFiles(sourcePath, destPath) {
             console.log('Source file path:', sourceFile);
             console.log('Destination file path:', destFile);
             
-            if (!fsSync.existsSync(sourceFile)) {
-                console.error(`Source file NOT FOUND: ${sourceFile}`);
+            // Try multiple potential source paths
+            const possibleSourcePaths = [
+                sourceFile,
+                path.join(__dirname, `../database/${filename}`),
+                path.join(process.cwd(), `database/${filename}`)
+            ];
+
+            let sourceFileContents = null;
+            for (const potentialSourcePath of possibleSourcePaths) {
+                if (fsSync.existsSync(potentialSourcePath)) {
+                    sourceFileContents = fsSync.readFileSync(potentialSourcePath, 'utf8');
+                    console.log(`Found source file at: ${potentialSourcePath}`);
+                    break;
+                }
+            }
+
+            // Fallback to hardcoded data if file not found
+            if (!sourceFileContents && filename === 'raid-loot.json') {
+                console.log('Using hardcoded raid loot data');
+                sourceFileContents = JSON.stringify(getHardcodedRaidLootData(), null, 2);
+            }
+
+            if (!sourceFileContents) {
+                console.error(`Source file NOT FOUND for ${filename} in any of these paths:`, possibleSourcePaths);
                 continue;
             }
-            
-            const sourceFileContents = fsSync.readFileSync(sourceFile, 'utf8');
+
             console.log('Source file contents length:', sourceFileContents.length);
             
             if (sourceFileContents.trim().length === 0) {
-                console.error(`Source file is empty: ${sourceFile}`);
+                console.error(`Source file is empty: ${filename}`);
                 continue;
             }
             
@@ -128,11 +181,12 @@ async function initializeDatabase(customPath) {
         throw new Error('No valid database path found');
     }
 
-    const sourcePath = path.join(__dirname, '../database');
+    // Use project root as source path
+    const sourcePath = path.join(__dirname, '..');
 
     await ensureDatabaseDirectory(databasePath);
     
-    copyExactFiles(sourcePath, databasePath);
+    await copyExactFiles(sourcePath, databasePath);
     
     await initializeDatabaseFiles(databasePath);
 
