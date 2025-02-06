@@ -1064,14 +1064,33 @@ function getHardcodedRaidLootData() {
       }
 }
 
-async function ensureDatabaseDirectory(databasePath) {
-    console.log('Attempting to create database directory:', databasePath);
+async function initializeDatabase(customPath) {
+    // Set a default database path if no path is provided
+    const defaultDatabasePath = path.resolve(__dirname, '../database');
+    const databasePath = customPath || process.env.DATABASE_PATH || defaultDatabasePath;
+
+    console.log('Initializing database with path:', databasePath);
+
+    // Validate that databasePath is a string
+    if (typeof databasePath !== 'string') {
+        console.error('Invalid database path:', databasePath);
+        throw new Error(`Database path must be a string. Received: ${typeof databasePath}`);
+    }
+
     try {
-        // Ensure the directory exists with full permissions
-        await fs.mkdir(databasePath, { recursive: true, mode: 0o777 });
-        console.log('Database directory created or already exists');
+        // Ensure the database directory exists
+        await fs.promises.mkdir(databasePath, { recursive: true });
+
+        console.log('Starting comprehensive database initialization...');
+        
+        // Ensure all required files exist
+        await initializeDatabaseFiles(databasePath);
+        
+        console.log(`Database successfully initialized at: ${databasePath}`);
+        
+        return databasePath;
     } catch (error) {
-        console.error('CRITICAL: Failed to create database directory:', error);
+        console.error('Critical error during database initialization:', error);
         throw error;
     }
 }
@@ -1132,16 +1151,16 @@ async function initializeDatabaseFiles(databasePath) {
         try {
             // Check if file exists
             try {
-                await fs.access(filePath);
+                await fs.promises.access(filePath);
                 console.log(`File ${filename} already exists`);
             } catch {
                 // File doesn't exist, create it with default content
                 const defaultContent = DEFAULT_CONTENTS[filename];
-                await fs.writeFile(filePath, JSON.stringify(defaultContent, null, 2));
+                await fs.promises.writeFile(filePath, JSON.stringify(defaultContent, null, 2));
                 console.log(`Created default ${filename}`);
             }
         } catch (error) {
-            console.error(`CRITICAL: Failed to initialize ${filename}:`, error);
+            console.error(`Critical error initializing ${filename}:`, error);
             throw error;
         }
     }
@@ -1175,81 +1194,17 @@ async function initializeDatabaseFiles(databasePath) {
     }
 }
 
-async function initializeDatabase(customPath) {
-    console.log('Starting database initialization');
-    console.log('Custom database path received:', customPath);
-    
-    // Set up a timeout to prevent hanging
-    const initializationTimeout = new Promise((_, reject) => 
-        setTimeout(() => {
-            const timeoutError = new Error('Database initialization timed out');
-            timeoutError.name = 'DatabaseInitializationTimeoutError';
-            reject(timeoutError);
-        }, DATABASE_INIT_TIMEOUT)
-    );
-
-    try {
-        // Possible database paths in order of preference
-        const possiblePaths = [
-            customPath,
-            process.env.DATABASE_PATH,
-            '/app/database',
-            '/database',
-            path.join(__dirname, '../database')
-        ].filter(Boolean);
-
-        let databasePath;
-        for (const testPath of possiblePaths) {
-            try {
-                await fs.access(testPath);
-                databasePath = testPath;
-                console.log('Using database path:', databasePath);
-                break;
-            } catch {
-                console.log(`Path not accessible: ${testPath}`);
-            }
-        }
-
-        if (!databasePath) {
-            throw new Error('No valid database path found');
-        }
-
-        // Run initialization steps
-        await Promise.race([
-            (async () => {
-                await ensureDatabaseDirectory(databasePath);
-                await initializeDatabaseFiles(databasePath);
-                return databasePath;
-            })(),
-            initializationTimeout
-        ]);
-
-        console.log('Database initialization completed successfully');
-        return databasePath;
-    } catch (error) {
-        console.error('CRITICAL: Database initialization failed:', error);
-        
-        // Log detailed error information
-        console.error('Error name:', error.name);
-        console.error('Error message:', error.message);
-        console.error('Error stack:', error.stack);
-        
-        // Rethrow to ensure the process knows initialization failed
-        throw error;
-    }
-}
-
 async function getDatabaseStats(databasePath) {
     const fs = require('fs').promises;
     const path = require('path');
     
-    const files = await fs.readdir(databasePath);
+    const files = await fs.promises.readdir(databasePath);
     const jsonFiles = files.filter(file => file.endsWith('.json'));
     
     let totalEntries = 0;
     for (const file of jsonFiles) {
         const filePath = path.join(databasePath, file);
-        const content = JSON.parse(await fs.readFile(filePath, 'utf8'));
+        const content = JSON.parse(await fs.promises.readFile(filePath, 'utf8'));
         
         // Count entries based on common structures
         if (content.reservations) totalEntries += content.reservations.length;
@@ -1261,31 +1216,6 @@ async function getDatabaseStats(databasePath) {
         totalFiles: jsonFiles.length,
         totalEntries
     };
-}
-
-async function initializeDatabase(customPath) {
-    console.log('Starting comprehensive database initialization...');
-    
-    try {
-        const databasePath = await ensureDatabaseDirectory(customPath);
-        console.log(`Database directory secured at: ${databasePath}`);
-        
-        await initializeDatabaseFiles(databasePath);
-        console.log('Database files successfully initialized and populated');
-        
-        // Optional: Add some summary statistics
-        const stats = await getDatabaseStats(databasePath);
-        console.log('Database Initialization Summary:');
-        console.log(`   - Total files: ${stats.totalFiles}`);
-        console.log(`   - Total entries: ${stats.totalEntries}`);
-        
-        console.log('Database initialization COMPLETE! Bot is ready to rock!');
-        
-        return databasePath;
-    } catch (error) {
-        console.error('Critical error during database initialization:', error);
-        throw error;
-    }
 }
 
 module.exports = { initializeDatabase };
