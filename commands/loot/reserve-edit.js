@@ -79,8 +79,8 @@ module.exports = {
         });
 
         // Create collector for button interactions
-        const collector = message.createMessageComponentCollector({
-            filter: i => i.user.id === interaction.user.id,
+        const collector = interaction.channel.createMessageComponentCollector({
+            filter: (i) => i.user.id === interaction.user.id,
             time: 300000 // 5 minutes
         });
 
@@ -90,8 +90,10 @@ module.exports = {
             currentBoss: null
         };
 
-        collector.on('collect', async i => {
+        collector.on('collect', async (i) => {
             try {
+                await i.deferUpdate();
+
                 if (i.customId === 'edit_character_name') {
                     // Create a modal for character name input
                     const modal = new ModalBuilder()
@@ -112,7 +114,7 @@ module.exports = {
 
                     // Wait for modal submission
                     const modalSubmitInteraction = await i.awaitModalSubmit({
-                        filter: mi => mi.customId === 'change_character_name' && mi.user.id === interaction.user.id,
+                        filter: (mi) => mi.customId === 'change_character_name' && mi.user.id === interaction.user.id,
                         time: 60000
                     });
 
@@ -129,7 +131,7 @@ module.exports = {
                     });
 
                     // Update the original message
-                    await message.edit({
+                    await interaction.editReply({
                         embeds: [
                             embed.setDescription(
                                 `Current reservations for character **${newCharacterName}**\n` +
@@ -163,7 +165,7 @@ module.exports = {
                         .setDescription('Select a boss to view their loot table.')
                         .setFooter({ text: 'Step 1 of 2: Boss Selection' });
 
-                    await i.update({
+                    await interaction.editReply({
                         embeds: [embed],
                         components: [row],
                         files: []
@@ -193,7 +195,7 @@ module.exports = {
                     const itemSelect = createItemSelectMenu(selectedBoss.loot, 'item_select');
                     const selectRow = new ActionRowBuilder().addComponents(itemSelect);
 
-                    await i.update({
+                    await interaction.editReply({
                         embeds: [lootEmbed],
                         files: [attachment],
                         components: [selectRow]
@@ -218,49 +220,44 @@ module.exports = {
                     reservations.weekly_reservations[currentWeek][userId] = userData;
                     saveReservations(reservations);
 
-                    // Create final image
-                    const reservationImage = await ImageComposer.createReservationImage(userData.items);
-                    const attachment = new AttachmentBuilder(reservationImage, { name: 'reservations.png' });
-
-                    const finalEmbed = new EmbedBuilder()
-                        .setColor(0x00FF00)
-                        .setTitle('Reservation Updated!')
-                        .setImage('attachment://reservations.png')
-                        .setDescription(
-                            `Your items have been updated for character **${userData.character_name}**!\n\n` +
-                            `**Link su WowHead**\n${userData.items.map((item, index) => 
-                                `${index + 1}- [${item.name}](${item.wowhead_url})`
-                            ).join('\n')}`
-                        );
-
-                    await i.update({
-                        embeds: [finalEmbed],
-                        files: [attachment],
-                        components: []
+                    // Edit the original message to confirm selection
+                    await interaction.editReply({
+                        content: `Item updated: ${selectedItem.name}`,
+                        embeds: [],
+                        components: [],
+                        files: []
                     });
+
+                    // Close the collector
                     collector.stop();
                 }
             } catch (error) {
-                console.error('Error in collector:', error);
-                await i.reply({ 
-                    content: 'An error occurred while processing your selection', 
-                    ephemeral: true 
-                }).catch(console.error);
+                console.error('Interaction handling error:', error);
+                
+                // Try to send an error message if possible
+                try {
+                    await interaction.followUp({
+                        content: 'An error occurred while processing your interaction. Please try again.',
+                        ephemeral: true
+                    });
+                } catch (followUpError) {
+                    console.error('Could not send error follow-up:', followUpError);
+                }
             }
         });
 
-        collector.on('end', async (collected, reason) => {
+        collector.on('end', (collected, reason) => {
             if (reason === 'time') {
-                const timeoutEmbed = new EmbedBuilder()
-                    .setColor(0xFF0000)
-                    .setTitle('Edit Timed Out')
-                    .setDescription('The edit process has timed out. Please try again.');
-
-                await interaction.editReply({
-                    embeds: [timeoutEmbed],
-                    components: [],
-                    files: []
-                });
+                try {
+                    interaction.editReply({
+                        content: 'Selection timed out. Please start over.',
+                        embeds: [],
+                        components: [],
+                        files: []
+                    });
+                } catch (error) {
+                    console.error('Error clearing timed-out interaction:', error);
+                }
             }
         });
     },
