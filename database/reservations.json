@@ -1,226 +1,26 @@
 {
   "weekly_reservations": {
     "2025-02-02": {
-      "user_1": {
-        "character_name": "Thorin",
-        "discord_username": "DragonSlayer",
-        "items": [
-          {
-            "boss": "Rasha'nan",
-            "name": "Cinta Erosa del Behemoth"
-          }
-        ]
-      },
-      "user_2": {
-        "character_name": "Luna",
-        "discord_username": "ShadowWalker",
-        "items": [
-          {
-            "boss": "Orrore Vincolasangue",
-            "name": "Cordone dell'Occhio Infranto"
-          }
-        ]
-      },
-      "user_3": {
-        "character_name": "Eldrin",
-        "discord_username": "MoonLight",
-        "items": [
-          {
-            "boss": "Regina Ansurek",
-            "name": "Mandato della Regina Folle"
-          }
-        ]
-      },
-      "user_4": {
-        "character_name": "Soren",
-        "discord_username": "StarBlade",
-        "items": [
-          {
-            "boss": "Rasha'nan",
-            "name": "Manette del Lampionaio Devastato"
-          }
-        ]
-      },
-      "user_5": {
-        "character_name": "Nova",
-        "discord_username": "FireHeart",
-        "items": [
-          {
-            "boss": "Mutastirpe Ovi'nax",
-            "name": "Catalizzatore Tetro del Mutastirpe"
-          }
-        ]
-      },
-      "user_6": {
-        "character_name": "Kael",
-        "discord_username": "WindRider",
-        "items": [
-          {
-            "boss": "Rasha'nan",
-            "name": "Lama da Banchetto del Predatore"
-          }
-        ]
-      },
-      "user_7": {
-        "character_name": "Kai",
-        "discord_username": "StormCaller",
-        "items": [
-          {
-            "boss": "Ulgrax il Divoratore",
-            "name": "Corna del Pasto Finale"
-          }
-        ]
-      },
-      "user_8": {
-        "character_name": "Rowan",
-        "discord_username": "NightWhisper",
-        "items": [
-          {
-            "boss": "Mutastirpe Ovi'nax",
-            "name": "Siringa Terrificante"
-          }
-        ]
-      },
-      "user_9": {
-        "character_name": "Zara",
-        "discord_username": "EarthShaker",
-        "items": [
-          {
-            "boss": "Ulgrax il Divoratore",
-            "name": "Pantaloni di Midollo Secco del Ribelle"
-          }
-        ]
-      },
-      "user_10": {
-        "character_name": "Vex",
-        "discord_username": "IronFist",
-        "items": [
-          {
-            "boss": "Sikran, Capitano dei Sureki",
-            "name": "Arco Setoso della Scheggia"
-          }
-        ]
-      },
-      "user_11": {
-        "character_name": "Rune",
-        "discord_username": "SilverArrow",
-        "items": [
-          {
-            "boss": "Regina Ansurek",
-            "name": "Grinfie della Paranoia"
-          }
-        ]
-      },
-      "user_12": {
-        "character_name": "Dax",
-        "discord_username": "RuneMaster",
-        "items": [
-          {
-            "boss": "Corte della Seta",
-            "name": "Autorità del Signore dello Sciame"
-          }
-        ]
-      },
-      "user_13": {
-        "character_name": "Raven",
-        "discord_username": "SoulBinder",
-        "items": [
-          {
-            "boss": "Rasha'nan",
-            "name": "Organo Corrosivo del Terrore dei Cieli"
-          }
-        ]
-      },
-      "user_14": {
-        "character_name": "Ember",
-        "discord_username": "DarkRider",
-        "items": [
-          {
-            "boss": "Orrore Vincolasangue",
-            "name": "Maschera Oscura dell'Aldilà"
-          }
-        ]
-      },
-      "user_15": {
-        "character_name": "Zen",
-        "discord_username": "LightBringer",
-        "items": [
-          {
-            "boss": "Sikran, Capitano dei Sureki",
-            "name": "Emblema dell'Animoso Mistico"
-          }
-        ]
-      },
-      "user_16": {
-        "character_name": "Ash",
-        "discord_username": "MysticWarden",
-        "items": [
-          {
-            "boss": "Rasha'nan",
-            "name": "Cinta Erosa del Behemoth"
-          }
-        ]
-      },
-      "user_17": {
-        "character_name": "Nyx",
-        "discord_username": "BloodMoon",
-        "items": [
-          {
-            "boss": "Sikran, Capitano dei Sureki",
-            "name": "Emblema dell'Animoso Venerato"
-          }
-        ]
-      },
-      "user_18": {
-        "character_name": "Lyra",
-        "discord_username": "CrimsonTide",
-        "items": [
-          {
-            "boss": "Ulgrax il Divoratore",
-            "name": "Imbracatura Zuppa di Bile"
-          }
-        ]
-      },
-      "user_19": {
-        "character_name": "Iris",
-        "discord_username": "SilentStrike",
-        "items": [
-          {
-            "boss": "Ulgrax il Divoratore",
-            "name": "Emblema Regale di Nerub'ar"
-          }
-        ]
-      },
-      "user_20": {
-        "character_name": "Aria",
-        "discord_username": "EchoReaper",
-        "items": [
-          {
-            "boss": "Rasha'nan",
-            "name": "Organo Corrosivo del Terrore dei Cieli"
-          }
-        ]
-      },
       "127455315636649985": {
-        "character_name": "uk",
+        "character_name": "uil",
         "items": [
           {
-            "id": "212398",
-            "name": "Mazzuola del Vento Rovente",
-            "boss": "Rasha'nan",
-            "type": "Una mano Mazza",
+            "id": "212392",
+            "name": "Acciaio Danzante del Duellante",
+            "boss": "Sikran, Capitano dei Sureki",
+            "type": "Una mano Spada",
             "ilvl": 571,
-            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_nerubianraid_d_01.jpg",
-            "wowhead_url": "https://www.wowhead.com/item=212398"
+            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_1h_nerubianraid_d_01.jpg",
+            "wowhead_url": "https://www.wowhead.com/item=212392"
           },
           {
-            "id": "212418",
-            "name": "Iniettori di Sangue Nero",
-            "boss": "Mutastirpe Ovi'nax",
-            "type": "Mani Piastre",
+            "id": "212447",
+            "name": "Chiave all'Immanifesto",
+            "boss": "Orrore Vincolasangue",
+            "type": "Dito Varie",
             "ilvl": 571,
-            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_raiddeathknightnerubian_d_01.jpg",
-            "wowhead_url": "https://www.wowhead.com/item=212418"
+            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_nerubian_ring_02_color5.jpg",
+            "wowhead_url": "https://www.wowhead.com/item=212447"
           }
         ]
       }

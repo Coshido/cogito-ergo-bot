@@ -15,12 +15,15 @@ module.exports = {
 
     async execute(interaction) {
         // Check if user is a raider
-        if (!isRaider(interaction.member)) {
+        if (!await isRaider(interaction.member)) {
             return interaction.reply({
                 content: 'Only Raiders can make item reservations.',
                 ephemeral: true
             });
         }
+
+        // Defer the reply to handle potential processing delays
+        await interaction.deferReply({ ephemeral: true });
 
         const currentWeek = getCurrentWeekMonday();
         const reservations = loadReservations();
@@ -53,10 +56,9 @@ module.exports = {
                     `**Link su WowHead**\n${wowheadLinks}`
                 );
 
-            return await interaction.reply({
+            return await interaction.editReply({
                 embeds: [embed],
                 files: [attachment],
-                ephemeral: true
             });
         }
 
@@ -101,11 +103,9 @@ module.exports = {
             .setDescription(`First, set your character name, then select a boss to view their loot table.\nYou can reserve up to 2 items per week.\nYou have ${2 - userData.items.length} reservations remaining.`)
             .setFooter({ text: `Step ${userState.currentStep} of 3: Character Selection` });
 
-        const initialMessage = await interaction.reply({
+        const initialMessage = await interaction.editReply({
             embeds: [embed],
             components: [buttonRow, selectRow],
-            ephemeral: true,
-            fetchReply: true
         });
 
         // Create collectors for the entire flow
@@ -171,6 +171,9 @@ module.exports = {
                 else if (i.customId === 'boss_select') {
                     console.log('Boss selected:', i.values[0]);
                     
+                    // Defer the update to handle potential processing delays
+                    await i.deferUpdate();
+
                     const selectedBoss = raidData.bosses.find(b => b.id.toString() === i.values[0]);
                     
                     if (!selectedBoss) {
@@ -213,7 +216,7 @@ module.exports = {
                     const selectRow = new ActionRowBuilder().addComponents(itemSelect);
                     const buttonRow = new ActionRowBuilder().addComponents(backButton);
 
-                    await i.update({
+                    await i.editReply({
                         embeds: [lootEmbed],
                         files: [attachment],
                         components: [selectRow, buttonRow],
@@ -316,6 +319,35 @@ module.exports = {
                             files: [attachment]
                         });
                     }
+                }
+                else if (i.customId === 'back_to_bosses') {
+                    // Defer the update to handle potential processing delays
+                    await i.deferUpdate();
+
+                    // Recreate the original boss selection rows
+                    const bossSelect = new StringSelectMenuBuilder()
+                        .setCustomId('boss_select')
+                        .setPlaceholder('Select a boss')
+                        .addOptions(
+                            raidData.bosses.map(boss => ({
+                                label: boss.name,
+                                value: boss.id.toString(),
+                                description: `Select loot from ${boss.name}`
+                            }))
+                        );
+                    const selectRow = new ActionRowBuilder().addComponents(bossSelect);
+
+                    await i.editReply({
+                        embeds: [
+                            new EmbedBuilder()
+                                .setColor(0x0099FF)
+                                .setTitle(`${raidData.raid} - Boss Selection`)
+                                .setDescription('Select a boss for your item reservation.')
+                                .setFooter({ text: `Step ${userState.currentStep} of 3: Boss Selection` })
+                        ],
+                        components: [selectRow],
+                        files: []
+                    });
                 }
                 else if (i.customId === 'confirm_reservation') {
                     console.log('Confirm reservation clicked');
