@@ -97,25 +97,56 @@ function deployCommands() {
 	});
 }
 
+async function clearAllGuildCommands() {
+    console.log('Starting to clear existing guild commands...');
+    try {
+        const rest = new REST().setToken(token);
+        
+        // Fetch existing commands
+        const commands = await rest.get(
+            Routes.applicationGuildCommands(clientId, guildId)
+        );
+
+        console.log(`Found ${commands.length} existing commands to clear`);
+
+        // Delete each existing command
+        for (const command of commands) {
+            await rest.delete(
+                Routes.applicationGuildCommand(clientId, guildId, command.id)
+            );
+            console.log(`Deleted command: ${command.name}`);
+        }
+
+        console.log('All guild commands cleared successfully');
+    } catch (error) {
+        console.error('Error clearing guild commands:', error);
+        throw error;  // Rethrow to stop deployment if clearing fails
+    }
+}
+
 // Main execution with comprehensive error handling
 (async () => {
-	try {
-		await deployCommands();
-		console.log('Command deployment completed successfully');
-		process.exit(0);
-	} catch (error) {
-		console.error('Deployment failed:', error);
-		
-		// Log specific error details
-		console.error('Error name:', error.name);
-		console.error('Error message:', error.message);
-		
-		if (error.response) {
-			console.error('Response status:', error.response.status);
-			console.error('Response data:', error.response.data);
-		}
-		
-		// Exit with error code
-		process.exit(1);
-	}
+    try {
+        // Clear existing commands first
+        await clearAllGuildCommands();
+        
+        // Then deploy new commands
+        await deployCommands();
+        
+        console.log('Command deployment completed successfully');
+        process.exit(0);
+    } catch (error) {
+        console.error('Deployment failed:', error);
+        
+        // Log specific error details
+        console.error('Error name:', error.name);
+        console.error('Error message:', error.message);
+        
+        if (error.response) {
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+        
+        process.exit(1);
+    }
 })();
