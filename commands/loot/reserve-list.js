@@ -19,7 +19,8 @@ module.exports = {
         }
 
         const currentWeek = getCurrentWeekMonday();
-        const reservations = ensureCurrentWeekReservations();
+        const reservations = loadReservations();
+        ensureCurrentWeekReservations(reservations);
         const itemReservations = {};
         
         // Read raid loot data

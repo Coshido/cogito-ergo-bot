@@ -205,13 +205,13 @@
         "character_name": "uk",
         "items": [
           {
-            "id": "212452",
-            "name": "Siringa Terrificante",
-            "boss": "Mutastirpe Ovi'nax",
-            "type": "Monile Varie",
+            "id": "212398",
+            "name": "Mazzuola del Vento Rovente",
+            "boss": "Rasha'nan",
+            "type": "Una mano Mazza",
             "ilvl": 571,
-            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_raid_gruesomesyringe_red.jpg",
-            "wowhead_url": "https://www.wowhead.com/item=212452"
+            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_nerubianraid_d_01.jpg",
+            "wowhead_url": "https://www.wowhead.com/item=212398"
           },
           {
             "id": "212418",
