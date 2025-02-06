@@ -34,6 +34,18 @@ function getHardcodedRaidLootData() {
                         "ilvl": 571
                     }
                 ]
+            },
+            {
+                "id": 2611,
+                "name": "Orrore Vincolasangue",
+                "loot": [
+                    {
+                        "id": "219917",
+                        "name": "Coagulo Strisciante",
+                        "type": "Monile Varie",
+                        "ilvl": 571
+                    }
+                ]
             }
         ]
     };
@@ -123,8 +135,22 @@ async function initializeDatabase(customPath) {
                 const raidLootPath = path.join(databasePath, 'raid-loot.json');
                 try {
                     const hardcodedRaidLootData = getHardcodedRaidLootData();
+                    
+                    // Log existing file contents before overwriting
+                    try {
+                        const existingContents = fsSync.readFileSync(raidLootPath, 'utf8');
+                        console.log('Existing raid-loot.json contents:', existingContents);
+                    } catch (readError) {
+                        console.log('No existing raid-loot.json file found');
+                    }
+
+                    // Write hardcoded data
                     fsSync.writeFileSync(raidLootPath, JSON.stringify(hardcodedRaidLootData, null, 2));
                     console.log('Forcibly wrote hardcoded raid loot data');
+                    
+                    // Verify written contents
+                    const writtenContents = fsSync.readFileSync(raidLootPath, 'utf8');
+                    console.log('Newly written raid-loot.json contents:', writtenContents);
                 } catch (error) {
                     console.error('Error writing hardcoded raid loot data:', error);
                 }
