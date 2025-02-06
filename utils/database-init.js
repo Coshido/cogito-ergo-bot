@@ -1,5 +1,5 @@
 const fs = require('fs').promises;
-const fsSync = require('fs');
+const fsSync = require('fs').promises;
 const path = require('path');
 const ImageComposer = require('./image-composer');
 
@@ -1079,7 +1079,7 @@ async function initializeDatabase(customPath) {
 
     try {
         // Ensure the database directory exists
-        await fs.promises.mkdir(databasePath, { recursive: true });
+        await fs.mkdir(databasePath, { recursive: true });
 
         console.log('Starting comprehensive database initialization...');
         
@@ -1106,7 +1106,7 @@ async function initializeDatabaseFiles(databasePath) {
         // Check if file exists and has content
         let existingData;
         try {
-            existingData = fsSync.readFileSync(raidLootPath, 'utf8').trim();
+            existingData = await fs.readFile(raidLootPath, 'utf8').trim();
         } catch (readError) {
             // File doesn't exist, will use hardcoded data
             existingData = '';
@@ -1118,10 +1118,10 @@ async function initializeDatabaseFiles(databasePath) {
             const hardcodedRaidLootData = getHardcodedRaidLootData();
             
             // Ensure database directory exists
-            fsSync.mkdirSync(path.dirname(raidLootPath), { recursive: true });
+            await fs.mkdir(path.dirname(raidLootPath), { recursive: true });
             
             // Write hardcoded data
-            fsSync.writeFileSync(raidLootPath, JSON.stringify(hardcodedRaidLootData, null, 2));
+            await fs.writeFile(raidLootPath, JSON.stringify(hardcodedRaidLootData, null, 2));
             
             console.log('Wrote hardcoded raid loot data to:', raidLootPath);
         } else {
@@ -1151,12 +1151,12 @@ async function initializeDatabaseFiles(databasePath) {
         try {
             // Check if file exists
             try {
-                await fs.promises.access(filePath);
+                await fs.access(filePath);
                 console.log(`File ${filename} already exists`);
             } catch {
                 // File doesn't exist, create it with default content
                 const defaultContent = DEFAULT_CONTENTS[filename];
-                await fs.promises.writeFile(filePath, JSON.stringify(defaultContent, null, 2));
+                await fs.writeFile(filePath, JSON.stringify(defaultContent, null, 2));
                 console.log(`Created default ${filename}`);
             }
         } catch (error) {
@@ -1195,16 +1195,13 @@ async function initializeDatabaseFiles(databasePath) {
 }
 
 async function getDatabaseStats(databasePath) {
-    const fs = require('fs').promises;
-    const path = require('path');
-    
-    const files = await fs.promises.readdir(databasePath);
+    const files = await fs.readdir(databasePath);
     const jsonFiles = files.filter(file => file.endsWith('.json'));
     
     let totalEntries = 0;
     for (const file of jsonFiles) {
         const filePath = path.join(databasePath, file);
-        const content = JSON.parse(await fs.promises.readFile(filePath, 'utf8'));
+        const content = JSON.parse(await fs.readFile(filePath, 'utf8'));
         
         // Count entries based on common structures
         if (content.reservations) totalEntries += content.reservations.length;
