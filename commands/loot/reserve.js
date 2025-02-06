@@ -182,6 +182,11 @@ module.exports = {
 
             collector.on('collect', async i => {
                 try {
+                    // Defer update to prevent interaction timeout
+                    await i.deferUpdate().catch(err => {
+                        console.warn('Deferred update failed:', err);
+                    });
+
                     if (i.customId === 'set_character') {
                         const modal = new ModalBuilder()
                             .setCustomId('character_name_modal')
@@ -197,38 +202,14 @@ module.exports = {
                         const firstActionRow = new ActionRowBuilder().addComponents(characterNameInput);
                         modal.addComponents(firstActionRow);
 
-                        await i.showModal(modal);
-
-                        try {
-                            const modalResponse = await interaction.awaitModalSubmit({ 
-                                filter: i => i.customId === 'character_name_modal',
-                                time: 60000 
+                        await i.showModal(modal).catch(err => {
+                            console.error('Error showing modal:', err);
+                            // If showing modal fails, try to edit the reply
+                            return i.editReply({
+                                content: 'Failed to open character name input. Please try again.',
+                                ephemeral: true
                             });
-
-                            if (modalResponse) {
-                                userState.characterName = modalResponse.fields.getTextInputValue('character_name');
-
-                                // Enable boss selection
-                                bossSelect.setDisabled(false);
-                                const updatedSelectRow = new ActionRowBuilder().addComponents(bossSelect);
-
-                                // Update the button to show the character name
-                                characterButton
-                                    .setLabel(`Character: ${userState.characterName}`)
-                                    .setStyle(ButtonStyle.Success);
-                                const updatedButtonRow = new ActionRowBuilder().addComponents(characterButton);
-
-                                await modalResponse.update({
-                                    components: [updatedButtonRow, updatedSelectRow]
-                                });
-                            }
-                        } catch (error) {
-                            console.error('Error handling modal submission:', error);
-                            await i.followUp({ 
-                                content: 'Failed to get character name. Please try again.',
-                                ephemeral: true 
-                            });
-                        }
+                        });
                     }
                     else if (i.customId === 'boss_select') {
                         const selectedBoss = raidData.bosses.find(b => b.id.toString() === i.values[0]);
@@ -409,11 +390,38 @@ module.exports = {
                         collector.stop();
                     }
                 } catch (error) {
-                    console.error('Error in collector:', error);
-                    await i.reply({ 
-                        content: 'An error occurred while processing your selection', 
-                        ephemeral: true 
-                    }).catch(console.error);
+                    console.error('Collector collect error:', error);
+                    
+                    // Attempt to handle the error gracefully
+                    try {
+                        await i.editReply({
+                            content: 'An unexpected error occurred. Please try your reservation again.',
+                            components: [],
+                            ephemeral: true
+                        }).catch(() => {});
+                    } catch (editError) {
+                        console.error('Error editing reply:', editError);
+                    }
+                    
+                    collector.stop('error');
+                }
+            });
+
+            // Add a timeout handler to clean up
+            collector.on('end', async (collected, reason) => {
+                console.log(`Collector ended. Reason: ${reason}`);
+                
+                try {
+                    // If the interaction is still pending, try to edit the reply
+                    await interaction.editReply({
+                        content: 'Reservation process timed out. Please start over.',
+                        components: [],
+                        ephemeral: true
+                    }).catch(err => {
+                        console.warn('Failed to edit reply on collector end:', err);
+                    });
+                } catch (error) {
+                    console.error('Error in collector end handler:', error);
                 }
             });
         } catch (mainError) {
