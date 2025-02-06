@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "start": "node --no-warnings --experimental-global-buffer=true deploy-commands.js && node --no-warnings --experimental-global-buffer=true .",
-    "deploy": "node --no-warnings --experimental-global-buffer=true deploy-commands.js",
-    "dev": "node --no-warnings --experimental-global-buffer=true deploy-commands.js && node --no-warnings --experimental-global-buffer=true ."
+    "start": "node --no-warnings deploy-commands.js && node --no-warnings .",
+    "deploy": "node --no-warnings deploy-commands.js",
+    "dev": "node --no-warnings deploy-commands.js && node --no-warnings ."
   },
   "engines": {
     "node": ">=18.20.0"
