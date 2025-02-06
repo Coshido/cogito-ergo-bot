@@ -63,29 +63,45 @@ module.exports = {
         // Read raid loot data
         let raidData;
         try {
-            raidData = JSON.parse(fs.readFileSync(
-                path.join(__dirname, '../../database/raid-loot.json'),
-                'utf8'
-            ));
+            const raidLootPath = path.join(__dirname, '../../database/raid-loot.json');
+            console.log('Attempting to read raid loot file from:', raidLootPath);
+            console.log('File exists:', fs.existsSync(raidLootPath));
+            
+            // Log directory contents
+            const databaseDir = path.join(__dirname, '../../database');
+            console.log('Database directory contents:', fs.readdirSync(databaseDir));
+
+            raidData = JSON.parse(fs.readFileSync(raidLootPath, 'utf8'));
+            
+            console.log('Raid Data:', JSON.stringify(raidData, null, 2));
+            console.log('Number of bosses:', raidData.bosses.length);
+            
+            // Log boss names to verify length
+            raidData.bosses.forEach((boss, index) => {
+                console.log(`Boss ${index + 1} name: "${boss.name}" (length: ${boss.name.length})`);
+            });
         } catch (error) {
-            console.error('Error reading raid loot file:', error);
+            console.error('FULL Error reading raid loot file:', error);
             
             // Ensure the directory exists
             const databaseDir = path.join(__dirname, '../../database');
             if (!fs.existsSync(databaseDir)) {
+                console.error('Database directory does not exist');
                 fs.mkdirSync(databaseDir, { recursive: true });
             }
             
             // Create a default raid loot file
             raidData = {
                 raid: "Default Raid",
-                bosses: []
+                bosses: [
+                    { id: 1, name: "Boss1" },
+                    { id: 2, name: "Boss2" }
+                ]
             };
             
-            fs.writeFileSync(
-                path.join(__dirname, '../../database/raid-loot.json'),
-                JSON.stringify(raidData, null, 2)
-            );
+            const defaultFilePath = path.join(__dirname, '../../database/raid-loot.json');
+            console.log('Writing default raid loot file to:', defaultFilePath);
+            fs.writeFileSync(defaultFilePath, JSON.stringify(raidData, null, 2));
         }
 
         // Store user's selection state
@@ -107,9 +123,9 @@ module.exports = {
             .setDisabled(true)  // Disabled until character name is set
             .addOptions(
                 raidData.bosses.map(boss => ({
-                    label: boss.name,
+                    label: boss.name.length > 25 ? boss.name.substring(0, 22) + '...' : boss.name,
                     value: boss.id.toString(),
-                    description: `Select loot from ${boss.name}`
+                    description: `Loot from ${boss.name.length > 25 ? boss.name.substring(0, 22) + '...' : boss.name}`
                 }))
             );
 
