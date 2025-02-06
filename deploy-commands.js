@@ -55,99 +55,30 @@ for (const folder of commandFolders) {
 
 const rest = new REST().setToken(token);
 
-// Wrap the deployment in a function with a timeout
 async function deployCommands() {
-    return new Promise((resolve, reject) => {
-        // Increase timeout to 2 minutes
-        const deploymentTimer = setTimeout(() => {
-            console.error('🕰️ Command deployment timed out');
-            const timeoutError = new Error('Command deployment timed out after 120 seconds');
-            timeoutError.name = 'DeploymentTimeoutError';
-            reject(timeoutError);
-        }, 120000);  // 2 minutes instead of 30 seconds
-
-        (async () => {
-            try {
-                console.log('🚀 Starting comprehensive command deployment process');
-                console.log('Environment variables:');
-                console.log('CLIENT_ID:', clientId);
-                console.log('Token present:', !!token);
-
-                console.log(`🔍 Preparing to deploy ${commands.length} application (/) commands`);
-                console.log('Commands to be deployed:', commands.map(cmd => cmd.name).join(', '));
-
-                // Measure deployment time
-                const startTime = Date.now();
-
-                // Deploy commands GLOBALLY
-                const data = await rest.put(
-                    Routes.applicationCommands(clientId),
-                    { body: commands },
-                );
-
-                const deploymentTime = (Date.now() - startTime) / 1000;
-                console.log(`✅ Successfully deployed ${data.length} global application (/) commands`);
-                console.log(`⏱️ Deployment took ${deploymentTime.toFixed(2)} seconds`);
-                
-                clearTimeout(deploymentTimer);
-                resolve(data);
-            } catch (error) {
-                clearTimeout(deploymentTimer);
-                console.error('❌ Command deployment failed:', error);
-                reject(error);
-            }
-        })();
-    });
-}
-
-async function clearAllGlobalCommands() {
-    console.log('Starting to clear existing commands...');
     try {
-        const rest = new REST().setToken(token);
-        
-        // Clear global commands
-        const globalCommands = await rest.get(
-            Routes.applicationCommands(clientId)
+        console.log(`Deploying ${commands.length} application (/) commands`);
+        console.log('Commands:', commands.map(cmd => cmd.name).join(', '));
+
+        const data = await rest.put(
+            Routes.applicationCommands(clientId),
+            { body: commands }
         );
 
-        console.log(`Found ${globalCommands.length} global commands to clear`);
-        for (const command of globalCommands) {
-            await rest.delete(
-                Routes.applicationCommand(clientId, command.id)
-            );
-            console.log(`Deleted global command: ${command.name}`);
-        }
-
-        console.log('All commands cleared successfully');
+        console.log(`Successfully deployed ${data.length} commands`);
+        return data;
     } catch (error) {
-        console.error('Error clearing commands:', error);
+        console.error('Failed to deploy commands:', error);
         throw error;
     }
 }
 
-// Main execution with comprehensive error handling
 (async () => {
     try {
-        // Clear existing commands first
-        await clearAllGlobalCommands();
-        
-        // Then deploy new commands
         await deployCommands();
-        
         console.log('Command deployment completed successfully');
-        process.exit(0);
     } catch (error) {
         console.error('Deployment failed:', error);
-        
-        // Log specific error details
-        console.error('Error name:', error.name);
-        console.error('Error message:', error.message);
-        
-        if (error.response) {
-            console.error('Response status:', error.response.status);
-            console.error('Response data:', error.response.data);
-        }
-        
         process.exit(1);
     }
 })();
