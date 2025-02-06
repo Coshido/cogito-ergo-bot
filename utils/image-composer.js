@@ -1,6 +1,47 @@
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage, registerFont } = require('canvas');
 const path = require('path');
 const fs = require('fs');
+
+// Detailed font registration with comprehensive error handling
+const fontPath = path.resolve(__dirname, '../assets/DejaVuSans.ttf');
+
+function registerDejaVuFont() {
+    try {
+        // Detailed file checks
+        if (!fs.existsSync(fontPath)) {
+            console.error('Font file does not exist:', fontPath);
+            return false;
+        }
+
+        const stats = fs.statSync(fontPath);
+        console.log('Font file details:', {
+            size: stats.size,
+            created: stats.birthtime,
+            modified: stats.mtime
+        });
+
+        // Attempt to read file contents
+        const fontBuffer = fs.readFileSync(fontPath);
+        console.log('Font file read successfully. Buffer size:', fontBuffer.length);
+
+        // Attempt to register font
+        registerFont(fontPath, { family: 'DejaVu Sans' });
+        console.log('Font registered successfully');
+        return true;
+
+    } catch (error) {
+        console.error('Font registration failed:', {
+            message: error.message,
+            name: error.name,
+            code: error.code,
+            stack: error.stack
+        });
+        return false;
+    }
+}
+
+// Attempt to register font during module load
+const fontRegistered = registerDejaVuFont();
 
 class ImageComposer {
     // Common constants at class level
@@ -128,6 +169,11 @@ class ImageComposer {
     static async createReservationImage(items) {
         console.log('Creating reservation image for items:', items.map(item => item.name));
 
+        // If font registration failed, log a warning
+        if (!fontRegistered) {
+            console.warn('Using fallback font due to DejaVu Sans registration failure');
+        }
+
         const itemSize = this.ITEM_SIZE;
         const padding = this.PADDING;
         const textWidth = this.TEXT_WIDTH;
@@ -155,14 +201,22 @@ class ImageComposer {
                 const textX = x + itemSize + padding;
                 let textY = y + 40;
 
-                ctx.font = 'bold 42px Arial, Helvetica, sans-serif';
+                // Use registered font if possible, with fallback
+                ctx.font = fontRegistered 
+                    ? 'bold 42px "DejaVu Sans"' 
+                    : 'bold 42px Arial, Helvetica, sans-serif';
+
                 const nameLines = this.wrapText(ctx, items[i].name, textWidth - padding);
                 nameLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
                     textY += lineHeight;
                 });
 
-                ctx.font = '37px Arial, Helvetica, sans-serif';
+                // Same font handling for subsequent text
+                ctx.font = fontRegistered 
+                    ? '37px "DejaVu Sans"' 
+                    : '37px Arial, Helvetica, sans-serif';
+
                 const bossLines = this.wrapText(ctx, `From: ${items[i].boss}`, textWidth - padding);
                 bossLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
