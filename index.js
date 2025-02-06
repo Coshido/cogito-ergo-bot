@@ -80,12 +80,15 @@ client.once(Events.ClientReady, readyClient => {
 // Initialize database before starting the bot
 (async () => {
     try {
+        console.log('Environment DATABASE_PATH:', process.env.DATABASE_PATH);
+        
         // Use the mounted volume path if available
-        const databasePath = process.env.DATABASE_PATH || path.join(__dirname, 'database');
-        await initializeDatabase(databasePath);
-        console.log('Database initialized successfully');
+        const databasePath = await initializeDatabase(process.env.DATABASE_PATH);
+        console.log('Database initialized successfully at:', databasePath);
     } catch (error) {
         console.error('Failed to initialize database:', error);
+        // Optionally, you might want to exit the process if database init is critical
+        // process.exit(1);
     }
 })();
 
