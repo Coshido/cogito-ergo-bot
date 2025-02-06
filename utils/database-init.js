@@ -2,25 +2,17 @@ const fs = require('fs').promises;
 const fsSync = require('fs');
 const path = require('path');
 
-const DEFAULT_CONFIGS = {
-    'config.json': {
-        raidLeaderRoleId: null,
-        raiderRoleId: null
-    },
-    'reservations.json': {
-        weekly_reservations: {}
-    },
-    'birthday-data.json': {
-        birthdays: {},
-        settings: {}
-    },
-    'league-data.json': {
-        participants: []
-    },
-    'league-config.json': {
-        managerRoleId: null,
-        participantRoleId: null
-    }
+// Timeout for database initialization (5 seconds)
+const DATABASE_INIT_TIMEOUT = 5000;
+
+// Predefined default content for various files
+const DEFAULT_CONTENTS = {
+    'config.json': { version: '1.0.0' },
+    'reservations.json': { reservations: [] },
+    'birthday-data.json': { birthdays: [] },
+    'league-data.json': { leagues: [] },
+    'league-config.json': { config: {} },
+    'raid-loot.json': getHardcodedRaidLootData()
 };
 
 const EXACT_COPY_FILES = [
@@ -33,35 +25,15 @@ function getHardcodedRaidLootData() {
         "bosses": [
             {
                 "id": 2607,
-                "name": "Ulgrax Divoratore",  
+                "name": "Ulgrax Divoratore",
                 "loot": [
                     {
                         "id": "219915",
-                        "name": "Chelicera Behemoth",  
-                        "type": "Monile Varie",
-                        "ilvl": 571,
-                        "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_raid_foulbehemothschelicera_red.jpg",
-                        "wowhead_url": "https://www.wowhead.com/item=219915"
-                    }
-                ]
-            },
-            {
-                "id": 2611,
-                "name": "Orrore Vincolasangue",  
-                "loot": [
-                    {
-                        "id": "219917",
-                        "name": "Coagulo Strisciante",
+                        "name": "Chelicera Behemoth",
                         "type": "Monile Varie",
                         "ilvl": 571
                     }
                 ]
-            }
-        ],
-        "difficulties": [
-            {
-                "name": "Looking For Raid",
-                "ilvl": 584
             }
         ]
     };
@@ -70,110 +42,64 @@ function getHardcodedRaidLootData() {
 async function ensureDatabaseDirectory(databasePath) {
     console.log('Attempting to create database directory:', databasePath);
     try {
-        await fs.mkdir(databasePath, { recursive: true });
+        // Ensure the directory exists with full permissions
+        await fs.mkdir(databasePath, { recursive: true, mode: 0o777 });
         console.log('Database directory created or already exists');
     } catch (error) {
-        console.error('Error creating database directory:', error);
+        console.error('CRITICAL: Failed to create database directory:', error);
         throw error;
-    }
-}
-
-async function copyExactFiles(sourcePath, destPath) {
-    console.log('Copying exact files from:', sourcePath, 'to:', destPath);
-    
-    for (const filename of EXACT_COPY_FILES) {
-        const sourceFile = path.join(sourcePath, filename);
-        const destFile = path.join(destPath, filename);
-        
-        try {
-            console.log(`Attempting to copy ${filename}`);
-            console.log('Source file path:', sourceFile);
-            console.log('Destination file path:', destFile);
-            
-            // Try multiple potential source paths
-            const possibleSourcePaths = [
-                sourceFile,
-                path.join(__dirname, `../database/${filename}`),
-                path.join(process.cwd(), `database/${filename}`)
-            ];
-
-            let sourceFileContents = null;
-            for (const potentialSourcePath of possibleSourcePaths) {
-                if (fsSync.existsSync(potentialSourcePath)) {
-                    sourceFileContents = fsSync.readFileSync(potentialSourcePath, 'utf8');
-                    console.log(`Found source file at: ${potentialSourcePath}`);
-                    break;
-                }
-            }
-
-            // Fallback to hardcoded data if file not found
-            if (!sourceFileContents && filename === 'raid-loot.json') {
-                console.log('Using hardcoded raid loot data');
-                sourceFileContents = JSON.stringify(getHardcodedRaidLootData(), null, 2);
-            }
-
-            if (!sourceFileContents) {
-                console.error(`Source file NOT FOUND for ${filename} in any of these paths:`, possibleSourcePaths);
-                continue;
-            }
-
-            console.log('Source file contents length:', sourceFileContents.length);
-            
-            if (sourceFileContents.trim().length === 0) {
-                console.error(`Source file is empty: ${filename}`);
-                continue;
-            }
-            
-            const parsedContent = JSON.parse(sourceFileContents);
-            console.log('Parsed content:', JSON.stringify(parsedContent, null, 2));
-            
-            fsSync.writeFileSync(destFile, JSON.stringify(parsedContent, null, 2));
-            
-            const destFileContents = fsSync.readFileSync(destFile, 'utf8');
-            console.log('Destination file contents length:', destFileContents.length);
-            
-            console.log(`Successfully copied and validated ${filename}`);
-        } catch (error) {
-            console.error(`CRITICAL ERROR copying ${filename}:`, error);
-            throw error;
-        }
     }
 }
 
 async function initializeDatabaseFiles(databasePath) {
     console.log('Initializing database files in:', databasePath);
-    
-    for (const [filename, defaultContent] of Object.entries(DEFAULT_CONFIGS)) {
+
+    for (const filename of Object.keys(DEFAULT_CONTENTS)) {
         const filePath = path.join(databasePath, filename);
         
         try {
-            await fs.access(filePath);
-            console.log(`File ${filename} already exists`);
-        } catch (error) {
+            // Check if file exists
             try {
+                await fs.access(filePath);
+                console.log(`File ${filename} already exists`);
+            } catch {
+                // File doesn't exist, create it with default content
+                const defaultContent = DEFAULT_CONTENTS[filename];
                 await fs.writeFile(filePath, JSON.stringify(defaultContent, null, 2));
                 console.log(`Created default ${filename}`);
-            } catch (writeError) {
-                console.error(`Error creating ${filename}:`, writeError);
             }
+        } catch (error) {
+            console.error(`CRITICAL: Failed to initialize ${filename}:`, error);
+            throw error;
         }
     }
 }
 
 async function initializeDatabase(customPath) {
+    console.log('Starting database initialization');
     console.log('Custom database path received:', customPath);
     
-    const possiblePaths = [
-        customPath,
-        process.env.DATABASE_PATH,
-        '/app/database',
-        '/database',
-        path.join(__dirname, '../database')
-    ];
+    // Set up a timeout to prevent hanging
+    const initializationTimeout = new Promise((_, reject) => 
+        setTimeout(() => {
+            const timeoutError = new Error('Database initialization timed out');
+            timeoutError.name = 'DatabaseInitializationTimeoutError';
+            reject(timeoutError);
+        }, DATABASE_INIT_TIMEOUT)
+    );
 
-    let databasePath;
-    for (const testPath of possiblePaths) {
-        if (testPath) {
+    try {
+        // Possible database paths in order of preference
+        const possiblePaths = [
+            customPath,
+            process.env.DATABASE_PATH,
+            '/app/database',
+            '/database',
+            path.join(__dirname, '../database')
+        ].filter(Boolean);
+
+        let databasePath;
+        for (const testPath of possiblePaths) {
             try {
                 await fs.access(testPath);
                 databasePath = testPath;
@@ -183,29 +109,46 @@ async function initializeDatabase(customPath) {
                 console.log(`Path not accessible: ${testPath}`);
             }
         }
-    }
 
-    if (!databasePath) {
-        throw new Error('No valid database path found');
-    }
+        if (!databasePath) {
+            throw new Error('No valid database path found');
+        }
 
-    await ensureDatabaseDirectory(databasePath);
-    
-    // Force write hardcoded raid loot data
-    const raidLootPath = path.join(databasePath, 'raid-loot.json');
-    try {
-        const hardcodedRaidLootData = getHardcodedRaidLootData();
-        fsSync.writeFileSync(raidLootPath, JSON.stringify(hardcodedRaidLootData, null, 2));
-        console.log('Forcibly wrote hardcoded raid loot data');
+        // Run initialization steps
+        await Promise.race([
+            (async () => {
+                await ensureDatabaseDirectory(databasePath);
+                
+                // Force write hardcoded raid loot data
+                const raidLootPath = path.join(databasePath, 'raid-loot.json');
+                try {
+                    const hardcodedRaidLootData = getHardcodedRaidLootData();
+                    fsSync.writeFileSync(raidLootPath, JSON.stringify(hardcodedRaidLootData, null, 2));
+                    console.log('Forcibly wrote hardcoded raid loot data');
+                } catch (error) {
+                    console.error('Error writing hardcoded raid loot data:', error);
+                }
+                
+                await initializeDatabaseFiles(databasePath);
+
+                return databasePath;
+            })(),
+            initializationTimeout
+        ]);
+
+        console.log('Database initialization completed successfully');
+        return databasePath;
     } catch (error) {
-        console.error('Error writing hardcoded raid loot data:', error);
+        console.error('CRITICAL: Database initialization failed:', error);
+        
+        // Log detailed error information
+        console.error('Error name:', error.name);
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+        
+        // Rethrow to ensure the process knows initialization failed
+        throw error;
     }
-    
-    await initializeDatabaseFiles(databasePath);
-
-    return databasePath;
 }
 
-module.exports = {
-    initializeDatabase
-};
+module.exports = { initializeDatabase };
