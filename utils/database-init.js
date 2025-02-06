@@ -3,8 +3,8 @@ const fsSync = require('fs');
 const path = require('path');
 const ImageComposer = require('./image-composer');
 
-// Timeout for database initialization (5 seconds)
-const DATABASE_INIT_TIMEOUT = 5000;
+// Timeout for database initialization (60 seconds)
+const DATABASE_INIT_TIMEOUT = 60000;
 
 // Predefined default content for various files
 const DEFAULT_CONTENTS = {
@@ -1077,7 +1077,8 @@ async function ensureDatabaseDirectory(databasePath) {
 }
 
 async function initializeDatabaseFiles(databasePath) {
-    console.log('Initializing database files in:', databasePath);
+    console.time('Database Initialization');
+    console.log(`Starting comprehensive database file initialization in ${databasePath}`);
 
     // Specific path for raid loot file
     const raidLootPath = path.join(databasePath, 'raid-loot.json');
@@ -1150,9 +1151,12 @@ async function initializeDatabaseFiles(databasePath) {
         const raidLootData = getHardcodedRaidLootData();
         const bosses = raidLootData.bosses;
 
-        console.log(`Generating comprehensive loot images for ${bosses.length} bosses...`);
+        console.log(`Preparing to generate comprehensive loot images for ${bosses.length} bosses...`);
+        console.time('Boss Loot Image Generation');
+        
         const lootImageGenerationResults = await ImageComposer.generateComprehensiveBossLootImages(bosses);
 
+        console.timeEnd('Boss Loot Image Generation');
         console.log('Boss Comprehensive Loot Image Generation Summary:');
         console.log('Generated:', lootImageGenerationResults.filter(r => r.status === 'generated').length);
         console.log('Skipped:', lootImageGenerationResults.filter(r => r.status === 'skipped').length);
@@ -1164,6 +1168,8 @@ async function initializeDatabaseFiles(databasePath) {
                 failedBosses.map(boss => boss.boss).join(', ')
             );
         }
+
+        console.timeEnd('Database Initialization');
     } catch (error) {
         console.error('Error during comprehensive boss loot image generation:', error);
     }
