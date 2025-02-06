@@ -60,14 +60,8 @@ const rest = new REST().setToken(token);
 		);
 
 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
-		
-		// Explicitly exit the process with a success code
-		process.exit(0);
 	} catch (error) {
 		// And of course, make sure you catch and log any errors!
 		console.error('Deployment error:', error);
-		
-		// Exit with an error code
-		process.exit(1);
 	}
 })();
