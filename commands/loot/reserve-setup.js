@@ -35,11 +35,19 @@ module.exports = {
         // Read existing config
         let config = {};
         try {
-            config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+            config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) || {};
         } catch (error) {
             console.error('Error reading config file:', error);
             config = {}; // Initialize empty config if file doesn't exist
         }
+
+        // Ensure config has all necessary properties
+        config = {
+            ...config,
+            raidLeaderRoleId: null,
+            raiderRoleId: null,
+            ...config
+        };
 
         // Update roles in config
         config.raidLeaderRoleId = raidLeaderRole.id;

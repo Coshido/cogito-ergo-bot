@@ -52,8 +52,16 @@ module.exports = {
             
             if (fs.existsSync(configPath)) {
                 const data = fs.readFileSync(configPath, 'utf8');
-                config = JSON.parse(data);
+                config = JSON.parse(data) || {};
             }
+
+            // Ensure config object has all necessary properties
+            config = {
+                ...config,
+                tournamentManagerRoleId: config.tournamentManagerRoleId || null,
+                tournamentRoleId: config.tournamentRoleId || null,
+                tournamentChannelId: config.tournamentChannelId || null
+            };
 
             if (subcommand === 'set-manager-role') {
                 const role = interaction.options.getRole('role');

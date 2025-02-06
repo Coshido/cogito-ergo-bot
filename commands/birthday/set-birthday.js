@@ -33,6 +33,11 @@ module.exports = {
             const dbPath = path.join(__dirname, '../../database/birthday-data.json');
             const data = JSON.parse(await fs.readFile(dbPath, 'utf8'));
 
+            // Ensure birthdays object exists
+            if (!data.birthdays) {
+                data.birthdays = {};
+            }
+
             // Store birthday
             data.birthdays[interaction.user.id] = { day, month };
             await fs.writeFile(dbPath, JSON.stringify(data, null, 4));

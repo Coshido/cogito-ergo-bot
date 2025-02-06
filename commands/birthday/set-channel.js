@@ -36,6 +36,11 @@ module.exports = {
                 data = JSON.parse(await fs.readFile(dbPath, 'utf8'));
             }
 
+            // Ensure settings object exists
+            if (!data.settings) {
+                data.settings = {};
+            }
+
             // Update birthday channel
             data.settings.announcementChannelId = channel.id;
 

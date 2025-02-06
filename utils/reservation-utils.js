@@ -22,7 +22,7 @@ function saveReservations(reservations) {
     fs.writeFileSync(reservationsPath, JSON.stringify(reservations, null, 2));
 }
 
-function ensureCurrentWeekReservations() {
+function ensureCurrentWeekReservations(userId) {
     const reservations = loadReservations();
     const currentWeek = getCurrentWeekMonday();
 
@@ -44,6 +44,16 @@ function ensureCurrentWeekReservations() {
         }
 
         // Save the updated reservations
+        saveReservations(reservations);
+    }
+
+    // Ensure the specific user has an entry for the current week
+    if (userId && !reservations.weekly_reservations[currentWeek][userId]) {
+        reservations.weekly_reservations[currentWeek][userId] = {
+            character_name: null,
+            discord_username: null,
+            items: []
+        };
         saveReservations(reservations);
     }
 
