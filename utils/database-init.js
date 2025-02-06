@@ -320,7 +320,7 @@ function getHardcodedRaidLootData() {
                 "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_polearm_2h_nerubianraid_d_01.jpg"
               },
               {
-                "id": "225577",
+                "id": "225577,
                 "name": "Fregio dello Zelota Sureki",
                 "type": "Collo Varie",
                 "ilvl": 571,
@@ -512,7 +512,7 @@ function getHardcodedRaidLootData() {
                 "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_qiraj_skinsandworm.jpg"
               },
               {
-                "id": "212387",
+                "id": "212387,
                 "name": "Catalizzatore Tetro del Mutastirpe",
                 "type": "Accessorio Varie",
                 "ilvl": 571,
@@ -1078,7 +1078,53 @@ async function ensureDatabaseDirectory(databasePath) {
 async function initializeDatabaseFiles(databasePath) {
     console.log('Initializing database files in:', databasePath);
 
+    // Specific path for raid loot file
+    const raidLootPath = path.join(databasePath, 'raid-loot.json');
+    
+    try {
+        // Check if file exists and has content
+        let existingData;
+        try {
+            existingData = fsSync.readFileSync(raidLootPath, 'utf8').trim();
+        } catch (readError) {
+            // File doesn't exist, will use hardcoded data
+            existingData = '';
+        }
+
+        // Only write hardcoded data if file is empty or doesn't exist
+        if (!existingData) {
+            console.log('Raid loot file is empty or missing. Using hardcoded data.');
+            const hardcodedRaidLootData = getHardcodedRaidLootData();
+            
+            // Ensure database directory exists
+            fsSync.mkdirSync(path.dirname(raidLootPath), { recursive: true });
+            
+            // Write hardcoded data
+            fsSync.writeFileSync(raidLootPath, JSON.stringify(hardcodedRaidLootData, null, 2));
+            
+            console.log('Wrote hardcoded raid loot data to:', raidLootPath);
+        } else {
+            console.log('Existing raid loot data found. Skipping hardcoded data.');
+            
+            // Optional: Parse and log existing data for verification
+            try {
+                const existingParsedData = JSON.parse(existingData);
+                console.log('Existing data contains:', existingParsedData.bosses ? `${existingParsedData.bosses.length} bosses` : 'No bosses');
+            } catch (parseError) {
+                console.error('Error parsing existing raid loot data:', parseError);
+            }
+        }
+    } catch (error) {
+        console.error('Error initializing raid loot data:', error);
+        throw error;
+    }
+
+    // Continue with other database file initializations if needed
     for (const filename of Object.keys(DEFAULT_CONTENTS)) {
+        if (filename === 'raid-loot.json') {
+            continue;
+        }
+        
         const filePath = path.join(databasePath, filename);
         
         try {
@@ -1142,33 +1188,7 @@ async function initializeDatabase(customPath) {
         await Promise.race([
             (async () => {
                 await ensureDatabaseDirectory(databasePath);
-                
-                // Force write hardcoded raid loot data
-                const raidLootPath = path.join(databasePath, 'raid-loot.json');
-                try {
-                    const hardcodedRaidLootData = getHardcodedRaidLootData();
-                    
-                    // Log existing file contents before overwriting
-                    try {
-                        const existingContents = fsSync.readFileSync(raidLootPath, 'utf8');
-                        console.log('Existing raid-loot.json contents:', existingContents);
-                    } catch (readError) {
-                        console.log('No existing raid-loot.json file found');
-                    }
-
-                    // Write hardcoded data
-                    fsSync.writeFileSync(raidLootPath, JSON.stringify(hardcodedRaidLootData, null, 2));
-                    console.log('Forcibly wrote hardcoded raid loot data');
-                    
-                    // Verify written contents
-                    const writtenContents = fsSync.readFileSync(raidLootPath, 'utf8');
-                    console.log('Newly written raid-loot.json contents:', writtenContents);
-                } catch (error) {
-                    console.error('Error writing hardcoded raid loot data:', error);
-                }
-                
                 await initializeDatabaseFiles(databasePath);
-
                 return databasePath;
             })(),
             initializationTimeout

@@ -3,8 +3,20 @@ const fs = require('node:fs');
 const path = require('node:path');
 require("dotenv").config();
 
-// Set a deployment timeout of 30 seconds
-const DEPLOYMENT_TIMEOUT = 30000;
+// Log environment variables for debugging
+console.log('Environment Variables:');
+console.log('CLIENT_ID:', process.env.CLIENT_ID ? 'SET' : 'UNSET');
+console.log('GUILD_ID:', process.env.GUILD_ID ? 'SET' : 'UNSET');
+console.log('BOT_TOKEN:', process.env.BOT_TOKEN ? 'SET (masked)' : 'UNSET');
+
+// Validate required environment variables
+const requiredEnvVars = ['CLIENT_ID', 'GUILD_ID', 'BOT_TOKEN'];
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+
+if (missingVars.length > 0) {
+    console.error(`Missing required environment variables: ${missingVars.join(', ')}`);
+    process.exit(1);
+}
 
 const clientId = process.env.CLIENT_ID
 const guildId = process.env.GUILD_ID
@@ -37,8 +49,8 @@ for (const folder of commandFolders) {
 			} else {
 				console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
 			}
-		} catch (error) {
-			console.error(`Error loading command ${file}:`, error);
+		} catch (loadError) {
+			console.error(`Error loading command ${file}:`, loadError);
 		}
 	}
 }
@@ -53,7 +65,7 @@ function deployCommands() {
 			const timeoutError = new Error('Command deployment timed out after 30 seconds');
 			timeoutError.name = 'DeploymentTimeoutError';
 			reject(timeoutError);
-		}, DEPLOYMENT_TIMEOUT);
+		}, 30000);
 
 		(async () => {
 			try {
