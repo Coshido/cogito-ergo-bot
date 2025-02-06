@@ -2,29 +2,107 @@ const { createCanvas, loadImage, registerFont } = require('canvas');
 const path = require('path');
 const fs = require('fs');
 
-// Attempt to register a fallback font
-try {
-    const systemFontsPath = process.platform === 'win32' 
-        ? 'C:\\Windows\\Fonts' 
-        : '/usr/share/fonts';
-    
+// Attempt to register fallback fonts with more comprehensive approach
+function registerFallbackFonts() {
+    const systemFontPaths = {
+        'win32': [
+            'C:\\Windows\\Fonts',
+            'C:\\Windows\\WinNT\\Fonts'
+        ],
+        'darwin': [
+            '/Library/Fonts',
+            '/System/Library/Fonts',
+            '~/Library/Fonts'
+        ],
+        'linux': [
+            '/usr/share/fonts',
+            '/usr/local/share/fonts',
+            '~/.fonts'
+        ]
+    };
+
     const fallbackFonts = [
         'arial.ttf', 
         'arialbd.ttf', 
         'arial_bold.ttf', 
         'DejaVuSans.ttf', 
-        'DejaVuSans-Bold.ttf'
+        'DejaVuSans-Bold.ttf',
+        'LiberationSans-Regular.ttf',
+        'LiberationSans-Bold.ttf'
     ];
 
-    fallbackFonts.forEach(fontName => {
-        const fontPath = path.join(systemFontsPath, fontName);
-        if (fs.existsSync(fontPath)) {
-            registerFont(fontPath, { family: 'Fallback Arial' });
-            console.log(`Registered fallback font: ${fontName}`);
+    const searchPaths = systemFontPaths[process.platform] || [];
+
+    for (const fontDir of searchPaths) {
+        for (const fontName of fallbackFonts) {
+            const fontPath = path.join(fontDir, fontName);
+            try {
+                if (fs.existsSync(fontPath)) {
+                    registerFont(fontPath, { family: 'Fallback Arial' });
+                    console.log(`Successfully registered font: ${fontPath}`);
+                    return true;  // Stop after first successful registration
+                }
+            } catch (error) {
+                console.error(`Error registering font ${fontPath}:`, error);
+            }
         }
-    });
-} catch (fontError) {
-    console.error('Error registering fallback fonts:', fontError);
+    }
+
+    // If no system fonts found, create a basic font file
+    const fallbackFontPath = path.join(__dirname, 'fallback-font.ttf');
+    try {
+        // Create a minimal TTF font file
+        const fallbackFontData = Buffer.from([
+            0x00, 0x01, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x80, 0x00, 0x03, 0x00, 0x20
+        ]);
+        fs.writeFileSync(fallbackFontPath, fallbackFontData);
+        registerFont(fallbackFontPath, { family: 'Fallback Arial' });
+        console.log('Created and registered minimal fallback font');
+        return true;
+    } catch (error) {
+        console.error('Failed to create fallback font:', error);
+        return false;
+    }
+}
+
+// Attempt to configure fontconfig
+function configureFontConfig() {
+    try {
+        // Try to set a custom fontconfig configuration
+        const fontconfigPath = path.join(__dirname, 'fonts.conf');
+        const fontconfigContent = `<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+    <dir>/usr/share/fonts</dir>
+    <dir>/usr/local/share/fonts</dir>
+    <dir>~/.fonts</dir>
+    <match target="pattern">
+        <test qual="any" name="family">
+            <string>serif</string>
+        </test>
+        <edit name="family" mode="assign" binding="same">
+            <string>DejaVu Serif</string>
+        </edit>
+    </match>
+</fontconfig>`;
+
+        fs.writeFileSync(fontconfigPath, fontconfigContent);
+        process.env.FONTCONFIG_FILE = fontconfigPath;
+        console.log('Created custom fontconfig configuration');
+    } catch (error) {
+        console.error('Failed to create fontconfig configuration:', error);
+    }
+}
+
+// Initialize fonts and fontconfig
+try {
+    const fontRegistered = registerFallbackFonts();
+    if (!fontRegistered) {
+        console.warn('No fallback fonts could be registered');
+    }
+    configureFontConfig();
+} catch (initError) {
+    console.error('Font initialization error:', initError);
 }
 
 class ImageComposer {
