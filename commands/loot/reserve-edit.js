@@ -206,6 +206,7 @@ module.exports = {
                     
                     // Update the reservation with all required fields
                     const itemToReplace = editState.itemIndex;
+                    const originalItem = userData.items[itemToReplace];
                     userData.items[itemToReplace] = {
                         id: selectedItem.id,
                         name: selectedItem.name,
@@ -216,20 +217,137 @@ module.exports = {
                         wowhead_url: selectedItem.wowhead_url
                     };
 
+                    // Create final image
+                    const reservationImage = await ImageComposer.createReservationImage(userData.items);
+                    const attachment = new AttachmentBuilder(reservationImage, { name: 'reservations.png' });
+
+                    // Create confirmation buttons
+                    const confirmButton = new ButtonBuilder()
+                        .setCustomId('confirm_edit')
+                        .setLabel('Confirm Changes')
+                        .setStyle(ButtonStyle.Success);
+
+                    const cancelButton = new ButtonBuilder()
+                        .setCustomId('cancel_edit')
+                        .setLabel('Cancel Edit')
+                        .setStyle(ButtonStyle.Danger);
+
+                    const backToBossButton = new ButtonBuilder()
+                        .setCustomId('back_to_boss')
+                        .setLabel('Back to Boss Selection')
+                        .setStyle(ButtonStyle.Secondary);
+
+                    const buttonRow = new ActionRowBuilder().addComponents(confirmButton, cancelButton, backToBossButton);
+
+                    const finalEmbed = new EmbedBuilder()
+                        .setColor(0x00FF00)
+                        .setTitle('Reservation Edit Preview')
+                        .setImage('attachment://reservations.png')
+                        .setDescription(
+                            `Editing item ${editState.itemIndex + 1} for character **${userData.character_name}**\n\n` +
+                            `**Original Item**: [${originalItem.name}](${originalItem.wowhead_url})\n` +
+                            `**New Item**: [${selectedItem.name}](${selectedItem.wowhead_url})`
+                        );
+
+                    await interaction.editReply({
+                        embeds: [finalEmbed],
+                        files: [attachment],
+                        components: [buttonRow]
+                    });
+                }
+                else if (i.customId === 'confirm_edit') {
                     // Save the updated reservations
                     reservations.weekly_reservations[currentWeek][userId] = userData;
                     saveReservations(reservations);
 
-                    // Edit the original message to confirm selection
+                    // Regenerate final reservation image
+                    const finalReservationImage = await ImageComposer.createReservationImage(userData.items);
+                    const finalAttachment = new AttachmentBuilder(finalReservationImage, { name: 'final-reservations.png' });
+
+                    const finalConfirmEmbed = new EmbedBuilder()
+                        .setColor(0x00FF00)
+                        .setTitle('Reservation Updated!')
+                        .setImage('attachment://final-reservations.png')
+                        .setDescription(
+                            `Your items have been updated for character **${userData.character_name}**!\n\n` +
+                            `**Wowhead Links**\n${userData.items.map((item, index) => 
+                                `${index + 1}- [${item.name}](${item.wowhead_url})`
+                            ).join('\n')}`
+                        );
+
                     await interaction.editReply({
-                        content: `Item updated: ${selectedItem.name}`,
-                        embeds: [],
-                        components: [],
-                        files: []
+                        embeds: [finalConfirmEmbed],
+                        files: [finalAttachment],
+                        components: []
                     });
 
-                    // Close the collector
                     collector.stop();
+                }
+                else if (i.customId === 'cancel_edit') {
+                    // Revert the item change
+                    userData.items[editState.itemIndex] = userData.items[editState.itemIndex];
+
+                    // Go back to the original reservation screen
+                    const reservationImage = await ImageComposer.createReservationImage(userData.items);
+                    const attachment = new AttachmentBuilder(reservationImage, { name: 'current-reservations.png' });
+
+                    const itemButtons = userData.items.map((item, index) => 
+                        new ButtonBuilder()
+                            .setCustomId(`edit_item_${index}`)
+                            .setLabel(`Replace Item ${index + 1}`)
+                            .setStyle(ButtonStyle.Primary)
+                    );
+
+                    const characterButton = new ButtonBuilder()
+                        .setCustomId('edit_character_name')
+                        .setLabel('Change Character Name')
+                        .setStyle(ButtonStyle.Secondary);
+
+                    const buttonRow1 = new ActionRowBuilder().addComponents(itemButtons);
+                    const buttonRow2 = new ActionRowBuilder().addComponents(characterButton);
+
+                    const embed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle('Your Current Reservations')
+                        .setImage('attachment://current-reservations.png')
+                        .setDescription(
+                            `Current reservations for character **${userData.character_name}**\n` +
+                            'Select what you want to edit:'
+                        );
+
+                    await interaction.editReply({
+                        embeds: [embed],
+                        components: [buttonRow1, buttonRow2],
+                        files: [attachment]
+                    });
+                }
+                else if (i.customId === 'back_to_boss') {
+                    // Revert the item change and go back to boss selection
+                    const bossSelect = new StringSelectMenuBuilder()
+                        .setCustomId('boss_select')
+                        .setPlaceholder('Select a boss')
+                        .addOptions(
+                            raidData.bosses.map(boss => ({
+                                label: boss.name,
+                                value: boss.id.toString(),
+                                description: `Select loot from ${boss.name}`
+                            }))
+                        );
+
+                    const row = new ActionRowBuilder()
+                        .addComponents(bossSelect);
+
+                    const embed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(`${raidData.raid} - Replace Item ${editState.itemIndex + 1}`)
+                        .setDescription('Select a boss to view their loot table.')
+                        .setFooter({ text: 'Step 1 of 2: Boss Selection' });
+
+                    await interaction.editReply({
+                        embeds: [embed],
+                        components: [row],
+                        files: []
+                    });
                 }
             } catch (error) {
                 console.error('Interaction handling error:', error);
