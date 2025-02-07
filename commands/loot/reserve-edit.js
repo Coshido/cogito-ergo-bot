@@ -67,6 +67,9 @@ module.exports = {
             .setImage('attachment://current-reservations.png')
             .setDescription(
                 `Current reservations for character **${userData.character_name}**\n` +
+                `**Wowhead Links**\n${userData.items.map((item, index) => 
+                    `${index + 1}- [${item.name}](${item.wowhead_url})`
+                ).join('\n')}\n` +
                 'Select what you want to edit:'
             );
 
@@ -133,11 +136,20 @@ module.exports = {
                     // Update the original message
                     await interaction.editReply({
                         embeds: [
-                            embed.setDescription(
-                                `Current reservations for character **${newCharacterName}**\n` +
-                                'Select what you want to edit:'
-                            )
-                        ]
+                            new EmbedBuilder()
+                                .setColor(0x0099FF)
+                                .setTitle('Your Current Reservations')
+                                .setImage('attachment://current-reservations.png')
+                                .setDescription(
+                                    `Current reservations for character **${newCharacterName}**\n` +
+                                    `**Wowhead Links**\n${userData.items.map((item, index) => 
+                                        `${index + 1}- [${item.name}](${item.wowhead_url})`
+                                    ).join('\n')}\n` +
+                                    'Select what you want to edit:'
+                                )
+                        ],
+                        components: [buttonRow1, buttonRow2],
+                        files: [attachment]
                     });
                 }
                 else if (i.customId.startsWith('edit_item_')) {
@@ -195,64 +207,94 @@ module.exports = {
                     const itemSelect = createItemSelectMenu(selectedBoss.loot, 'item_select');
                     const selectRow = new ActionRowBuilder().addComponents(itemSelect);
 
+                    // Create Back to Bosses button
+                    const backToBossesButton = new ButtonBuilder()
+                        .setCustomId('back_to_bosses')
+                        .setLabel('Back to Bosses')
+                        .setStyle(ButtonStyle.Secondary);
+                    const buttonRow = new ActionRowBuilder().addComponents(backToBossesButton);
+
                     await interaction.editReply({
                         embeds: [lootEmbed],
                         files: [attachment],
-                        components: [selectRow]
+                        components: [selectRow, buttonRow]
+                    });
+                }
+                else if (i.customId === 'back_to_bosses') {
+                    // Recreate boss selection dropdown
+                    const bossSelect = new StringSelectMenuBuilder()
+                        .setCustomId('boss_select')
+                        .setPlaceholder('Select a boss')
+                        .addOptions(
+                            raidData.bosses.map(boss => ({
+                                label: boss.name,
+                                value: boss.id.toString(),
+                                description: `Select loot from ${boss.name}`
+                            }))
+                        );
+
+                    const row = new ActionRowBuilder()
+                        .addComponents(bossSelect);
+
+                    const embed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle(`${raidData.raid} - Replace Item ${editState.itemIndex + 1}`)
+                        .setDescription('Select a boss to view their loot table.')
+                        .setFooter({ text: 'Step 1 of 2: Boss Selection' });
+
+                    await interaction.editReply({
+                        embeds: [embed],
+                        components: [row],
+                        files: []
                     });
                 }
                 else if (i.customId === 'item_select') {
                     const selectedItem = editState.currentBoss.loot.find(item => item.id === i.values[0]);
                     
-                    // Update the reservation with all required fields
-                    const itemToReplace = editState.itemIndex;
-                    const originalItem = userData.items[itemToReplace];
-                    userData.items[itemToReplace] = {
-                        id: selectedItem.id,
-                        name: selectedItem.name,
-                        boss: editState.currentBoss.name,
-                        type: selectedItem.type,
-                        ilvl: selectedItem.ilvl,
-                        icon: selectedItem.icon,
-                        wowhead_url: selectedItem.wowhead_url
-                    };
+                    // Directly replace the item in userData
+                    const originalItem = userData.items[editState.itemIndex];
+                    userData.items[editState.itemIndex] = selectedItem;
 
-                    // Create final image
+                    // Save the updated reservations
+                    reservations.weekly_reservations[currentWeek][userId] = userData;
+                    saveReservations(reservations);
+
+                    // Regenerate reservation image
                     const reservationImage = await ImageComposer.createReservationImage(userData.items);
-                    const attachment = new AttachmentBuilder(reservationImage, { name: 'reservations.png' });
+                    const attachment = new AttachmentBuilder(reservationImage, { name: 'current-reservations.png' });
 
-                    // Create confirmation buttons
-                    const confirmButton = new ButtonBuilder()
-                        .setCustomId('confirm_edit')
-                        .setLabel('Confirm Changes')
-                        .setStyle(ButtonStyle.Success);
+                    // Recreate item buttons
+                    const itemButtons = userData.items.map((item, index) => 
+                        new ButtonBuilder()
+                            .setCustomId(`edit_item_${index}`)
+                            .setLabel(`Replace Item ${index + 1}`)
+                            .setStyle(ButtonStyle.Primary)
+                    );
 
-                    const cancelButton = new ButtonBuilder()
-                        .setCustomId('cancel_edit')
-                        .setLabel('Cancel Edit')
-                        .setStyle(ButtonStyle.Danger);
-
-                    const backToBossButton = new ButtonBuilder()
-                        .setCustomId('back_to_boss')
-                        .setLabel('Back to Boss Selection')
+                    const characterButton = new ButtonBuilder()
+                        .setCustomId('edit_character_name')
+                        .setLabel('Change Character Name')
                         .setStyle(ButtonStyle.Secondary);
 
-                    const buttonRow = new ActionRowBuilder().addComponents(confirmButton, cancelButton, backToBossButton);
+                    const buttonRow1 = new ActionRowBuilder().addComponents(itemButtons);
+                    const buttonRow2 = new ActionRowBuilder().addComponents(characterButton);
 
-                    const finalEmbed = new EmbedBuilder()
-                        .setColor(0x00FF00)
-                        .setTitle('Reservation Edit Preview')
-                        .setImage('attachment://reservations.png')
+                    const embed = new EmbedBuilder()
+                        .setColor(0x0099FF)
+                        .setTitle('Your Current Reservations')
+                        .setImage('attachment://current-reservations.png')
                         .setDescription(
-                            `Editing item ${editState.itemIndex + 1} for character **${userData.character_name}**\n\n` +
-                            `**Original Item**: [${originalItem.name}](${originalItem.wowhead_url})\n` +
-                            `**New Item**: [${selectedItem.name}](${selectedItem.wowhead_url})`
+                            `Current reservations for character **${userData.character_name}**\n` +
+                            `**Wowhead Links**\n${userData.items.map((item, index) => 
+                                `${index + 1}- [${item.name}](${item.wowhead_url})`
+                            ).join('\n')}\n` +
+                            'Select what you want to edit:'
                         );
 
                     await interaction.editReply({
-                        embeds: [finalEmbed],
-                        files: [attachment],
-                        components: [buttonRow]
+                        embeds: [embed],
+                        components: [buttonRow1, buttonRow2],
+                        files: [attachment]
                     });
                 }
                 else if (i.customId === 'confirm_edit') {
@@ -312,6 +354,9 @@ module.exports = {
                         .setImage('attachment://current-reservations.png')
                         .setDescription(
                             `Current reservations for character **${userData.character_name}**\n` +
+                            `**Wowhead Links**\n${userData.items.map((item, index) => 
+                                `${index + 1}- [${item.name}](${item.wowhead_url})`
+                            ).join('\n')}\n` +
                             'Select what you want to edit:'
                         );
 
@@ -319,34 +364,6 @@ module.exports = {
                         embeds: [embed],
                         components: [buttonRow1, buttonRow2],
                         files: [attachment]
-                    });
-                }
-                else if (i.customId === 'back_to_boss') {
-                    // Revert the item change and go back to boss selection
-                    const bossSelect = new StringSelectMenuBuilder()
-                        .setCustomId('boss_select')
-                        .setPlaceholder('Select a boss')
-                        .addOptions(
-                            raidData.bosses.map(boss => ({
-                                label: boss.name,
-                                value: boss.id.toString(),
-                                description: `Select loot from ${boss.name}`
-                            }))
-                        );
-
-                    const row = new ActionRowBuilder()
-                        .addComponents(bossSelect);
-
-                    const embed = new EmbedBuilder()
-                        .setColor(0x0099FF)
-                        .setTitle(`${raidData.raid} - Replace Item ${editState.itemIndex + 1}`)
-                        .setDescription('Select a boss to view their loot table.')
-                        .setFooter({ text: 'Step 1 of 2: Boss Selection' });
-
-                    await interaction.editReply({
-                        embeds: [embed],
-                        components: [row],
-                        files: []
                     });
                 }
             } catch (error) {
