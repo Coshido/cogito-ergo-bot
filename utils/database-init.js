@@ -1090,6 +1090,39 @@ function getHardcodedRaidLootData() {
     }
 }
 
+async function initializeDatabase(customPath) {
+    // Set a default database path if no path is provided
+    const defaultDatabasePath = path.resolve(__dirname, '../database');
+    const databasePath = customPath || process.env.DATABASE_PATH || defaultDatabasePath;
+
+    console.log('databasePath: ', databasePath);
+
+    console.log('Initializing database with path:', databasePath);
+
+    // Validate that databasePath is a string
+    if (typeof databasePath !== 'string') {
+        console.error('Invalid database path:', databasePath);
+        throw new Error(`Database path must be a string. Received: ${typeof databasePath}`);
+    }
+
+    try {
+        // Ensure the database directory exists
+        await fs.mkdir(databasePath, { recursive: true });
+
+        console.log('Starting comprehensive database initialization...');
+        
+        // Ensure all required files exist
+        await initializeDatabaseFiles(databasePath);
+        
+        console.log(`Database successfully initialized at: ${databasePath}`);
+        
+        return databasePath;
+    } catch (error) {
+        console.error('Critical error during database initialization:', error);
+        throw error;
+    }
+}
+
 async function initializeDatabaseFiles(databasePath) {
     console.time('Database Initialization');
     console.log(`Starting comprehensive database file initialization in ${databasePath}`);
