@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fs = require('fs').promises;
 const path = require('path');
-const config = require('./config');
+const config = require('./config'); 
 
 // Helper function to delay execution
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -212,7 +212,7 @@ async function fetchItemData(itemId, accessToken) {
 
 async function getAccessToken() {
     try {
-        console.log('Getting access token...');
+        console.log('Getting access token...', config.clientId, config.clientSecret);
         const response = await axios.post('https://oauth.battle.net/token', 
             'grant_type=client_credentials', 
             {
@@ -241,7 +241,7 @@ async function fetchRaidData(accessToken) {
         // Use the journal-instance API to get raid data
         console.log('Fetching raid data...');
         const raidResponse = await makeRequest(
-            `https://${config.region}.api.blizzard.com/data/wow/journal-instance/1273`, // Nerub'ar Palace instance ID
+            `https://${config.region}.api.blizzard.com/data/wow/journal-instance/1296`, // Liberation of Undermine instance ID
             {
                 namespace: `static-${config.region}`,
                 locale: config.locale
@@ -250,7 +250,7 @@ async function fetchRaidData(accessToken) {
         );
 
         if (!raidResponse || !raidResponse.data) {
-            throw new Error('Could not find Palazzo dei Nerub\'ar raid data');
+            throw new Error('Could not find Liberation of Undermine raid data');
         }
 
         console.log('Found raid:', raidResponse.data);
