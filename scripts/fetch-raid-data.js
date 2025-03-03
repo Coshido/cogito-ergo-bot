@@ -55,7 +55,7 @@ function isEquipment(item) {
     // Check for emblems and tokens by name
     const tokenKeywords = [
         // English
-        'emblem', 'token', 'mark', 'proof', 'symbol', 'fragment', 'sigil',
+        'emblem', 'token', 'mark', 'proof', 'symbol', 'fragment', 'sigil', 'Gallybux',
         // Italian
         'emblema', 'distintivo', 'icona', 'gettone', 'insegna', 'marchio', 
         'prova', 'simbolo', 'frammento',
