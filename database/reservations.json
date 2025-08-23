@@ -1,29 +1,3 @@
 {
-  "weekly_reservations": {
-    "2025-02-02": {
-      "127455315636649985": {
-        "character_name": "uil",
-        "items": [
-          {
-            "id": "212392",
-            "name": "Acciaio Danzante del Duellante",
-            "boss": "Sikran, Capitano dei Sureki",
-            "type": "Una mano Spada",
-            "ilvl": 571,
-            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_1h_nerubianraid_d_01.jpg",
-            "wowhead_url": "https://www.wowhead.com/item=212392"
-          },
-          {
-            "id": "212447",
-            "name": "Chiave all'Immanifesto",
-            "boss": "Orrore Vincolasangue",
-            "type": "Dito Varie",
-            "ilvl": 571,
-            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_nerubian_ring_02_color5.jpg",
-            "wowhead_url": "https://www.wowhead.com/item=212447"
-          }
-        ]
-      }
-    }
-  }
+  "weekly_reservations": {}
 }

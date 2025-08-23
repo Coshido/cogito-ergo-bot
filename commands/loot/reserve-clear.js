@@ -1,13 +1,12 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const fs = require('fs').promises;
 const path = require('path');
-const { getCurrentWeekMonday } = require('../../utils/reservation-utils');
 const { isRaidLeader } = require('../../utils/permission-utils');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-clear')
-        .setDescription('Clear all reservations for the current week (Raid Leaders only)'),
+        .setDescription('Clear ALL reservations across ALL weeks (Raid Leaders only)'),
 
     async execute(interaction) {
         // Check if the user is a Raid Leader
@@ -23,16 +22,12 @@ module.exports = {
             // Path to the reservations file
             const reservationsPath = path.join(__dirname, '../../database/reservations.json');
 
-            // Read the current reservations
-            const reservationsData = require(reservationsPath);
+            // Read the current reservations fresh from disk
+            const raw = await fs.readFile(reservationsPath, 'utf8').catch(() => '{"weekly_reservations":{}}');
+            const reservationsData = JSON.parse(raw || '{"weekly_reservations":{}}');
 
-            // Get the current week's date
-            const currentWeek = getCurrentWeekMonday();
-
-            // Remove reservations for the current week
-            if (reservationsData.weekly_reservations && reservationsData.weekly_reservations[currentWeek]) {
-                delete reservationsData.weekly_reservations[currentWeek];
-            }
+            // Clear ALL reservations across ALL weeks
+            reservationsData.weekly_reservations = {};
 
             // Write the updated data back to the file
             await fs.writeFile(reservationsPath, JSON.stringify(reservationsData, null, 2));
@@ -40,8 +35,8 @@ module.exports = {
             // Create an embed to confirm the action
             const embed = new EmbedBuilder()
                 .setColor(0xFF0000)
-                .setTitle('Reservations Cleared')
-                .setDescription(`All reservations for the week of ${currentWeek} have been cleared.`)
+                .setTitle('All Reservations Cleared')
+                .setDescription('All reservations across all weeks have been cleared.')
                 .setFooter({ text: 'Action performed by a Raid Leader' });
 
             // Reply with the confirmation
