@@ -1,7 +1,20 @@
 const cron = require('node-cron');
 const { Client } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
 const UserPreferences = require('../utils/user-preferences');
 const { getCurrentWeekMonday, loadReservations } = require('../utils/reservation-utils');
+
+// Config loader for role IDs
+const CONFIG_PATH = path.join(__dirname, '..', 'database', 'config.json');
+function loadConfig() {
+    try {
+        return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) || {};
+    } catch (error) {
+        console.error('ReminderService: error reading config.json', error);
+        return {};
+    }
+}
 
 class ReminderService {
     constructor(client) {
@@ -16,12 +29,42 @@ class ReminderService {
         // Load all user preferences
         const preferences = await UserPreferences.loadPreferences();
 
+        // Load config and guild for raider filtering
+        const { raiderRoleId } = loadConfig();
+        const guildId = process.env.GUILD_ID;
+
+        if (!guildId) {
+            console.warn('ReminderService: GUILD_ID is not set. Skipping reminder run.');
+            return;
+        }
+        if (!raiderRoleId) {
+            console.warn('ReminderService: raiderRoleId missing in database/config.json. Skipping reminder run.');
+            return;
+        }
+
+        let raiderIds = new Set();
+        try {
+            const guild = await this.client.guilds.fetch(guildId);
+            // Ensure member cache is populated
+            await guild.members.fetch();
+            raiderIds = new Set(
+                guild.members.cache
+                    .filter(m => m.roles.cache.has(raiderRoleId))
+                    .map(m => m.id)
+            );
+        } catch (err) {
+            console.error('ReminderService: failed to fetch guild or members for raider filtering', err);
+            return;
+        }
+
         // Current week's Monday
         const currentWeek = getCurrentWeekMonday();
         const reservations = loadReservations();
 
         // Iterate through users with reminders enabled
         for (const [userId, userConfig] of Object.entries(preferences)) {
+            // Only proceed for users who currently have the raider role
+            if (!raiderIds.has(userId)) continue;
             const reminderConfig = userConfig.reminders;
 
             // Check if reminder is due

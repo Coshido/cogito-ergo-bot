@@ -5,8 +5,15 @@ require("dotenv").config();
 
 console.log('Starting command deployment process');
 
-// Validate environment variables
-const requiredEnvVars = ['CLIENT_ID', 'GUILD_ID', 'BOT_TOKEN'];
+// Flags
+const isGlobal = process.argv.includes('--global');
+console.log('Deployment mode:', isGlobal ? 'GLOBAL' : 'GUILD');
+
+// Validate environment variables (GUILD_ID required only for guild deploys)
+const requiredEnvVars = isGlobal
+  ? ['CLIENT_ID', 'BOT_TOKEN']
+  : ['CLIENT_ID', 'GUILD_ID', 'BOT_TOKEN'];
+
 const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingVars.length > 0) {
@@ -57,16 +64,29 @@ const rest = new REST().setToken(token);
 
 async function deployCommands() {
     try {
-        console.log(`Deploying ${commands.length} application (/) commands to guild ${guildId}`);
-        console.log('Commands:', commands.map(cmd => cmd.name).join(', '));
+        if (isGlobal) {
+            console.log(`Deploying ${commands.length} GLOBAL application (/) commands`);
+            console.log('Commands:', commands.map(cmd => cmd.name).join(', '));
 
-        const data = await rest.put(
-            Routes.applicationGuildCommands(clientId, guildId),
-            { body: commands }
-        );
+            const data = await rest.put(
+                Routes.applicationCommands(clientId),
+                { body: commands }
+            );
 
-        console.log(`Successfully deployed ${data.length} commands`);
-        return data;
+            console.log(`Successfully deployed ${data.length} GLOBAL commands`);
+            return data;
+        } else {
+            console.log(`Deploying ${commands.length} application (/) commands to guild ${guildId}`);
+            console.log('Commands:', commands.map(cmd => cmd.name).join(', '));
+
+            const data = await rest.put(
+                Routes.applicationGuildCommands(clientId, guildId),
+                { body: commands }
+            );
+
+            console.log(`Successfully deployed ${data.length} GUILD commands`);
+            return data;
+        }
     } catch (error) {
         console.error('Failed to deploy commands:', error);
         

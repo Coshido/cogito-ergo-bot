@@ -7,8 +7,7 @@ const {
     ComponentType,
     PermissionFlagsBits
 } = require('discord.js');
-const TournamentConfig = require('../../utils/tournamentUtils');
-const LeagueConfig = require('../../utils/league-config');
+// Tournament and League features removed
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -19,80 +18,9 @@ module.exports = {
         // Check user roles and permissions
         const member = interaction.member;
 
-        // Helper function to check role-based permissions
-        const checkTournamentManagerRole = async () => {
-            try {
-                // For tournament, check if the user can access tournament configuration
-                const config = TournamentConfig.getConfig();
-                return config.tournamentManagerRoleId 
-                    ? member.roles.cache.has(config.tournamentManagerRoleId)
-                    : member.permissions.has(PermissionFlagsBits.ManageEvents);
-            } catch {
-                return false;
-            }
-        };
-
         // Determine available features and commands
         const availableFeatures = [];
         const featureCommands = {};
-
-        // Tournament Feature
-        const isTournamentManager = await checkTournamentManagerRole();
-        if (isTournamentManager) {
-            availableFeatures.push({
-                value: 'tournament_help',
-                label: 'Tournament Management',
-                emoji: '🏆'
-            });
-            featureCommands['tournament_help'] = {
-                managerCommands: [
-                    '`/t-config set-manager-role`',
-                    '`/t-config set-tournament-role`',
-                    '`/t-create`',
-                    '`/t-start`',
-                    '`/t-end`',
-                    '`/t-bracket`'
-                ],
-                participantCommands: [
-                    '`/t-join`',
-                    '`/t-leave`',
-                    '`/t-list`',
-                    '`/t-report`'
-                ]
-            };
-        }
-
-        // League Feature
-        const isLeagueManager = await LeagueConfig.isLeagueManager(member);
-        console.log('League Manager Check:', {
-            isLeagueManager,
-            userId: member.id,
-            username: member.user.username,
-            roleIds: Array.from(member.roles.cache.keys())
-        });
-        if (isLeagueManager) {
-            availableFeatures.push({
-                value: 'league_help',
-                label: 'League Management',
-                emoji: '⚽'
-            });
-            featureCommands['league_help'] = {
-                managerCommands: [
-                    '`/league-role-setup manager`',
-                    '`/league-role-setup participant`',
-                    '`/league-setup`',
-                    '`/league-match-report`',
-                    '`/league-info`'
-                ],
-                participantCommands: [
-                    '`/league-join`',
-                    '`/league-leave`',
-                    '`/league-participants`',
-                    '`/league-info standings`',
-                    '`/league-info schedule`'
-                ]
-            };
-        }
 
         // Reservation Feature (placeholder, you'll need to implement this)
         const isReserveManager = member.permissions.has(PermissionFlagsBits.ManageRoles);
@@ -204,36 +132,6 @@ module.exports = {
 
             // Create feature-specific help embeds
             const helpEmbeds = {
-                'tournament_help': () => new EmbedBuilder()
-                    .setColor(0x2ECC71)
-                    .setTitle('🏆 Tournament Management')
-                    .setDescription('Comprehensive tournament organization commands')
-                    .addFields(
-                        { 
-                            name: 'Manager Commands', 
-                            value: featureCommands['tournament_help'].managerCommands.join('\n') || 'No manager commands available'
-                        },
-                        { 
-                            name: 'Participant Commands', 
-                            value: featureCommands['tournament_help'].participantCommands.join('\n') || 'No participant commands available'
-                        }
-                    ),
-
-                'league_help': () => new EmbedBuilder()
-                    .setColor(0x3498DB)
-                    .setTitle('⚽ League Management')
-                    .setDescription('Round-robin league tracking and management')
-                    .addFields(
-                        { 
-                            name: 'Manager Commands', 
-                            value: featureCommands['league_help'].managerCommands.join('\n') || 'No manager commands available'
-                        },
-                        { 
-                            name: 'Participant Commands', 
-                            value: featureCommands['league_help'].participantCommands.join('\n') || 'No participant commands available'
-                        }
-                    ),
-
                 'reserve_help': () => new EmbedBuilder()
                     .setColor(0x9B59B6)
                     .setTitle('🎲 Loot Reservation')

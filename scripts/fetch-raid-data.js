@@ -126,23 +126,11 @@ function isEquipment(item) {
     return false;
 }
 
-async function processItemResponse(item, isClassic, accessToken) {
+async function processItemResponse(item, accessToken) {
     try {
         // Skip non-equipment items
         if (!isEquipment(item)) {
             return null;
-        }
-
-        if (isClassic) {
-            return {
-                id: item.id.toString(),
-                name: item.name,
-                type: `${item.itemClass} ${item.itemSubClass}`,
-                ilvl: item.itemLevel,
-                icon: `https://wow.zamimg.com/images/wow/icons/large/${item.icon}.jpg`,
-                wowhead_url: `https://www.wowhead.com/item=${item.id}`,
-                image_url: `https://wow.zamimg.com/images/wow/icons/large/${item.icon}.jpg`
-            };
         }
 
         // Try to get media for retail items
@@ -185,29 +173,41 @@ async function fetchItemData(itemId, accessToken) {
         );
 
         if (!itemResponse) {
-            // If retail API fails, try the classic gamedata API
-            console.log(`Trying classic gamedata API for item ${itemId}...`);
-            const classicResponse = await makeRequest(
-                `https://${config.region}.api.blizzard.com/wow/item/${itemId}`,
-                {
-                    locale: config.locale
-                },
-                accessToken
-            );
-
-            if (!classicResponse) {
-                console.log(`Could not find item ${itemId} in any API`);
-                return null;
-            }
-
-            return processItemResponse(classicResponse.data, true, accessToken);
+            console.log(`Could not find item ${itemId}`);
+            return null;
         }
 
-        return processItemResponse(itemResponse.data, false, accessToken);
+        return processItemResponse(itemResponse.data, accessToken);
     } catch (error) {
         console.error(`Error fetching item ${itemId}:`, error.message);
         return null;
     }
+}
+
+// Resolve a raid journal instance ID by name using the index
+async function getInstanceIdByName(raidName, accessToken) {
+    const indexResponse = await makeRequest(
+        `https://${config.region}.api.blizzard.com/data/wow/journal-instance/index`,
+        {
+            namespace: `static-${config.region}`,
+            locale: config.locale
+        },
+        accessToken
+    );
+
+    if (!indexResponse?.data?.instances) {
+        throw new Error('Could not retrieve journal instance index');
+    }
+
+    const wanted = raidName.trim().toLowerCase();
+    const match = indexResponse.data.instances.find(i => i.name && i.name.trim().toLowerCase() === wanted);
+
+    if (!match) {
+        const available = indexResponse.data.instances.map(i => i.name).join(', ');
+        throw new Error(`Raid "${raidName}" not found in journal index. Available: ${available}`);
+    }
+
+    return match.id;
 }
 
 async function getAccessToken() {
@@ -236,12 +236,14 @@ async function getAccessToken() {
     }
 }
 
-async function fetchRaidData(accessToken) {
+async function fetchRaidData(accessToken, raidName = 'Manaforge Omega') {
     try {
-        // Use the journal-instance API to get raid data
-        console.log('Fetching raid data...');
+        // Resolve raid ID by name and fetch raid data
+        console.log(`Resolving raid ID for: ${raidName} ...`);
+        const instanceId = await getInstanceIdByName(raidName, accessToken);
+        console.log(`Fetching raid data for instance ID ${instanceId} ...`);
         const raidResponse = await makeRequest(
-            `https://${config.region}.api.blizzard.com/data/wow/journal-instance/1296`, // Liberation of Undermine instance ID
+            `https://${config.region}.api.blizzard.com/data/wow/journal-instance/${instanceId}`,
             {
                 namespace: `static-${config.region}`,
                 locale: config.locale
@@ -250,7 +252,7 @@ async function fetchRaidData(accessToken) {
         );
 
         if (!raidResponse || !raidResponse.data) {
-            throw new Error('Could not find Liberation of Undermine raid data');
+            throw new Error(`Could not find raid data for ${raidName}`);
         }
 
         console.log('Found raid:', raidResponse.data);
@@ -338,7 +340,8 @@ async function fetchRaidData(accessToken) {
 async function main() {
     try {
         const accessToken = await getAccessToken();
-        await fetchRaidData(accessToken);
+        const raidName = process.argv[2] || 'Manaforge Omega';
+        await fetchRaidData(accessToken, raidName);
     } catch (error) {
         console.error('Script failed:', error);
         process.exit(1);

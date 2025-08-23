@@ -11,8 +11,6 @@ const DEFAULT_CONTENTS = {
     'config.json': { version: '1.0.0' },
     'reservations.json': { reservations: [] },
     'birthday-data.json': { birthdays: [] },
-    'league-data.json': { leagues: [] },
-    'league-config.json': { config: {} },
     'raid-loot.json': getHardcodedRaidLootData()
 };
 
@@ -1294,7 +1292,6 @@ async function getDatabaseStats(databasePath) {
         // Count entries based on common structures
         if (content.reservations) totalEntries += content.reservations.length;
         if (content.birthdays) totalEntries += content.birthdays.length;
-        if (content.leagues) totalEntries += content.leagues.length;
     }
     
     return {

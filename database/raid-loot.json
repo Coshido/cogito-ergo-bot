@@ -1,1032 +1,1023 @@
 {
-  "raid": "Liberazione di Cavafonda",
+  "raid": "Manaforgia Omega",
   "bosses": [
     {
-      "id": 2639,
-      "name": "Vexie e i Pestaruote",
+      "id": 2684,
+      "name": "Sentinella del Plesso",
       "loot": [
         {
-          "id": "228876",
-          "name": "Ultimo Giro del Dragster",
-          "type": "Piedi Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raidroguegoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228876",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raidroguegoblin_d_01.jpg"
-        },
-        {
-          "id": "231268",
-          "name": "Machete Furioso",
-          "type": "Una mano Spada",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=231268",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_1h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228875",
-          "name": "Rivestimento Cranico del Vandalo",
-          "type": "Spalle Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_leather_raiddemonhuntergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228875",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_leather_raiddemonhuntergoblin_d_01.jpg"
-        },
-        {
-          "id": "228858",
-          "name": "Casco a Tuttabirra",
-          "type": "Testa Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladingoblin_d_01_helm.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228858",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladingoblin_d_01_helm.jpg"
-        },
-        {
-          "id": "228862",
-          "name": "Calzari Imbottiti di Schegge",
-          "type": "Piedi Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidevokergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228862",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidevokergoblin_d_01.jpg"
-        },
-        {
-          "id": "228861",
-          "name": "Cintura di Attrezzi Messa a Punto",
-          "type": "Fianchi Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_belt.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228861",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_belt.jpg"
-        },
-        {
-          "id": "228892",
-          "name": "Cambio dello Svalvolatore",
-          "type": "Due mani Bastone",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_goblinraid_d_02.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228892",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_goblinraid_d_02.jpg"
-        },
-        {
-          "id": "228839",
-          "name": "Bandiera a Scacchi del Sottocircuito",
-          "type": "Schiena Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_cape.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228839",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_cape.jpg"
-        },
-        {
-          "id": "228865",
-          "name": "Sottogonna del Dottore della Fossa",
-          "type": "Gambe Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_cloth_raidpriestgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228865",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_cloth_raidpriestgoblin_d_01.jpg"
-        },
-        {
-          "id": "230197",
-          "name": "Chiavi di Scorta di Pestaruote",
+          "id": "242394",
+          "name": "Arcanucleo Eradicante",
           "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblintrikekeychain_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230197",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblintrikekeychain_gallywix.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_obliterationcannon.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242394",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_obliterationcannon.jpg"
         },
         {
-          "id": "228852",
-          "name": "Giacca della Gloria",
-          "type": "Torso Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_mail_raidevokergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228852",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_mail_raidevokergoblin_d_01.jpg"
+          "id": "237813",
+          "name": "Plessomartello di Serie",
+          "type": "Una mano Mazza",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_etherealraid_d_02.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237813",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_etherealraid_d_02.jpg"
         },
         {
-          "id": "228868",
-          "name": "Avambracci Accelerati",
-          "type": "Polsi Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raiddeathknightgoblin_d_01_bracer.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228868",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raiddeathknightgoblin_d_01_bracer.jpg"
-        },
-        {
-          "id": "230019",
-          "name": "Fischietto della Fossa di Vexie",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_sapper_bilgewater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230019",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_sapper_bilgewater.jpg"
-        }
-      ]
-    },
-    {
-      "id": 2640,
-      "name": "Calderone del Massacro",
-      "loot": [
-        {
-          "id": "230191",
-          "name": "Fiamma Pilota di Motorendo",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_flarendosflame_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230191",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_flarendosflame_gallywix.jpg"
-        },
-        {
-          "id": "230190",
-          "name": "Grosso Pulsante Rosso di Torq",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_redbutton_bilgewater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230190",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_redbutton_bilgewater.jpg"
-        },
-        {
-          "id": "228890",
-          "name": "Canestro del Superfan",
-          "type": "Accessorio Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_offhand_1h_goblinraid_d_02.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228890",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_offhand_1h_goblinraid_d_02.jpg"
-        },
-        {
-          "id": "228904",
-          "name": "Favorito dalla Folla",
-          "type": "Una mano Tirapugni",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_hand_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228904",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_hand_1h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228803",
-          "name": "Gallybux Insanguinato Terrificante",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_bilgewater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228803",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_bilgewater.jpg"
-        },
-        {
-          "id": "228873",
-          "name": "Cintura del Titolo dei Pesi Massimissimi",
-          "type": "Fianchi Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_plate_raidwarriorgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228873",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_plate_raidwarriorgoblin_d_01.jpg"
-        },
-        {
-          "id": "228900",
-          "name": "Arco del Torneo",
-          "type": "A distanza Arco",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bow_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228900",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bow_1h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228805",
-          "name": "Gallybux Insanguinato Venerato",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_bilgewater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228805",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_bilgewater.jpg"
-        },
-        {
-          "id": "228856",
-          "name": "Fascione da Battaglia del Concorrente",
-          "type": "Fianchi Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_leather_raiddruidgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228856",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_leather_raiddruidgoblin_d_01.jpg"
-        },
-        {
-          "id": "228840",
-          "name": "Anello del Campione Scomparso",
-          "type": "Dito Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_ring_bilgewater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228840",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_ring_bilgewater.jpg"
-        },
-        {
-          "id": "228846",
-          "name": "Polsiere con Graffiti Galvanici",
-          "type": "Polsi Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_mail_raidshamangoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228846",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_mail_raidshamangoblin_d_01.jpg"
-        },
-        {
-          "id": "228806",
-          "name": "Gallybux Insanguinato dello Zenith",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_bilgewater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228806",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_bilgewater.jpg"
-        },
-        {
-          "id": "228804",
-          "name": "Gallybux Insanguinato Mistico",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_bilgewater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228804",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_bilgewater.jpg"
-        },
-        {
-          "id": "228847",
-          "name": "Giratalloni Caldi",
-          "type": "Piedi Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidpriestgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228847",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidpriestgoblin_d_01.jpg"
-        }
-      ]
-    },
-    {
-      "id": 2641,
-      "name": "Rik Riverbero",
-      "loot": [
-        {
-          "id": "228845",
-          "name": "Fascia della Diva Feroce",
-          "type": "Fianchi Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidevokergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228845",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidevokergoblin_d_01.jpg"
-        },
-        {
-          "id": "228815",
-          "name": "Gallybux Lucidato Terrificante",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_ventureco.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228815",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_ventureco.jpg"
-        },
-        {
-          "id": "228897",
-          "name": "Sparachiodi Pirotecnici",
-          "type": "Una mano Pugnale",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_goblinraid_d_02.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228897",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_goblinraid_d_02.jpg"
-        },
-        {
-          "id": "228895",
-          "name": "Sciabola a Iniezione Remixata",
-          "type": "Una mano Spada",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228895",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_1h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228816",
-          "name": "Gallybux Lucidato Mistico",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_ventureco.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228816",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_ventureco.jpg"
-        },
-        {
-          "id": "228857",
-          "name": "Braccialetto d'Ingresso alla Sottofesta",
+          "id": "237534",
+          "name": "Polsiere con Setaccio Bruciate",
           "type": "Polsi Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_bracer.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228857",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_bracer.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_cloth_raidmageethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237534",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_cloth_raidmageethereal_d_01.jpg"
         },
         {
-          "id": "228841",
-          "name": "Amuleto Semiammaliato",
-          "type": "Collo Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_necklace_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228841",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_necklace_gallywix.jpg"
+          "id": "237533",
+          "name": "Cintura Fasica Atomica",
+          "type": "Fianchi Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_leather_raidmonkethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237533",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_leather_raidmonkethereal_d_01.jpg"
         },
         {
-          "id": "230194",
-          "name": "Radio Riverbero",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_statsoundwaveemitter_blackwater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230194",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_statsoundwaveemitter_blackwater.jpg"
+          "id": "237523",
+          "name": "Matrice da Polso Arcanotecnica",
+          "type": "Polsi Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_mail_raidevokerethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237523",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_mail_raidevokerethereal_d_01.jpg"
         },
         {
-          "id": "228817",
-          "name": "Gallybux Lucidato Venerato",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_ventureco.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228817",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_ventureco.jpg"
-        },
-        {
-          "id": "228818",
-          "name": "Gallybux Lucidato dello Zenith",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_ventureco.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228818",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_ventureco.jpg"
-        },
-        {
-          "id": "228869",
-          "name": "Tremapolsi della Regina Assassina",
-          "type": "Polsi Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_leather_raiddruidgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228869",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_leather_raiddruidgoblin_d_01.jpg"
-        },
-        {
-          "id": "228874",
-          "name": "Stivali da Passeggio di Rik",
+          "id": "237551",
+          "name": "Stivali dell'Espulsione Sterilizzata",
           "type": "Piedi Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raiddeathknightgoblin_d_01_boot.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228874",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raiddeathknightgoblin_d_01_boot.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_plate_raiddeathknightethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237551",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_plate_raiddeathknightethereal_d_01.jpg"
         },
         {
-          "id": "231311",
-          "name": "Muro Meraviglioso del Capobanda",
-          "type": "Mano secondaria Scudo",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=231311",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_goblinraid_d_01.jpg"
-        }
-      ]
-    },
-    {
-      "id": 2642,
-      "name": "Stix Tritabrande",
-      "loot": [
-        {
-          "id": "228896",
-          "name": "Rilevatore di Metalli di Stix",
-          "type": "Una mano Pugnale",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228896",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_goblinraid_d_01.jpg"
+          "id": "237736",
+          "name": "Plessomartello Velocizzato",
+          "type": "Una mano Mazza",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237736",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_etherealraid_d_01.jpg"
         },
         {
-          "id": "228854",
-          "name": "Pantaloni Scartati dei Ratti di Sentina",
-          "type": "Gambe Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_leather_raidmonkgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228854",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_leather_raidmonkgoblin_d_01.jpg"
-        },
-        {
-          "id": "228813",
-          "name": "Gallybux Arrugginito Venerato",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_blackwater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228813",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_blackwater.jpg"
-        },
-        {
-          "id": "228812",
-          "name": "Gallybux Arrugginito Mistico",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_blackwater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228812",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_blackwater.jpg"
-        },
-        {
-          "id": "228849",
-          "name": "Compattatori Meccanici",
-          "type": "Mani Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_plate_raidwarriorgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228849",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_plate_raidwarriorgoblin_d_01.jpg"
-        },
-        {
-          "id": "228811",
-          "name": "Gallybux Arrugginito Terrificante",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_blackwater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228811",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_blackwater.jpg"
-        },
-        {
-          "id": "228814",
-          "name": "Gallybux Arrugginito dello Zenith",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_blackwater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228814",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_blackwater.jpg"
-        },
-        {
-          "id": "228903",
-          "name": "Sciacallo dei Rifiuti",
-          "type": "Due mani Ascia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_axe_2h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228903",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_axe_2h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "230189",
-          "name": "Megamagnete della Maestra dei Rottami",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_magnet_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230189",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_magnet_gallywix.jpg"
-        },
-        {
-          "id": "228871",
-          "name": "Maschera da Rifiuti della Squadra di Pulizia",
-          "type": "Testa Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_helm.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228871",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_helm.jpg"
-        },
-        {
-          "id": "228859",
-          "name": "Cappuccio di Scarti Sanitizzato",
-          "type": "Testa Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_mail_raidshamangoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228859",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_mail_raidshamangoblin_d_01.jpg"
-        },
-        {
-          "id": "230026",
-          "name": "Scartacampo 9001",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_forcefieldmodule_steamwheedle.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230026",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_forcefieldmodule_steamwheedle.jpg"
-        }
-      ]
-    },
-    {
-      "id": 2653,
-      "name": "Ingraniere Lockenstock",
-      "loot": [
-        {
-          "id": "228799",
-          "name": "Gallybux Oliato Terrificante",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_steamwheedle.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228799",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_steamwheedle.jpg"
-        },
-        {
-          "id": "228894",
-          "name": "Motolama della GIGAMORTE",
-          "type": "Una mano Lame da Guerra",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glaive_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228894",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glaive_1h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228884",
-          "name": "Polsiere della Cavia",
-          "type": "Polsi Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladingoblin_d_01_bracer.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228884",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladingoblin_d_01_bracer.jpg"
-        },
-        {
-          "id": "228802",
-          "name": "Gallybux Oliato dello Zenith",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_steamwheedle.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228802",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_steamwheedle.jpg"
-        },
-        {
-          "id": "228867",
-          "name": "Paramani Attira-Porcherie",
-          "type": "Mani Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_mail_raidhuntergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228867",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_mail_raidhuntergoblin_d_01.jpg"
-        },
-        {
-          "id": "228898",
-          "name": "Bastone Badabum Alfalimentato",
-          "type": "Due mani Bastone",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228898",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228800",
-          "name": "Gallybux Oliato Mistico",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_steamwheedle.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228800",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_steamwheedle.jpg"
-        },
-        {
-          "id": "228844",
-          "name": "Zaino Razzo di Prova del Pilota",
-          "type": "Schiena Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_cape_special_mechanicalflyer_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228844",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_cape_special_mechanicalflyer_d_01.jpg"
-        },
-        {
-          "id": "228882",
-          "name": "Nastro Trasportatore del Raffinatore",
-          "type": "Fianchi Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_cloth_raidpriestgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228882",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_cloth_raidpriestgoblin_d_01.jpg"
-        },
-        {
-          "id": "228801",
-          "name": "Gallybux Oliato Venerato",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_steamwheedle.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228801",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_steamwheedle.jpg"
-        },
-        {
-          "id": "230186",
-          "name": "Signor Polveri-Al-Fuoco",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_healraydrone_bilgewater.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230186",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_healraydrone_bilgewater.jpg"
-        },
-        {
-          "id": "228888",
-          "name": "Pubblicatori di Beta Affrettate",
-          "type": "Piedi Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raidmonkgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228888",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raidmonkgoblin_d_01.jpg"
-        },
-        {
-          "id": "230193",
-          "name": "Signor Fuoco-Alle-Polveri",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_healraydrone_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230193",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_healraydrone_gallywix.jpg"
-        }
-      ]
-    },
-    {
-      "id": 2644,
-      "name": "Bandito con un Braccio Solo",
-      "loot": [
-        {
-          "id": "230188",
-          "name": "Servizio in Bottiglia del Gallagio",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_underminegangsterdisguise.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230188",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_underminegangsterdisguise.jpg"
-        },
-        {
-          "id": "230027",
-          "name": "Castello di Carte",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_gallyjack_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230027",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_gallyjack_gallywix.jpg"
-        },
-        {
-          "id": "228886",
-          "name": "Cinturone a Gettoni",
-          "type": "Fianchi Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladingoblin_d_01_belt.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228886",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladingoblin_d_01_belt.jpg"
-        },
-        {
-          "id": "228885",
-          "name": "Polsiere delle Puntate del Delinquente",
-          "type": "Polsi Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_leather_raiddemonhuntergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228885",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_leather_raiddemonhuntergoblin_d_01.jpg"
-        },
-        {
-          "id": "228883",
-          "name": "Scarpe da Tavolo Dubbiose",
-          "type": "Piedi Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidhuntergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228883",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidhuntergoblin_d_01.jpg"
-        },
-        {
-          "id": "228906",
-          "name": "Individuatore di Frodi dell'Operatore",
-          "type": "Accessorio Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_offhand_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228906",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_offhand_1h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228905",
-          "name": "Svaligia-Banche Gigante",
+          "id": "237739",
+          "name": "Alabarda Raggiante dell'Annientamento",
           "type": "Due mani Arma ad asta",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_polearm_2h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228905",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_polearm_2h_goblinraid_d_01.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_polearm_2h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237739",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_polearm_2h_etherealraid_d_01.jpg"
         },
         {
-          "id": "228807",
-          "name": "Gallybux Dorato Terrificante",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228807",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_gallywix.jpg"
-        },
-        {
-          "id": "228810",
-          "name": "Gallybux Dorato dello Zenith",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228810",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_gallywix.jpg"
-        },
-        {
-          "id": "228850",
-          "name": "Blusa dell'Ultimo Dollaro",
-          "type": "Torso Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_robe.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228850",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_cloth_raidmagegoblin_d_01_robe.jpg"
-        },
-        {
-          "id": "228808",
-          "name": "Gallybux Dorato Mistico",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228808",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_gallywix.jpg"
-        },
-        {
-          "id": "231266",
-          "name": "Perforatore Numerico Casuale",
-          "type": "Una mano Pugnale",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=231266",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228809",
-          "name": "Gallybux Dorato Venerato",
-          "type": "Non equipaggiabile Cianfrusaglie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228809",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_goblincasinochips_gallywix.jpg"
-        },
-        {
-          "id": "228843",
-          "name": "Ruota di Roulette in Miniatura",
+          "id": "237567",
+          "name": "Varco Logico: Alfa",
           "type": "Dito Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_11_0_ventureco_ring01_color3.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228843",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_11_0_ventureco_ring01_color3.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_ring03_etherealtechnomancerstyle_gold.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237567",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_ring03_etherealtechnomancerstyle_gold.jpg"
         },
         {
-          "id": "232526",
-          "name": "Leva della Slot",
-          "type": "Due mani Mazza",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_2h_goblinraid_d_02.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=232526",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_2h_goblinraid_d_02.jpg"
-        }
-      ]
-    },
-    {
-      "id": 2645,
-      "name": "Mug'zee, Capi della Sicurezza",
-      "loot": [
-        {
-          "id": "228863",
-          "name": "Dita Appiccicose dell'Esecutore",
-          "type": "Mani Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_leather_raiddemonhuntergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228863",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_leather_raiddemonhuntergoblin_d_01.jpg"
-        },
-        {
-          "id": "228893",
-          "name": "\"Amichetto\"",
-          "type": "A distanza Arma da fuoco",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_firearm_2h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228893",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_firearm_2h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228853",
-          "name": "Gambali Foderati dello Scagnozzo Mercenario",
-          "type": "Gambe Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raiddeathknightgoblin_d_01_pant.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228853",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raiddeathknightgoblin_d_01_pant.jpg"
-        },
-        {
-          "id": "228870",
-          "name": "Coprispalle Sartoriali del Vicecapo",
+          "id": "237547",
+          "name": "Manacannoni Montati",
           "type": "Spalle Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_cloth_raidpriestgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228870",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_cloth_raidpriestgoblin_d_01.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_cloth_raidpriestethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237547",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_cloth_raidpriestethereal_d_01.jpg"
         },
         {
-          "id": "228860",
-          "name": "Spalline degli Esecutori Falliti",
-          "type": "Spalle Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_mail_raidhuntergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228860",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_mail_raidhuntergoblin_d_01.jpg"
+          "id": "237525",
+          "name": "Filtro d'Impurità Irradiato",
+          "type": "Testa Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_leather_raidmonkethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237525",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_leather_raidmonkethereal_d_01.jpg"
         },
         {
-          "id": "228851",
-          "name": "Cotta a \"Prova di Proiettile\"",
+          "id": "237543",
+          "name": "Gonnellino del Setaccio",
+          "type": "Gambe Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_mail_raidhunterethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237543",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_mail_raidhunterethereal_d_01.jpg"
+        },
+        {
+          "id": "237528",
+          "name": "Telaio di Dislocazione Manaforgiato",
           "type": "Torso Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raiddeathknightgoblin_d_01_chest.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228851",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raiddeathknightgoblin_d_01_chest.jpg"
-        },
-        {
-          "id": "228879",
-          "name": "Pinne da Murloc di Cemento",
-          "type": "Piedi Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidwarlockgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228879",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidwarlockgoblin_d_01.jpg"
-        },
-        {
-          "id": "228901",
-          "name": "Mazzuola del Gran Lavoratore",
-          "type": "Una mano Mazza",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228901",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_goblinraid_d_01.jpg"
-        },
-        {
-          "id": "228880",
-          "name": "Fondina del Sicario",
-          "type": "Fianchi Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_leather_raidroguegoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228880",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_leather_raidroguegoblin_d_01.jpg"
-        },
-        {
-          "id": "228878",
-          "name": "Manette Artigianali",
-          "type": "Polsi Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_mail_raidevokergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228878",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_mail_raidevokergoblin_d_01.jpg"
-        },
-        {
-          "id": "230199",
-          "name": "Linea Diretta Criminale di Zee",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_remotecontrol_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230199",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_remotecontrol_gallywix.jpg"
-        },
-        {
-          "id": "228842",
-          "name": "Collana Regalo del Padrino Goblin",
-          "type": "Collo Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_11_0_ventureco_necklace01_color2.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228842",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_11_0_ventureco_necklace01_color2.jpg"
-        },
-        {
-          "id": "228902",
-          "name": "Offerta Rifiutata del Saggio",
-          "type": "Una mano Mazza",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_goblinraid_d_02.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228902",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_goblinraid_d_02.jpg"
-        },
-        {
-          "id": "230192",
-          "name": "Contenitore Grintoso di Mug",
-          "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_blackbloodfueledcontainer.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230192",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_blackbloodfueledcontainer.jpg"
-        },
-        {
-          "id": "232804",
-          "name": "Paranocche Fuse di Capo",
-          "type": "Una mano Tirapugni",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_hand_1h_ogresecurityboss_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=232804",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_hand_1h_ogresecurityboss_d_01.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_plate_raidwarriorethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237528",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_plate_raidwarriorethereal_d_01.jpg"
         }
       ]
     },
     {
-      "id": 2646,
-      "name": "Re Cromato Gallywix",
+      "id": 2686,
+      "name": "Loom'ithar",
       "loot": [
         {
-          "id": "228899",
-          "name": "Pollice di Ferro di Gallywix",
-          "type": "Una mano Mazza",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228899",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_goblinraid_d_01.jpg"
+          "id": "237729",
+          "name": "Giuntatore Genetico Prodigioso",
+          "type": "Una mano Pugnale",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237729",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_etherealraid_d_01.jpg"
         },
         {
-          "id": "228848",
-          "name": "Tricorno del Malvivente Micciascura",
-          "type": "Testa Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_leather_raidroguegoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228848",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_leather_raidroguegoblin_d_01.jpg"
+          "id": "237732",
+          "name": "Arco a Filamento Penetrante",
+          "type": "A distanza Arco",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bow_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237732",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bow_1h_etherealraid_d_01.jpg"
         },
         {
-          "id": "228887",
-          "name": "Stivalacci da Competizione dei Tagliagole",
-          "type": "Piedi Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_plate_raidwarriorgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228887",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_plate_raidwarriorgoblin_d_01.jpg"
+          "id": "237552",
+          "name": "Spalletti Predestinati",
+          "type": "Spalle Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_leather_raidrogueethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237552",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_leather_raidrogueethereal_d_01.jpg"
         },
         {
-          "id": "228877",
-          "name": "Catena Avara del Fornitore",
-          "type": "Fianchi Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidhuntergoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228877",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidhuntergoblin_d_01.jpg"
+          "id": "237545",
+          "name": "Catene Nutrienti Scartate",
+          "type": "Polsi Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_plate_raidwarriorethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237545",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_plate_raidwarriorethereal_d_01.jpg"
         },
         {
-          "id": "231265",
-          "name": "Diamante di Jastor",
-          "type": "Dito Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_jewelry_ring_63.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=231265",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_jewelry_ring_63.jpg"
-        },
-        {
-          "id": "228881",
-          "name": "Bracciali dei Finanziamenti Illeciti",
-          "type": "Polsi Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_cloth_raidwarlockgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228881",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_cloth_raidwarlockgoblin_d_01.jpg"
-        },
-        {
-          "id": "230198",
-          "name": "Occhio di Kezan",
+          "id": "242393",
+          "name": "Seta Vivente di Loom'ithar",
           "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/spell_azerite_essence08.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230198",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/spell_azerite_essence08.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_astralspinneret.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242393",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_astralspinneret.jpg"
         },
         {
-          "id": "228889",
-          "name": "Scudo Titanico Industriale",
+          "id": "242395",
+          "name": "Antenna Astrale",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_silkwormsantenna.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242395",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_silkwormsantenna.jpg"
+        },
+        {
+          "id": "237723",
+          "name": "Protezione della Bestia Tessente",
           "type": "Mano secondaria Scudo",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228889",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_goblinraid_d_01.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237723",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_etherealraid_d_01.jpg"
         },
         {
-          "id": "228866",
-          "name": "Pantaloni dalle Tasche Profonde",
-          "type": "Gambe Maglia",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_pants_mail_raidshamangoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228866",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_pants_mail_raidshamangoblin_d_01.jpg"
+          "id": "237524",
+          "name": "Calcatane Allacciati",
+          "type": "Piedi Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidmageethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237524",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidmageethereal_d_01.jpg"
         },
         {
-          "id": "228855",
-          "name": "Paraspalle Fruttuosi",
-          "type": "Spalle Piastre",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_plate_raidwarriorgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228855",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_plate_raidwarriorgoblin_d_01.jpg"
+          "id": "237522",
+          "name": "Cinta Vitale Colossale",
+          "type": "Fianchi Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidhunterethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237522",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidhunterethereal_d_01.jpg"
+        }
+      ]
+    },
+    {
+      "id": 2685,
+      "name": "Vincolatrice d'Anime Naazindhri",
+      "loot": [
+        {
+          "id": "250104",
+          "name": "Mantofatuo della Vincolatrice d'Anime",
+          "type": "Schiena Cosmetico",
+          "ilvl": 1,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_cape_special_soulbinder_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=250104",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_cape_special_soulbinder_d_01.jpg"
         },
         {
-          "id": "230029",
-          "name": "Tuta da Artificiere Cromobustibile",
+          "id": "242398",
+          "name": "Frusta Mistica di Naazindhri",
           "type": "Monile Varie",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_bombsuit_gallywix.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=230029",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_111_bombsuit_gallywix.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_soulbinderbossinttrinket.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242398",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_soulbinderbossinttrinket.jpg"
         },
         {
-          "id": "228891",
-          "name": "Punitore Capitale",
-          "type": "Due mani Mazza",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_2h_goblinraid_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228891",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_2h_goblinraid_d_01.jpg"
+          "id": "237738",
+          "name": "Artigli da Addestramento Svincolati",
+          "type": "Una mano Tirapugni",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_hand_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237738",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_hand_1h_etherealraid_d_01.jpg"
         },
         {
-          "id": "228872",
-          "name": "Stringimani Dorato",
-          "type": "Mani Stoffa",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_cloth_raidpriestgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228872",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_cloth_raidpriestgoblin_d_01.jpg"
+          "id": "237527",
+          "name": "Abito della Riunione Spirituale",
+          "type": "Torso Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_robe_cloth_raidwarlockethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237527",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_robe_cloth_raidwarlockethereal_d_01.jpg"
         },
         {
-          "id": "228864",
-          "name": "Uniforme del Cartello \"Ottimizzata\"",
+          "id": "237546",
+          "name": "Manette dell'Essenza Perduta",
+          "type": "Polsi Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_leather_raiddruidethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237546",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_leather_raiddruidethereal_d_01.jpg"
+        },
+        {
+          "id": "242391",
+          "name": "Abbraccio della Vincolatrice d'Anime",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_manaforge_tanktrinket1.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242391",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_manaforge_tanktrinket1.jpg"
+        },
+        {
+          "id": "237539",
+          "name": "Artigli del Fuso della Morte",
+          "type": "Piedi Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidevokerethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237539",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidevokerethereal_d_01.jpg"
+        },
+        {
+          "id": "237550",
+          "name": "Legami Eterei Freschi",
+          "type": "Fianchi Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_plate_raidwarriorethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237550",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_plate_raidwarriorethereal_d_01.jpg"
+        },
+        {
+          "id": "237568",
+          "name": "Crisalide delle Anime Recise",
+          "type": "Collo Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_necklace01_etherealnontechnologicalstyle_gold.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237568",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_necklace01_etherealnontechnologicalstyle_gold.jpg"
+        },
+        {
+          "id": "237730",
+          "name": "Guglia di Vuotovitreo",
+          "type": "Due mani Bastone",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_etherealraid_d_02.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237730",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_etherealraid_d_02.jpg"
+        }
+      ]
+    },
+    {
+      "id": 2687,
+      "name": "Tessiforgia Araz",
+      "loot": [
+        {
+          "id": "237570",
+          "name": "Varco Logico: Omega",
+          "type": "Dito Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_ring03_etherealtechnomancerstyle_terra.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237570",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_ring03_etherealtechnomancerstyle_terra.jpg"
+        },
+        {
+          "id": "237726",
+          "name": "Meraviglia della Tecnomanzia",
+          "type": "Due mani Bastone",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237726",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "237538",
+          "name": "Fondina per Diario del Tessiforgia",
+          "type": "Fianchi Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_cloth_raidwarlockethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237538",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_cloth_raidwarlockethereal_d_01.jpg"
+        },
+        {
+          "id": "237526",
+          "name": "Protezioni di Contenimento Violate",
+          "type": "Mani Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_plate_raiddeathknightethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237526",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_plate_raiddeathknightethereal_d_01.jpg"
+        },
+        {
+          "id": "242402",
+          "name": "Forgia Rituale di Araz",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_trinkettechnomancer_ritualengine.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242402",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_trinkettechnomancer_ritualengine.jpg"
+        },
+        {
+          "id": "237724",
+          "name": "Iride della Grande Oscurità",
+          "type": "Accessorio Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_offhand_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237724",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_offhand_1h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "237553",
+          "name": "Pianelle dei Test di Laboratorio",
+          "type": "Piedi Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raiddruidethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237553",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raiddruidethereal_d_01.jpg"
+        },
+        {
+          "id": "237529",
+          "name": "Uniforme dell'Attendente Mietuto",
+          "type": "Torso Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_mail_raidhunterethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237529",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_mail_raidhunterethereal_d_01.jpg"
+        },
+        {
+          "id": "237737",
+          "name": "Sciabola Suprema Fotonica",
+          "type": "Due mani Spada",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_2h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237737",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_2h_etherealraid_d_01.jpg"
+        }
+      ]
+    },
+    {
+      "id": 2688,
+      "name": "I Cacciatori d'Anime",
+      "loot": [
+        {
+          "id": "243305",
+          "name": "Stivalacci di Seta dell'Intruso",
+          "type": "Piedi Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidpriestethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=243305",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidpriestethereal_d_01.jpg"
+        },
+        {
+          "id": "237597",
+          "name": "Marchio Maledetto Anelante Truce",
+          "type": "Non equipaggiabile Cianfrusaglie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_terra.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237597",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_terra.jpg"
+        },
+        {
+          "id": "237598",
+          "name": "Marchio Maledetto Anelante Mistico",
+          "type": "Non equipaggiabile Cianfrusaglie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_purple.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237598",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_purple.jpg"
+        },
+        {
+          "id": "237599",
+          "name": "Marchio Maledetto Anelante Venerato",
+          "type": "Non equipaggiabile Cianfrusaglie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_dark.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237599",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_dark.jpg"
+        },
+        {
+          "id": "237600",
+          "name": "Marchio Maledetto Anelante dello Zenith",
+          "type": "Non equipaggiabile Cianfrusaglie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_gold.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237600",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_gold.jpg"
+        },
+        {
+          "id": "237569",
+          "name": "Disperazione di Fiammavespro",
+          "type": "Collo Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_necklace03_etherealtechnomancerstyle_gold.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237569",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_necklace03_etherealtechnomancerstyle_gold.jpg"
+        },
+        {
+          "id": "237741",
+          "name": "Orizzonte degli Eventi",
+          "type": "Mano secondaria Scudo",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237741",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "237541",
+          "name": "Carapace Corrotto di Dolornero",
           "type": "Torso Cuoio",
-          "ilvl": 623,
-          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_leather_raidmonkgoblin_d_01.jpg",
-          "wowhead_url": "https://www.wowhead.com/item=228864",
-          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_leather_raidmonkgoblin_d_01.jpg"
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_leather_raiddemonhunterethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237541",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_leather_raiddemonhunterethereal_d_01.jpg"
+        },
+        {
+          "id": "237554",
+          "name": "Fibbia della Libertà Furiosa",
+          "type": "Fianchi Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidshamanethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237554",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidshamanethereal_d_01.jpg"
+        },
+        {
+          "id": "242401",
+          "name": "Amuleto dell'Ira Incessante",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_manaforgetanktrinket3.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242401",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_manaforgetanktrinket3.jpg"
+        },
+        {
+          "id": "242397",
+          "name": "Sigillo della Caccia Cosmica",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_agidpsancientkareshirelic.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242397",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_agidpsancientkareshirelic.jpg"
+        },
+        {
+          "id": "237727",
+          "name": "Lame Fasiche Collassanti",
+          "type": "Una mano Lame da Guerra",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glaive_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237727",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glaive_1h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "237549",
+          "name": "Artigli Nodosi di Furiasangue",
+          "type": "Mani Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_cloth_raidwarlockethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237549",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_cloth_raidwarlockethereal_d_01.jpg"
+        },
+        {
+          "id": "237561",
+          "name": "Giogo dell'Odio Avvolgente",
+          "type": "Polsi Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_bracer.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237561",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_bracer.jpg"
+        },
+        {
+          "id": "237597",
+          "name": "Marchio Maledetto Anelante Truce",
+          "type": "Non equipaggiabile Cianfrusaglie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_terra.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237597",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_terra.jpg"
+        },
+        {
+          "id": "237598",
+          "name": "Marchio Maledetto Anelante Mistico",
+          "type": "Non equipaggiabile Cianfrusaglie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_purple.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237598",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_purple.jpg"
+        },
+        {
+          "id": "237599",
+          "name": "Marchio Maledetto Anelante Venerato",
+          "type": "Non equipaggiabile Cianfrusaglie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_dark.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237599",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_dark.jpg"
+        },
+        {
+          "id": "237600",
+          "name": "Marchio Maledetto Anelante dello Zenith",
+          "type": "Non equipaggiabile Cianfrusaglie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_gold.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237600",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_gold.jpg"
+        },
+        {
+          "id": "237569",
+          "name": "Disperazione di Fiammavespro",
+          "type": "Collo Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_necklace03_etherealtechnomancerstyle_gold.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237569",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_necklace03_etherealtechnomancerstyle_gold.jpg"
+        },
+        {
+          "id": "237741",
+          "name": "Orizzonte degli Eventi",
+          "type": "Mano secondaria Scudo",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237741",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shield_1h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "237541",
+          "name": "Carapace Corrotto di Dolornero",
+          "type": "Torso Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_leather_raiddemonhunterethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237541",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_chest_leather_raiddemonhunterethereal_d_01.jpg"
+        },
+        {
+          "id": "237554",
+          "name": "Fibbia della Libertà Furiosa",
+          "type": "Fianchi Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidshamanethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237554",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_mail_raidshamanethereal_d_01.jpg"
+        },
+        {
+          "id": "242401",
+          "name": "Amuleto dell'Ira Incessante",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_manaforgetanktrinket3.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242401",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_manaforgetanktrinket3.jpg"
+        },
+        {
+          "id": "242397",
+          "name": "Sigillo della Caccia Cosmica",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_agidpsancientkareshirelic.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242397",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_agidpsancientkareshirelic.jpg"
+        },
+        {
+          "id": "237727",
+          "name": "Lame Fasiche Collassanti",
+          "type": "Una mano Lame da Guerra",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glaive_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237727",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glaive_1h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "237549",
+          "name": "Artigli Nodosi di Furiasangue",
+          "type": "Mani Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_cloth_raidwarlockethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237549",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_cloth_raidwarlockethereal_d_01.jpg"
+        },
+        {
+          "id": "237561",
+          "name": "Giogo dell'Odio Avvolgente",
+          "type": "Polsi Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_bracer.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237561",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_bracer.jpg"
+        },
+        {
+          "id": "243306",
+          "name": "Grancalzari Rinforzati dell'Intruso",
+          "type": "Piedi Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raidmonkethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=243306",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raidmonkethereal_d_01.jpg"
+        },
+        {
+          "id": "243308",
+          "name": "Stivali Inanellati dell'Intruso",
+          "type": "Piedi Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidshamanethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=243308",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidshamanethereal_d_01.jpg"
+        },
+        {
+          "id": "243307",
+          "name": "Calzari a Piastre dell'Intruso",
+          "type": "Piedi Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_boot.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=243307",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_boot.jpg"
+        }
+      ]
+    },
+    {
+      "id": 2747,
+      "name": "Fractillus",
+      "loot": [
+        {
+          "id": "237733",
+          "name": "Lanciacorrente Lacerato",
+          "type": "A distanza Balestra",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_crossbow_2h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237733",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_crossbow_2h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "237742",
+          "name": "Ultimo Respiro di Fractillus",
+          "type": "Accessorio Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_offhand_1h_etherealraid_d_02.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237742",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_offhand_1h_etherealraid_d_02.jpg"
+        },
+        {
+          "id": "237536",
+          "name": "Morso delle Distese Astrali",
+          "type": "Testa Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_mail_raidshamanethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237536",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_mail_raidshamanethereal_d_01.jpg"
+        },
+        {
+          "id": "237530",
+          "name": "Gambali Foderati di Schegge Fuse",
+          "type": "Gambe Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_plate_raiddeathknightethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237530",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_plate_raiddeathknightethereal_d_01.jpg"
+        },
+        {
+          "id": "242392",
+          "name": "Nucleo del Vuoto Adamantino",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_intdps_ancientkareshirelic.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242392",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_intdps_ancientkareshirelic.jpg"
+        },
+        {
+          "id": "242396",
+          "name": "Prisma Fatuo Inflessibile",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_voidprism.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242396",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_voidprism.jpg"
+        },
+        {
+          "id": "237728",
+          "name": "Kris di Vuotovitreo",
+          "type": "Una mano Pugnale",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_etherealraid_d_02.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237728",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_etherealraid_d_02.jpg"
+        },
+        {
+          "id": "237558",
+          "name": "Bracciali di Vetro Congiunto",
+          "type": "Polsi Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_cloth_raidpriestethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237558",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_cloth_raidpriestethereal_d_01.jpg"
+        },
+        {
+          "id": "237565",
+          "name": "Calcadune Cinetici",
+          "type": "Piedi Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raiddemonhunterethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237565",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_leather_raiddemonhunterethereal_d_01.jpg"
+        }
+      ]
+    },
+    {
+      "id": 2690,
+      "name": "Re del Nexus Salhadaar",
+      "loot": [
+        {
+          "id": "242403",
+          "name": "Proiettore Perfido",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_11_0_etherealraid_communicator_color4.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242403",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_11_0_etherealraid_communicator_color4.jpg"
+        },
+        {
+          "id": "237734",
+          "name": "Ricompensa dello Spergiuratore",
+          "type": "Una mano Ascia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_axe_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237734",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_axe_1h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "237548",
+          "name": "Velo del Tiranno del Crepuscolo",
+          "type": "Testa Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_cloth_raidpriestethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237548",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_helm_cloth_raidpriestethereal_d_01.jpg"
+        },
+        {
+          "id": "237531",
+          "name": "Coprigambe della Guardia dell'Ombra d'Élite",
+          "type": "Gambe Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_leather_raidmonkethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237531",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_leather_raidmonkethereal_d_01.jpg"
+        },
+        {
+          "id": "237544",
+          "name": "Guanti Lunghi Regali di Scaglie del Vuoto",
+          "type": "Mani Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_mail_raidevokerethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237544",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_mail_raidevokerethereal_d_01.jpg"
+        },
+        {
+          "id": "237532",
+          "name": "Segnalatore della Falsa Rettitudine",
+          "type": "Spalle Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_shoulder.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237532",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_shoulder.jpg"
+        },
+        {
+          "id": "242406",
+          "name": "Follia di Salhadaar",
+          "type": "Collo Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_necklace02_etherealribbonorrunestyle_gold.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242406",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_necklace02_etherealribbonorrunestyle_gold.jpg"
+        },
+        {
+          "id": "242400",
+          "name": "Comando del Re del Nexus",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_oathbindersauthority.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242400",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_oathbindersauthority.jpg"
+        },
+        {
+          "id": "237740",
+          "name": "Aculeo Fatuo Vendicativo",
+          "type": "Una mano Pugnale",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_etherealraid_d_02.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237740",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_knife_1h_etherealraid_d_02.jpg"
+        },
+        {
+          "id": "237556",
+          "name": "Grancalzari della Servitù Sfregiata",
+          "type": "Piedi Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidwarlockethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237556",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_cloth_raidwarlockethereal_d_01.jpg"
+        },
+        {
+          "id": "237557",
+          "name": "Cintura Terrificante del Mietitore",
+          "type": "Fianchi Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_leather_raidrogueethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237557",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_leather_raidrogueethereal_d_01.jpg"
+        },
+        {
+          "id": "237555",
+          "name": "Avambracci Vincolati dal Patto",
+          "type": "Polsi Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_mail_raidshamanethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237555",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_mail_raidshamanethereal_d_01.jpg"
+        },
+        {
+          "id": "237564",
+          "name": "Calzari del Cavaliere Oscuro",
+          "type": "Piedi Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_plate_raidwarriorethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237564",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_plate_raidwarriorethereal_d_01.jpg"
+        },
+        {
+          "id": "237735",
+          "name": "Lama del Sovrano del Vuotovitreo",
+          "type": "Una mano Spada",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_1h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237735",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_sword_1h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "243365",
+          "name": "Fauci del Vuoto",
+          "type": "Due mani Mazza",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_2h_etherealking_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=243365",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_2h_etherealking_d_01.jpg"
+        }
+      ]
+    },
+    {
+      "id": 2691,
+      "name": "Dimensius il Divoratore",
+      "loot": [
+        {
+          "id": "242404",
+          "name": "Nucleo del Divoratore",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_omnidpstrinket.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242404",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_omnidpstrinket.jpg"
+        },
+        {
+          "id": "242405",
+          "name": "Vera dell'Anima Infranta",
+          "type": "Dito Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_ring02_etherealribbonorrunestyle_gold.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242405",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_ring02_etherealribbonorrunestyle_gold.jpg"
+        },
+        {
+          "id": "237731",
+          "name": "Mazza Ferrata Ergosferica",
+          "type": "Una mano Mazza",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_etherealraid_d_02.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237731",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_1h_etherealraid_d_02.jpg"
+        },
+        {
+          "id": "237559",
+          "name": "Cordone della Singolarità",
+          "type": "Fianchi Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_cloth_raidpriestethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237559",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_cloth_raidpriestethereal_d_01.jpg"
+        },
+        {
+          "id": "237562",
+          "name": "Polsiere Foderate del Tempo Compresso",
+          "type": "Polsi Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_leather_raiddemonhunterethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237562",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_bracer_leather_raiddemonhunterethereal_d_01.jpg"
+        },
+        {
+          "id": "237560",
+          "name": "Schinieri dello Spazio Spezzato",
+          "type": "Piedi Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidhunterethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237560",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_boot_mail_raidhunterethereal_d_01.jpg"
+        },
+        {
+          "id": "237535",
+          "name": "Sguardo Abissale di Artoshion",
+          "type": "Testa Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_helm.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237535",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_plate_raidpaladinethereal_d_01_helm.jpg"
+        },
+        {
+          "id": "242399",
+          "name": "Grida di un Cielo Dimenticato",
+          "type": "Monile Varie",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_blobofswirlingvoid_terra.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=242399",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_blobofswirlingvoid_terra.jpg"
+        },
+        {
+          "id": "237725",
+          "name": "Schiantastelle Supermassiccia",
+          "type": "Due mani Mazza",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_2h_etherealraid_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237725",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_mace_2h_etherealraid_d_01.jpg"
+        },
+        {
+          "id": "237542",
+          "name": "Calzoni della Navigazione Stellare",
+          "type": "Gambe Stoffa",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_cloth_raidmageethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237542",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_pant_cloth_raidmageethereal_d_01.jpg"
+        },
+        {
+          "id": "237540",
+          "name": "Coprimani Gamma Alati",
+          "type": "Mani Cuoio",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_leather_raiddruidethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237540",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_glove_leather_raiddruidethereal_d_01.jpg"
+        },
+        {
+          "id": "237537",
+          "name": "Artigli della Resistenza Fallita",
+          "type": "Spalle Maglia",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_mail_raidshamanethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237537",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_shoulder_mail_raidshamanethereal_d_01.jpg"
+        },
+        {
+          "id": "237563",
+          "name": "Cinturone della Fissione Ultradensa",
+          "type": "Fianchi Piastre",
+          "ilvl": 662,
+          "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_plate_raiddeathknightethereal_d_01.jpg",
+          "wowhead_url": "https://www.wowhead.com/item=237563",
+          "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_belt_plate_raiddeathknightethereal_d_01.jpg"
         }
       ]
     }
@@ -1052,76 +1043,148 @@
   "missingItems": [],
   "filteredItems": [
     {
-      "id": 223048,
-      "name": "Progetto: Stiletto Aspirante",
+      "id": 237593,
+      "name": "Offerta Setosa Truce",
       "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:34:59.290Z"
+      "timestamp": "2025-08-23T18:52:35.691Z"
+    },
+    {
+      "id": 237594,
+      "name": "Offerta Setosa Mistica",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:35.783Z"
+    },
+    {
+      "id": 237595,
+      "name": "Offerta Setosa Venerata",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:35.852Z"
+    },
+    {
+      "id": 237596,
+      "name": "Offerta Setosa dello Zenith",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:35.934Z"
     },
     {
       "id": 224435,
       "name": "Modello: Imbottitura di Fildivespro",
       "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:03.346Z"
+      "timestamp": "2025-08-23T18:52:37.148Z"
     },
     {
-      "id": 236687,
-      "name": "Pietra del Ritorno Esplosiva",
+      "id": 237585,
+      "name": "Agente Legante Truce",
       "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:06.792Z"
+      "timestamp": "2025-08-23T18:52:37.433Z"
+    },
+    {
+      "id": 237586,
+      "name": "Agente Legante Mistico",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:37.524Z"
+    },
+    {
+      "id": 237587,
+      "name": "Agente Legante Venerato",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:37.630Z"
+    },
+    {
+      "id": 237588,
+      "name": "Agente Legante dello Zenith",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:37.712Z"
+    },
+    {
+      "id": 237589,
+      "name": "Becher Profetico Truce",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:38.867Z"
+    },
+    {
+      "id": 237590,
+      "name": "Becher Profetico Mistico",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:38.955Z"
+    },
+    {
+      "id": 237591,
+      "name": "Becher Profetico Venerato",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:39.019Z"
+    },
+    {
+      "id": 237592,
+      "name": "Becher Profetico dello Zenith",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:39.099Z"
+    },
+    {
+      "id": 223048,
+      "name": "Progetto: Stiletto Aspirante",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:40.137Z"
     },
     {
       "id": 223097,
       "name": "Modello: Fibbia dell'Impeto Adrenalinico",
       "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:07.202Z"
+      "timestamp": "2025-08-23T18:52:43.743Z"
+    },
+    {
+      "id": 237581,
+      "name": "Contaminante di Vuotovitreo Truce",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:43.912Z"
+    },
+    {
+      "id": 237582,
+      "name": "Contaminante di Vuotovitreo Mistico",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:43.986Z"
+    },
+    {
+      "id": 237583,
+      "name": "Contaminante di Vuotovitreo Venerato",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:44.056Z"
+    },
+    {
+      "id": 237584,
+      "name": "Contaminante di Vuotovitreo dello Zenith",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:44.124Z"
     },
     {
       "id": 223094,
       "name": "Modello: Castone dell'Orefice Magnifico",
       "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:11.319Z"
+      "timestamp": "2025-08-23T18:52:45.249Z"
+    },
+    {
+      "id": 237602,
+      "name": "Reperto del Vuoto Famelico",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:49.036Z"
+    },
+    {
+      "id": 246565,
+      "name": "Pietra del Ritorno Cosmica",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:49.101Z"
+    },
+    {
+      "id": 243061,
+      "name": "Mangiastelle Svincolato",
+      "type": "NON_EQUIP",
+      "timestamp": "2025-08-23T18:52:49.178Z"
     },
     {
       "id": 223144,
       "name": "Formula: Incantamento Arma - Autorità delle Profondità",
       "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:13.681Z"
-    },
-    {
-      "id": 223144,
-      "name": "Formula: Incantamento Arma - Autorità delle Profondità",
-      "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:13.750Z"
-    },
-    {
-      "id": 223144,
-      "name": "Formula: Incantamento Arma - Autorità delle Profondità",
-      "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:13.812Z"
-    },
-    {
-      "id": 223144,
-      "name": "Formula: Incantamento Arma - Autorità delle Profondità",
-      "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:13.870Z"
-    },
-    {
-      "id": 228819,
-      "name": "Ninnolo Eccessivamente Ingioiellato",
-      "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:14.900Z"
-    },
-    {
-      "id": 236960,
-      "name": "Prototipo A.S.M.R.",
-      "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:16.037Z"
-    },
-    {
-      "id": 235626,
-      "name": "Chiavi del Grande G",
-      "type": "NON_EQUIP",
-      "timestamp": "2025-03-03T16:35:16.108Z"
+      "timestamp": "2025-08-23T18:52:49.253Z"
     }
   ]
 }
