@@ -8,12 +8,16 @@ const ImageComposer = require('../../utils/image-composer');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-list')
-        .setDescription('Mostra tutte le reserve della settimana organizzate per boss')
-        .addBooleanOption(opt =>
+        .setDescription('Mostra tutte le reserve della settimana (immagini per default)')
+        .addStringOption(opt =>
             opt
-                .setName('image')
-                .setDescription('Genera immagini per boss con icone degli oggetti e nomi dei prenotanti')
+                .setName('format')
+                .setDescription('Formato di output: immagini (default) o testo')
                 .setRequired(false)
+                .addChoices(
+                    { name: 'Immagini (per boss)', value: 'images' },
+                    { name: 'Testo', value: 'text' }
+                )
         ),
 
     async execute(interaction) {
@@ -76,58 +80,88 @@ module.exports = {
         });
 
         const guild = interaction.guild;
-        const useImage = interaction.options.getBoolean('image') === true;
+        const format = interaction.options.getString('format');
+        const useImage = (format ?? 'images') === 'images';
 
         if (useImage) {
-            // Prepare per-boss image payloads
-            const bossPayloads = [];
-            for (const [bossName, items] of Object.entries(itemReservations)) {
-                const itemsList = Object.entries(items)
-                    .filter(([_, info]) => info.reservers && info.reservers.length > 0)
-                    .map(([itemName, info]) => {
-                        return {
-                            name: info.display_name || itemName,
-                            image_url: info.image_url,
-                            reservers: info.reservers.map(r => {
-                                const member = guild.members.cache.get(r.userId);
-                                const username = member ? member.user.username : 'Utente Sconosciuto';
-                                return { username, characterName: r.characterName };
-                            })
-                        };
-                    });
+            // Defer immediately to prevent interaction timeout while generating images
+            try { await interaction.deferReply({ ephemeral: true }); } catch {}
+            try {
+                // Prepare per-boss image payloads
+                const bossPayloads = [];
+                for (const [bossName, items] of Object.entries(itemReservations)) {
+                    try {
+                        const itemsList = Object.entries(items)
+                            .filter(([_, info]) => info.reservers && info.reservers.length > 0)
+                            .map(([itemName, info]) => {
+                                // Sanitize potentially long token display names
+                                const shownName = (info.display_name || itemName);
+                                const name = shownName.length > 160 ? shownName.slice(0, 157) + '...' : shownName;
+                                return {
+                                    name,
+                                    image_url: info.image_url,
+                                    reservers: info.reservers.map(r => {
+                                        const member = guild.members.cache.get(r.userId);
+                                        const username = member ? member.user.username : 'Utente Sconosciuto';
+                                        return { username, characterName: r.characterName };
+                                    })
+                                };
+                            });
 
-                if (itemsList.length > 0) {
-                    const buffer = await ImageComposer.createBossReservationsImage(bossName, itemsList);
-                    const safeBoss = bossName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-                    const fileName = `reservations_${safeBoss}.png`;
-                    const attachment = new AttachmentBuilder(buffer, { name: fileName });
-                    const embed = new EmbedBuilder()
-                        .setColor('#87CEEB')
-                        .setTitle(bossName.toUpperCase())
-                        .setImage(`attachment://${fileName}`)
-                        .setFooter({ text: `Settimana del ${currentWeek}` });
-                    bossPayloads.push({ embed, attachment });
+                        if (itemsList.length > 0) {
+                            const buffer = await ImageComposer.createBossReservationsImage(bossName, itemsList);
+                            const safeBoss = bossName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                            const fileName = `reservations_${safeBoss}.png`;
+                            const attachment = new AttachmentBuilder(buffer, { name: fileName });
+                            const embed = new EmbedBuilder()
+                                .setColor('#87CEEB')
+                                .setTitle(bossName.toUpperCase())
+                                .setImage(`attachment://${fileName}`)
+                                .setFooter({ text: `Settimana del ${currentWeek}` });
+                            bossPayloads.push({ embed, attachment });
+                        }
+                    } catch (bossErr) {
+                        console.error(`Errore durante la generazione dell'immagine per il boss "${bossName}":`, bossErr);
+                        // continue with next boss
+                    }
                 }
-            }
 
-            if (bossPayloads.length === 0) {
-                await interaction.reply({ content: 'Nessuna reserve per questa settimana!', ephemeral: true });
+                if (bossPayloads.length === 0) {
+                    // If deferred, edit reply; otherwise fallback to reply
+                    if (interaction.deferred || interaction.replied) {
+                        await interaction.editReply({ content: 'Nessuna reserve per questa settimana!' });
+                    } else {
+                        await interaction.reply({ content: 'Nessuna reserve per questa settimana!', ephemeral: true });
+                    }
+                    return;
+                }
+
+                // Send in chunks of up to 10 embeds/attachments per message
+                const chunkSize = 10;
+                for (let i = 0; i < bossPayloads.length; i += chunkSize) {
+                    const chunk = bossPayloads.slice(i, i + chunkSize);
+                    const embeds = chunk.map(p => p.embed);
+                    const files = chunk.map(p => p.attachment);
+                    if (i === 0) {
+                        if (interaction.deferred || interaction.replied) {
+                            await interaction.editReply({ content: 'Tutte le reserve della settimana (immagini)', embeds, files });
+                        } else {
+                            await interaction.reply({ content: 'Tutte le reserve della settimana (immagini)', embeds, files, ephemeral: true });
+                        }
+                    } else {
+                        await interaction.followUp({ embeds, files, ephemeral: true });
+                    }
+                }
+                return;
+            } catch (err) {
+                console.error('Errore nella generazione delle immagini delle reserve:', err);
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply({ content: 'Si è verificato un errore durante la generazione delle immagini delle reserve. Riprova più tardi o usa la modalità testo.' });
+                } else {
+                    await interaction.reply({ content: 'Si è verificato un errore durante la generazione delle immagini delle reserve. Riprova più tardi o usa la modalità testo.', ephemeral: true });
+                }
                 return;
             }
-
-            // Send in chunks of up to 10 embeds/attachments per message
-            const chunkSize = 10;
-            for (let i = 0; i < bossPayloads.length; i += chunkSize) {
-                const chunk = bossPayloads.slice(i, i + chunkSize);
-                const embeds = chunk.map(p => p.embed);
-                const files = chunk.map(p => p.attachment);
-                if (i === 0) {
-                    await interaction.reply({ content: 'Tutte le reserve della settimana (immagini)', embeds, files, ephemeral: true });
-                } else {
-                    await interaction.followUp({ embeds, files, ephemeral: true });
-                }
-            }
-            return;
         }
 
         // Text mode (default)
