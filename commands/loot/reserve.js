@@ -11,13 +11,13 @@ const { isRaider } = require('../../utils/permission-utils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve')
-        .setDescription('Reserve items from the current raid'),
+        .setDescription('Prenota oggetti dal raid corrente'),
 
     async execute(interaction) {
         // Check if user is a raider
         if (!await isRaider(interaction.member)) {
             return interaction.reply({
-                content: 'Only Raiders can make item reservations.',
+                content: 'Solo i Raiders possono prenotare oggetti.',
                 ephemeral: true
             });
         }
@@ -49,10 +49,10 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor(0xFF0000)  // Red color to indicate can't add more
-                .setTitle('Maximum Reservations Reached')
+                .setTitle('Numero Massimo di Prenotazioni Raggiunto')
                 .setImage('attachment://current-reservations.png')
                 .setDescription(
-                    `You have already reserved 2 items this week for character **${userData.character_name}**!\n\n` +
+                    `Hai già prenotato 2 oggetti questa settimana per il personaggio **${userData.character_name}**!\n\n` +
                     `**Link su WowHead**\n${wowheadLinks}`
                 );
 
@@ -99,9 +99,9 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
-            .setTitle(`${raidData.raid} - Loot Reservation`)
-            .setDescription(`First, set your character name, then select a boss to view their loot table.\nYou can reserve up to 2 items per week.\nYou have ${2 - userData.items.length} reservations remaining.`)
-            .setFooter({ text: `Step ${userState.currentStep} of 3: Character Selection` });
+            .setTitle(`${raidData.raid} - Prenotazione Bottini`)
+            .setDescription(`Per iniziare, imposta il nome del tuo personaggio, poi seleziona un boss per vedere il suo bottino.\nPuoi prenotare fino a 2 oggetti a settimana.\nTi restano ${2 - userData.items.length} prenotazioni.`)
+            .setFooter({ text: `Passo ${userState.currentStep} di 3: Selezione Personaggio` });
 
         const initialMessage = await interaction.editReply({
             embeds: [embed],
@@ -143,7 +143,7 @@ module.exports = {
             } catch (error) {
                 console.error('Error handling modal submission:', error);
                 await modalInteraction.reply({
-                    content: `Something went wrong: ${error.message}`,
+                    content: `Qualcosa è andato storto: ${error.message}`,
                     ephemeral: true
                 });
             }
@@ -154,7 +154,7 @@ module.exports = {
                 if (i.customId === 'set_character') {
                     const modal = new ModalBuilder()
                         .setCustomId('character_name_modal')
-                        .setTitle('Enter Character Name');
+                        .setTitle('Inserisci il Nome del Personaggio');
 
                     const characterNameInput = new TextInputBuilder()
                         .setCustomId('character_name')
@@ -179,7 +179,7 @@ module.exports = {
                     if (!selectedBoss) {
                         console.error('Boss not found:', i.values[0]);
                         return await i.reply({ 
-                            content: 'Error: Boss not found', 
+                            content: 'Errore: Boss non trovato', 
                             ephemeral: true 
                         });
                     }
@@ -201,11 +201,11 @@ module.exports = {
                         .setColor(0x0099FF)
                         .setTitle(`${selectedBoss.name}`)
                         .setDescription(
-                            `**Loot Table**\n\n` +
-                            `**WowHead Links**\n${wowheadLinks}`
+                            `**Bottino**\n\n` +
+                            `**Link su WowHead**\n${wowheadLinks}`
                         )
                         .setImage('attachment://loot-table.png')
-                        .setFooter({ text: `Step ${userState.currentStep} of 3: Item Selection` });
+                        .setFooter({ text: `Passo ${userState.currentStep} di 3: Selezione Oggetto` });
 
                     // Create item selection menu
                     const itemSelect = createItemSelectMenu(selectedBoss.loot, 'item_select');
@@ -213,7 +213,7 @@ module.exports = {
                     // Add back button
                     const backButton = new ButtonBuilder()
                         .setCustomId('back_to_bosses')
-                        .setLabel('← Select Different Boss')
+                        .setLabel('← Seleziona un Altro Boss')
                         .setStyle(ButtonStyle.Secondary);
 
                     // Create two rows: one for the select menu, one for the back button
@@ -236,7 +236,7 @@ module.exports = {
                     if (!selectedItem) {
                         console.error('Item not found:', i.values[0]);
                         return await i.reply({ 
-                            content: 'Error: Item not found', 
+                            content: 'Errore: Oggetto non trovato', 
                             ephemeral: true 
                         });
                     }
@@ -264,20 +264,20 @@ module.exports = {
                         userState.currentStep = 2;
                         const newEmbed = new EmbedBuilder()
                             .setColor(0x0099FF)
-                            .setTitle(`${raidData.raid} - Second Item Selection`)
-                            .setDescription('Select a boss for your second item.\n\nFirst selection:\n' +
-                                `- ${formatItemNameWithClasses(selectedItem)} from ${userState.currentBoss.name}`)
-                            .setFooter({ text: `Step ${userState.currentStep} of 3: Boss Selection` });
+                            .setTitle(`${raidData.raid} - Selezione Secondo Oggetto`)
+                            .setDescription('Seleziona un boss per il tuo secondo oggetto.\n\nPrima selezione:\n' +
+                                `- ${formatItemNameWithClasses(selectedItem)} da ${userState.currentBoss.name}`)
+                            .setFooter({ text: `Passo ${userState.currentStep} di 3: Selezione Boss` });
 
                         // Recreate the original boss selection rows
                         const bossSelect = new StringSelectMenuBuilder()
                             .setCustomId('boss_select')
-                            .setPlaceholder('Select a boss')
+                            .setPlaceholder('Seleziona un boss')
                             .addOptions(
                                 raidData.bosses.map(boss => ({
                                     label: boss.name,
                                     value: boss.id.toString(),
-                                    description: `Select loot from ${boss.name}`
+                                    description: `Seleziona bottino da ${boss.name}`
                                 }))
                             );
                         const selectRow = new ActionRowBuilder().addComponents(bossSelect);
@@ -292,23 +292,23 @@ module.exports = {
                         userState.currentStep = 3;
                         const confirmEmbed = new EmbedBuilder()
                             .setColor(0x0099FF)
-                            .setTitle('Confirm Your Reservations')
+                            .setTitle('Conferma le Tue Prenotazioni')
                             .setDescription(
-                                `Please review and confirm your selections for character **${userState.characterName}**:\n\n` +
+                                `Controlla e conferma le tue selezioni per il personaggio **${userState.characterName}**:\n\n` +
                                 userState.selectedItems.map((item, index) => 
-                                    `${index + 1}. ${formatItemNameWithClasses(item)} from ${item.boss}`
+                                    `${index + 1}. ${formatItemNameWithClasses(item)} da ${item.boss}`
                                 ).join('\n')
                             )
-                            .setFooter({ text: 'Step 3 of 3: Confirmation' });
+                            .setFooter({ text: 'Passo 3 di 3: Conferma' });
 
                         const confirmButton = new ButtonBuilder()
                             .setCustomId('confirm_reservation')
-                            .setLabel('Confirm Reservations')
+                            .setLabel('Conferma Prenotazioni')
                             .setStyle(ButtonStyle.Success);
 
                         const cancelButton = new ButtonBuilder()
                             .setCustomId('cancel_reservation')
-                            .setLabel('Cancel')
+                            .setLabel('Annulla')
                             .setStyle(ButtonStyle.Danger);
 
                         const confirmRow = new ActionRowBuilder()
@@ -332,12 +332,12 @@ module.exports = {
                     // Recreate the original boss selection rows
                     const bossSelect = new StringSelectMenuBuilder()
                         .setCustomId('boss_select')
-                        .setPlaceholder('Select a boss')
+                        .setPlaceholder('Seleziona un boss')
                         .addOptions(
                             raidData.bosses.map(boss => ({
                                 label: boss.name,
                                 value: boss.id.toString(),
-                                description: `Select loot from ${boss.name}`
+                                description: `Seleziona bottino da ${boss.name}`
                             }))
                         );
                     const selectRow = new ActionRowBuilder().addComponents(bossSelect);
@@ -346,9 +346,9 @@ module.exports = {
                         embeds: [
                             new EmbedBuilder()
                                 .setColor(0x0099FF)
-                                .setTitle(`${raidData.raid} - Boss Selection`)
-                                .setDescription('Select a boss for your item reservation.')
-                                .setFooter({ text: `Step ${userState.currentStep} of 3: Boss Selection` })
+                                .setTitle(`${raidData.raid} - Selezione Boss`)
+                                .setDescription('Seleziona un boss per la tua prenotazione.')
+                                .setFooter({ text: `Passo ${userState.currentStep} di 3: Selezione Boss` })
                         ],
                         components: [selectRow],
                         files: []
@@ -387,10 +387,10 @@ module.exports = {
 
                         const finalEmbed = new EmbedBuilder()
                             .setColor(0x00FF00)
-                            .setTitle('Reservations Confirmed!')
+                            .setTitle('Prenotazioni Confermate!')
                             .setImage('attachment://reservations.png')
                             .setDescription(
-                                `Your items have been reserved for this week for character **${userState.characterName}**!\n\n` +
+                                `I tuoi oggetti sono stati prenotati per questa settimana per il personaggio **${userState.characterName}**!\n\n` +
                                 `**Link su WowHead**\n${userState.selectedItems.map((item, index) => 
                                     `${index + 1}- [${formatItemNameWithClasses(item)}](${item.wowhead_url})`
                                 ).join('\n')}`
@@ -406,7 +406,7 @@ module.exports = {
                     } catch (saveError) {
                         console.error('Error saving reservations:', saveError);
                         await i.reply({
-                            content: `Failed to save reservations: ${saveError.message}`,
+                            content: `Impossibile salvare le prenotazioni: ${saveError.message}`,
                             ephemeral: true
                         });
                     }
@@ -416,8 +416,8 @@ module.exports = {
 
                     const cancelEmbed = new EmbedBuilder()
                         .setColor(0xFF0000)
-                        .setTitle('Reservations Cancelled')
-                        .setDescription('Your item reservations have been cancelled.');
+                        .setTitle('Prenotazioni Annullate')
+                        .setDescription('Le tue prenotazioni sono state annullate.');
 
                     await i.update({
                         embeds: [cancelEmbed],
@@ -431,7 +431,7 @@ module.exports = {
                 console.error('Error in collector:', error);
                 try {
                     await i.reply({
-                        content: `Something went wrong: ${error.message}`,
+                        content: `Qualcosa è andato storto: ${error.message}`,
                         ephemeral: true
                     });
                 } catch (replyError) {

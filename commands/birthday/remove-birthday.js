@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('birthday-remove')
-        .setDescription('Remove your birthday from the server celebrations'),
+        .setDescription('Rimuovi il tuo compleanno dalle celebrazioni del server'),
 
     async execute(interaction) {
         try {
@@ -15,7 +15,7 @@ module.exports = {
             // Check if user has a birthday set
             if (!data.birthdays[interaction.user.id]) {
                 return interaction.reply({ 
-                    content: "You don't have a birthday set!", 
+                    content: 'Non hai un compleanno impostato!', 
                     ephemeral: true 
                 });
             }
@@ -25,15 +25,15 @@ module.exports = {
             await fs.writeFile(dbPath, JSON.stringify(data, null, 4));
             
             await interaction.reply({ 
-                content: 'Your birthday has been removed! 🗑️', 
+                content: 'Il tuo compleanno è stato rimosso! 🗑️', 
                 ephemeral: true 
             });
         } catch (error) {
             console.error(error);
             await interaction.reply({ 
-                content: 'There was an error removing your birthday!', 
+                content: 'Si è verificato un errore durante la rimozione del tuo compleanno!', 
                 ephemeral: true 
             });
         }
     },
-}; 
+};

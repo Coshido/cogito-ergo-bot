@@ -12,7 +12,7 @@ const {
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
-        .setDescription('Get help and information about bot features'),
+        .setDescription('Ottieni aiuto e informazioni sulle funzionalità del bot'),
 
     async execute(interaction) {
         // Check user roles and permissions
@@ -67,7 +67,7 @@ module.exports = {
         // If no features are available, send a message
         if (availableFeatures.length === 0) {
             return interaction.reply({
-                content: 'You do not have permission to access any bot features.',
+                content: 'Non hai i permessi per accedere a nessuna funzionalità del bot.',
                 ephemeral: true
             });
         }
@@ -75,29 +75,29 @@ module.exports = {
         // Create the main help embed
         const helpEmbed = new EmbedBuilder()
             .setColor(0x3498DB)
-            .setTitle('🤖 Bot Feature Guide')
-            .setDescription('Select a feature below to get detailed information!')
+            .setTitle('🤖 Guida alle Funzionalità del Bot')
+            .setDescription('Seleziona una funzionalità qui sotto per maggiori informazioni!')
             .addFields(
                 { 
-                    name: '📋 Available Features', 
+                    name: '📋 Funzionalità Disponibili', 
                     value: availableFeatures.map(f => `• ${f.label}`).join('\n')
                 },
                 { 
-                    name: '🆘 How to Use', 
-                    value: 'Use the dropdown menu below to explore your available commands.' 
+                    name: '🆘 Come Usare', 
+                    value: 'Usa il menu a tendina qui sotto per esplorare i comandi disponibili.' 
                 }
             )
-            .setFooter({ text: 'Select a feature to learn more!' });
+            .setFooter({ text: 'Seleziona una funzionalità per saperne di più!' });
 
         // Create a select menu for different features
         const selectMenu = new StringSelectMenuBuilder()
             .setCustomId('help_feature_select')
-            .setPlaceholder('Select a feature to get help')
+            .setPlaceholder('Seleziona una funzionalità per ottenere aiuto')
             .addOptions(
                 availableFeatures.map(feature => 
                     new StringSelectMenuOptionBuilder()
                         .setLabel(feature.label)
-                        .setDescription(`Commands for ${feature.label.toLowerCase()}`)
+                        .setDescription(`Comandi per ${feature.label.toLowerCase()}`)
                         .setValue(feature.value)
                         .setEmoji(feature.emoji)
                 )
@@ -124,7 +124,7 @@ module.exports = {
             // Ensure the interaction is from the original user
             if (selectInteraction.user.id !== interaction.user.id) {
                 await selectInteraction.reply({
-                    content: 'You cannot use someone else\'s help menu.',
+                    content: 'Non puoi usare il menu di aiuto di un altro utente.',
                     ephemeral: true
                 });
                 return;
@@ -134,31 +134,31 @@ module.exports = {
             const helpEmbeds = {
                 'reserve_help': () => new EmbedBuilder()
                     .setColor(0x9B59B6)
-                    .setTitle('🎲 Loot Reservation')
-                    .setDescription('Item reservation system for raids')
+                    .setTitle('🎲 Prenotazione Bottini')
+                    .setDescription('Sistema di prenotazione oggetti per i raid')
                     .addFields(
                         { 
-                            name: 'Manager Commands', 
-                            value: featureCommands['reserve_help'].managerCommands.join('\n') || 'No manager commands available'
+                            name: 'Comandi Gestione', 
+                            value: featureCommands['reserve_help'].managerCommands.join('\n') || 'Nessun comando di gestione disponibile'
                         },
                         { 
-                            name: 'Participant Commands', 
-                            value: featureCommands['reserve_help'].participantCommands.join('\n') || 'No participant commands available'
+                            name: 'Comandi Partecipanti', 
+                            value: featureCommands['reserve_help'].participantCommands.join('\n') || 'Nessun comando per i partecipanti disponibile'
                         }
                     ),
 
                 'birthday_help': () => new EmbedBuilder()
                     .setColor(0xE67E22)
-                    .setTitle('🎂 Birthday Tracking')
-                    .setDescription('Track and celebrate server birthdays')
+                    .setTitle('🎂 Compleanni')
+                    .setDescription('Traccia e celebra i compleanni del server')
                     .addFields(
                         { 
-                            name: 'Admin Commands', 
-                            value: featureCommands['birthday_help'].adminCommands.join('\n') || 'No admin commands available'
+                            name: 'Comandi Admin', 
+                            value: featureCommands['birthday_help'].adminCommands.join('\n') || 'Nessun comando admin disponibile'
                         },
                         { 
-                            name: 'User Commands', 
-                            value: featureCommands['birthday_help'].userCommands.join('\n') || 'No user commands available'
+                            name: 'Comandi Utente', 
+                            value: featureCommands['birthday_help'].userCommands.join('\n') || 'Nessun comando utente disponibile'
                         }
                     )
             };

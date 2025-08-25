@@ -7,13 +7,13 @@ const { isRaidLeader } = require('../../utils/permission-utils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-generate')
-        .setDescription('Generate a WeakAura for current loot reservations'),
+        .setDescription('Genera una WeakAura per le prenotazioni di bottino attuali'),
     
     async execute(interaction) {
         // Check if user is a raid leader
         if (!isRaidLeader(interaction.member)) {
             return interaction.reply({
-                content: 'Only Raid Leaders can generate WeakAuras.',
+                content: 'Solo i Raid Leader possono generare le WeakAura.',
                 ephemeral: true
             });
         }
@@ -41,7 +41,7 @@ module.exports = {
             if (!waString || waString.length < 10) {
                 console.error('Generated WeakAura string is invalid');
                 await interaction.editReply({
-                    content: 'Failed to generate WeakAura: Invalid string',
+                    content: 'Impossibile generare la WeakAura: stringa non valida',
                     ephemeral: true
                 });
                 return;
@@ -52,7 +52,7 @@ module.exports = {
             const attachment = new AttachmentBuilder(buffer, { name: 'LootReservations.txt' });
 
             await interaction.editReply({
-                content: 'Here\'s your WeakAura import string. Copy the contents of the file and import it in WeakAuras.',
+                content: 'Ecco la stringa di importazione per WeakAura. Copia il contenuto del file e importalo in WeakAuras.',
                 files: [attachment],
                 ephemeral: true
             });
@@ -60,7 +60,7 @@ module.exports = {
             console.error('Error in reserve-generate command:', error);
             try {
                 await interaction.editReply({
-                    content: `Error generating WeakAura: ${error.message}`,
+                    content: `Errore durante la generazione della WeakAura: ${error.message}`,
                     ephemeral: true
                 });
             } catch (replyError) {

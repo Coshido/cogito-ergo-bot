@@ -8,11 +8,11 @@ const ImageComposer = require('../../utils/image-composer');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-list')
-        .setDescription('Show all current week reservations organized by boss')
+        .setDescription('Mostra tutte le reserve della settimana organizzate per boss')
         .addBooleanOption(opt =>
             opt
                 .setName('image')
-                .setDescription('Render images per boss with item icons and reserver names')
+                .setDescription('Genera immagini per boss con icone degli oggetti e nomi dei prenotanti')
                 .setRequired(false)
         ),
 
@@ -20,7 +20,7 @@ module.exports = {
         // Check if user is a raid leader
         if (!isRaidLeader(interaction.member)) {
             return interaction.reply({
-                content: 'Only Raid Leaders can view the reservation list.',
+                content: 'Solo i Raid Leader possono visualizzare la lista delle reserve.',
                 ephemeral: true
             });
         }
@@ -90,7 +90,7 @@ module.exports = {
                             image_url: info.image_url,
                             reservers: info.reservers.map(r => {
                                 const member = guild.members.cache.get(r.userId);
-                                const username = member ? member.user.username : 'Unknown User';
+                                const username = member ? member.user.username : 'Utente Sconosciuto';
                                 return { username, characterName: r.characterName };
                             })
                         };
@@ -105,13 +105,13 @@ module.exports = {
                         .setColor('#87CEEB')
                         .setTitle(bossName.toUpperCase())
                         .setImage(`attachment://${fileName}`)
-                        .setFooter({ text: `Week of ${currentWeek}` });
+                        .setFooter({ text: `Settimana del ${currentWeek}` });
                     bossPayloads.push({ embed, attachment });
                 }
             }
 
             if (bossPayloads.length === 0) {
-                await interaction.reply({ content: 'No reservations for this week yet!', ephemeral: true });
+                await interaction.reply({ content: 'Nessuna reserve per questa settimana!', ephemeral: true });
                 return;
             }
 
@@ -122,7 +122,7 @@ module.exports = {
                 const embeds = chunk.map(p => p.embed);
                 const files = chunk.map(p => p.attachment);
                 if (i === 0) {
-                    await interaction.reply({ content: 'All Current Week Reservations (images)', embeds, files, ephemeral: true });
+                    await interaction.reply({ content: 'Tutte le reserve della settimana (immagini)', embeds, files, ephemeral: true });
                 } else {
                     await interaction.followUp({ embeds, files, ephemeral: true });
                 }
@@ -139,7 +139,7 @@ module.exports = {
                     const reserversList = info.reservers
                         .map(r => {
                             const member = guild.members.cache.get(r.userId);
-                            const username = member ? member.user.username : 'Unknown User';
+                            const username = member ? member.user.username : 'Utente Sconosciuto';
                             return `└ ${username} (${r.characterName})`;
                         })
                         .join('\n');
@@ -153,15 +153,15 @@ module.exports = {
         }
 
         if (description.trim() === '') {
-            await interaction.reply({ content: 'No reservations for this week yet!', ephemeral: true });
+            await interaction.reply({ content: 'Nessuna reserve per questa settimana!', ephemeral: true });
             return;
         }
 
         const embed = new EmbedBuilder()
             .setColor('#87CEEB')
-            .setTitle('All Current Week Reservations')
+            .setTitle('Tutte le reserve della settimana')
             .setDescription(description)
-            .setFooter({ text: `Week of ${currentWeek}` });
+            .setFooter({ text: `Settimana del ${currentWeek}` });
 
         await interaction.reply({ embeds: [embed], ephemeral: true });
     }

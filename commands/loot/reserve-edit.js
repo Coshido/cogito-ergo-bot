@@ -11,13 +11,13 @@ const { isRaider } = require('../../utils/permission-utils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-edit')
-        .setDescription('Edit your current week reservations'),
+        .setDescription('Modifica le reserve della settimana corrente'),
 
     async execute(interaction) {
         // Check if user is a raider
         if (!isRaider(interaction.member)) {
             return interaction.reply({
-                content: 'Only Raiders can edit item reservations.',
+                content: 'Solo i Raiders possono modificare le reserve degli oggetti.',
                 ephemeral: true
             });
         }
@@ -36,7 +36,7 @@ module.exports = {
         const userData = reservations.weekly_reservations[currentWeek]?.[userId];
         if (!userData || userData.items.length === 0) {
             return await interaction.reply({
-                content: 'You have no reservations for this week!',
+                content: 'Non hai reserve per questa settimana!',
                 ephemeral: true
             });
         }
@@ -49,13 +49,13 @@ module.exports = {
         const itemButtons = userData.items.map((item, index) => 
             new ButtonBuilder()
                 .setCustomId(`edit_item_${index}`)
-                .setLabel(`Replace Item ${index + 1}`)
+                .setLabel(`Sostituisci Oggetto ${index + 1}`)
                 .setStyle(ButtonStyle.Primary)
         );
 
         const characterButton = new ButtonBuilder()
             .setCustomId('edit_character_name')
-            .setLabel('Change Character Name')
+            .setLabel('Modifica Nome Personaggio')
             .setStyle(ButtonStyle.Secondary);
 
         const buttonRow1 = new ActionRowBuilder().addComponents(itemButtons);
@@ -63,14 +63,14 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
-            .setTitle('Your Current Reservations')
+            .setTitle('Le Tue Reserve Attuali')
             .setImage('attachment://current-reservations.png')
             .setDescription(
-                `Current reservations for character **${userData.character_name}**\n` +
-                `**Wowhead Links**\n${userData.items.map((item, index) => 
+                `Reserve correnti per il personaggio **${userData.character_name}**\n` +
+                `**Link su WowHead**\n${userData.items.map((item, index) => 
                     `${index + 1}- [${item.name}](${item.wowhead_url})`
                 ).join('\n')}\n` +
-                'Select what you want to edit:'
+                'Seleziona cosa vuoi modificare:'
             );
 
         const message = await interaction.reply({
@@ -101,11 +101,11 @@ module.exports = {
                     // Create a modal for character name input
                     const modal = new ModalBuilder()
                         .setCustomId('change_character_name')
-                        .setTitle('Change Character Name');
+                        .setTitle('Modifica Nome Personaggio');
 
                     const characterNameInput = new TextInputBuilder()
                         .setCustomId('new_character_name')
-                        .setLabel('New Character Name')
+                        .setLabel('Nuovo Nome Personaggio')
                         .setStyle(TextInputStyle.Short)
                         .setPlaceholder(userData.character_name)
                         .setRequired(true);
@@ -129,7 +129,7 @@ module.exports = {
                     saveReservations(reservations);
 
                     await modalSubmitInteraction.reply({
-                        content: `Character name updated to **${newCharacterName}**`,
+                        content: `Nome personaggio aggiornato a **${newCharacterName}**`,
                         ephemeral: true
                     });
 
@@ -138,14 +138,14 @@ module.exports = {
                         embeds: [
                             new EmbedBuilder()
                                 .setColor(0x0099FF)
-                                .setTitle('Your Current Reservations')
+                                .setTitle('Le Tue Reserve Attuali')
                                 .setImage('attachment://current-reservations.png')
                                 .setDescription(
-                                    `Current reservations for character **${newCharacterName}**\n` +
-                                    `**Wowhead Links**\n${userData.items.map((item, index) => 
+                                    `Reserve correnti per il personaggio **${newCharacterName}**\n` +
+                                    `**Link su WowHead**\n${userData.items.map((item, index) => 
                                         `${index + 1}- [${item.name}](${item.wowhead_url})`
                                     ).join('\n')}\n` +
-                                    'Select what you want to edit:'
+                                    'Seleziona cosa vuoi modificare:'
                                 )
                         ],
                         components: [buttonRow1, buttonRow2],
@@ -159,12 +159,12 @@ module.exports = {
                     // Create boss selection dropdown
                     const bossSelect = new StringSelectMenuBuilder()
                         .setCustomId('boss_select')
-                        .setPlaceholder('Select a boss')
+                        .setPlaceholder('Seleziona un boss')
                         .addOptions(
                             raidData.bosses.map(boss => ({
                                 label: boss.name,
                                 value: boss.id.toString(),
-                                description: `Select loot from ${boss.name}`
+                                description: `Seleziona bottino da ${boss.name}`
                             }))
                         );
 
@@ -173,9 +173,9 @@ module.exports = {
 
                     const embed = new EmbedBuilder()
                         .setColor(0x0099FF)
-                        .setTitle(`${raidData.raid} - Replace Item ${itemIndex + 1}`)
-                        .setDescription('Select a boss to view their loot table.')
-                        .setFooter({ text: 'Step 1 of 2: Boss Selection' });
+                        .setTitle(`${raidData.raid} - Sostituisci Oggetto ${itemIndex + 1}`)
+                        .setDescription('Seleziona un boss per visualizzare il suo bottino.')
+                        .setFooter({ text: 'Passo 1 di 2: Selezione Boss' });
 
                     await interaction.editReply({
                         embeds: [embed],
@@ -201,7 +201,7 @@ module.exports = {
                         .setTitle(`${selectedBoss.name}`)
                         .setDescription(`**Link su WowHead**\n${wowheadLinks}`)
                         .setImage('attachment://loot-table.png')
-                        .setFooter({ text: 'Step 2 of 2: Item Selection' });
+                        .setFooter({ text: 'Passo 2 di 2: Selezione Oggetto' });
 
                     // Create item selection menu
                     const itemSelect = createItemSelectMenu(selectedBoss.loot, 'item_select');
@@ -210,7 +210,7 @@ module.exports = {
                     // Create Back to Bosses button
                     const backToBossesButton = new ButtonBuilder()
                         .setCustomId('back_to_bosses')
-                        .setLabel('Back to Bosses')
+                        .setLabel('Torna ai Boss')
                         .setStyle(ButtonStyle.Secondary);
                     const buttonRow = new ActionRowBuilder().addComponents(backToBossesButton);
 
@@ -224,12 +224,12 @@ module.exports = {
                     // Recreate boss selection dropdown
                     const bossSelect = new StringSelectMenuBuilder()
                         .setCustomId('boss_select')
-                        .setPlaceholder('Select a boss')
+                        .setPlaceholder('Seleziona un boss')
                         .addOptions(
                             raidData.bosses.map(boss => ({
                                 label: boss.name,
                                 value: boss.id.toString(),
-                                description: `Select loot from ${boss.name}`
+                                description: `Seleziona bottino da ${boss.name}`
                             }))
                         );
 
@@ -238,9 +238,9 @@ module.exports = {
 
                     const embed = new EmbedBuilder()
                         .setColor(0x0099FF)
-                        .setTitle(`${raidData.raid} - Replace Item ${editState.itemIndex + 1}`)
-                        .setDescription('Select a boss to view their loot table.')
-                        .setFooter({ text: 'Step 1 of 2: Boss Selection' });
+                        .setTitle(`${raidData.raid} - Sostituisci Oggetto ${editState.itemIndex + 1}`)
+                        .setDescription('Seleziona un boss per visualizzare il suo bottino.')
+                        .setFooter({ text: 'Passo 1 di 2: Selezione Boss' });
 
                     await interaction.editReply({
                         embeds: [embed],
@@ -267,13 +267,13 @@ module.exports = {
                     const itemButtons = userData.items.map((item, index) => 
                         new ButtonBuilder()
                             .setCustomId(`edit_item_${index}`)
-                            .setLabel(`Replace Item ${index + 1}`)
+                            .setLabel(`Sostituisci Oggetto ${index + 1}`)
                             .setStyle(ButtonStyle.Primary)
                     );
 
                     const characterButton = new ButtonBuilder()
                         .setCustomId('edit_character_name')
-                        .setLabel('Change Character Name')
+                        .setLabel('Modifica Nome Personaggio')
                         .setStyle(ButtonStyle.Secondary);
 
                     const buttonRow1 = new ActionRowBuilder().addComponents(itemButtons);
@@ -281,14 +281,14 @@ module.exports = {
 
                     const embed = new EmbedBuilder()
                         .setColor(0x0099FF)
-                        .setTitle('Your Current Reservations')
+                        .setTitle('Le Tue Reserve Attuali')
                         .setImage('attachment://current-reservations.png')
                         .setDescription(
-                            `Current reservations for character **${userData.character_name}**\n` +
-                            `**Wowhead Links**\n${userData.items.map((item, index) => 
+                            `Reserve correnti per il personaggio **${userData.character_name}**\n` +
+                            `**Link su WowHead**\n${userData.items.map((item, index) => 
                                 `${index + 1}- [${item.name}](${item.wowhead_url})`
                             ).join('\n')}\n` +
-                            'Select what you want to edit:'
+                            'Seleziona cosa vuoi modificare:'
                         );
 
                     await interaction.editReply({
@@ -308,11 +308,11 @@ module.exports = {
 
                     const finalConfirmEmbed = new EmbedBuilder()
                         .setColor(0x00FF00)
-                        .setTitle('Reservation Updated!')
+                        .setTitle('Prenotazione Aggiornata!')
                         .setImage('attachment://final-reservations.png')
                         .setDescription(
-                            `Your items have been updated for character **${userData.character_name}**!\n\n` +
-                            `**Wowhead Links**\n${userData.items.map((item, index) => 
+                            `I tuoi oggetti sono stati aggiornati per il personaggio **${userData.character_name}**!\n\n` +
+                            `**Link su WowHead**\n${userData.items.map((item, index) => 
                                 `${index + 1}- [${item.name}](${item.wowhead_url})`
                             ).join('\n')}`
                         );
@@ -336,13 +336,13 @@ module.exports = {
                     const itemButtons = userData.items.map((item, index) => 
                         new ButtonBuilder()
                             .setCustomId(`edit_item_${index}`)
-                            .setLabel(`Replace Item ${index + 1}`)
+                            .setLabel(`Sostituisci Oggetto ${index + 1}`)
                             .setStyle(ButtonStyle.Primary)
                     );
 
                     const characterButton = new ButtonBuilder()
                         .setCustomId('edit_character_name')
-                        .setLabel('Change Character Name')
+                        .setLabel('Modifica Nome Personaggio')
                         .setStyle(ButtonStyle.Secondary);
 
                     const buttonRow1 = new ActionRowBuilder().addComponents(itemButtons);
@@ -350,14 +350,14 @@ module.exports = {
 
                     const embed = new EmbedBuilder()
                         .setColor(0x0099FF)
-                        .setTitle('Your Current Reservations')
+                        .setTitle('Le Tue Reserve Attuali')
                         .setImage('attachment://current-reservations.png')
                         .setDescription(
-                            `Current reservations for character **${userData.character_name}**\n` +
-                            `**Wowhead Links**\n${userData.items.map((item, index) => 
+                            `Reserve correnti per il personaggio **${userData.character_name}**\n` +
+                            `**Link su WowHead**\n${userData.items.map((item, index) => 
                                 `${index + 1}- [${item.name}](${item.wowhead_url})`
                             ).join('\n')}\n` +
-                            'Select what you want to edit:'
+                            'Seleziona cosa vuoi modificare:'
                         );
 
                     await interaction.editReply({
@@ -372,7 +372,7 @@ module.exports = {
                 // Try to send an error message if possible
                 try {
                     await interaction.followUp({
-                        content: 'An error occurred while processing your interaction. Please try again.',
+                        content: 'Si è verificato un errore durante l\'elaborazione della tua interazione. Riprova.',
                         ephemeral: true
                     });
                 } catch (followUpError) {
@@ -385,7 +385,7 @@ module.exports = {
             if (reason === 'time') {
                 try {
                     interaction.editReply({
-                        content: 'Selection timed out. Please start over.',
+                        content: 'Tempo scaduto per la selezione. Per favore ricomincia.',
                         embeds: [],
                         components: [],
                         files: []

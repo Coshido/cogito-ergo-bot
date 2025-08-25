@@ -6,17 +6,17 @@ const { isAdminOrAuthorizedUser } = require('../../utils/permission-utils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('birthday-set-channel')
-        .setDescription('Set the channel for birthday announcements')
+        .setDescription('Imposta il canale per gli annunci di compleanno')
         .addChannelOption(option =>
             option.setName('channel')
-                .setDescription('The channel to send birthday messages in')
+                .setDescription('Il canale in cui inviare i messaggi di compleanno')
                 .setRequired(true)),
 
     async execute(interaction) {
         // Check admin or authorized user permissions
         if (!isAdminOrAuthorizedUser(interaction)) {
             return interaction.reply({
-                content: 'You do not have permission to use this command.',
+                content: 'Non hai il permesso di usare questo comando.',
                 ephemeral: true
             });
         }
@@ -24,7 +24,7 @@ module.exports = {
         const channel = interaction.options.getChannel('channel');
 
         if (!channel.isTextBased()) {
-            return interaction.reply({ content: 'Please select a text channel!', ephemeral: true });
+            return interaction.reply({ content: 'Per favore seleziona un canale di testo!', ephemeral: true });
         }
 
         try {
@@ -48,13 +48,13 @@ module.exports = {
             await fs.writeFile(dbPath, JSON.stringify(data, null, 2));
 
             await interaction.reply({ 
-                content: `Birthday announcements will now be sent in ${channel}! 🎉`, 
+                content: `Gli annunci di compleanno verranno inviati in ${channel}! 🎉`, 
                 ephemeral: false 
             });
         } catch (error) {
             console.error('Birthday channel setup error:', error);
             await interaction.reply({ 
-                content: `Error setting birthday channel: ${error.message}`, 
+                content: `Errore durante l'impostazione del canale dei compleanni: ${error.message}`, 
                 ephemeral: true 
             });
         }

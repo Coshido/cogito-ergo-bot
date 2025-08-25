@@ -35,9 +35,9 @@ module.exports = {
             // Create an embed to confirm the action
             const embed = new EmbedBuilder()
                 .setColor(0xFF0000)
-                .setTitle('All Reservations Cleared')
-                .setDescription('All reservations across all weeks have been cleared.')
-                .setFooter({ text: 'Action performed by a Raid Leader' });
+                .setTitle('Tutte le reserve sono state cancellate')
+                .setDescription('Tutte le reserve per tutte le settimane sono state cancellate.')
+                .setFooter({ text: 'Azione eseguibile solo da un Raid Leader' });
 
             // Reply with the confirmation
             await interaction.reply({ embeds: [embed] });
@@ -45,7 +45,7 @@ module.exports = {
         } catch (error) {
             console.error('Error clearing reservations:', error);
             await interaction.reply({
-                content: 'An error occurred while clearing reservations.',
+                content: 'Si è verificato un errore durante la cancellazione delle reserve.',
                 ephemeral: true
             });
         }

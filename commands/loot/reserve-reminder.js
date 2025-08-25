@@ -6,13 +6,13 @@ const { getCurrentWeekMonday, loadReservations } = require('../../utils/reservat
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-reminder')
-        .setDescription('Configure your reservation reminders'),
+        .setDescription('Configura i promemoria delle tue prenotazioni'),
 
     async execute(interaction) {
         // Check if user is a raider
         if (!await isRaider(interaction.member)) {
             return interaction.reply({
-                content: 'Only Raiders can configure reservation reminders.',
+                content: 'Solo i Raiders possono configurare i promemoria delle prenotazioni.',
                 ephemeral: true
             });
         }
@@ -23,32 +23,32 @@ module.exports = {
         // Create enable/disable button
         const enableButton = new ButtonBuilder()
             .setCustomId('toggle_reminders')
-            .setLabel(currentPreferences.enabled ? 'Disable Reminders' : 'Enable Reminders')
+            .setLabel(currentPreferences.enabled ? 'Disattiva promemoria' : 'Attiva promemoria')
             .setStyle(currentPreferences.enabled ? ButtonStyle.Danger : ButtonStyle.Success);
 
         // Create reminder type select menu
         const reminderTypeSelect = new StringSelectMenuBuilder()
             .setCustomId('reminder_type')
-            .setPlaceholder('Select Reminder Type')
+            .setPlaceholder('Seleziona tipo di promemoria')
             .setDisabled(!currentPreferences.enabled)
             .addOptions([
                 {
-                    label: 'No Reminders',
+                    label: 'Nessun promemoria',
                     value: 'none',
                     default: currentPreferences.type === 'none'
                 },
                 {
-                    label: 'Remind if No Reservations',
+                    label: 'Ricorda se nessuna prenotazione',
                     value: 'unreserved',
                     default: currentPreferences.type === 'unreserved'
                 },
                 {
-                    label: 'Show Current Reservations',
+                    label: 'Mostra prenotazioni correnti',
                     value: 'current',
                     default: currentPreferences.type === 'current'
                 },
                 {
-                    label: 'Both Types of Reminders',
+                    label: 'Entrambi i tipi di promemoria',
                     value: 'both',
                     default: currentPreferences.type === 'both'
                 }
@@ -57,22 +57,22 @@ module.exports = {
         // Create day select menu
         const daySelect = new StringSelectMenuBuilder()
             .setCustomId('reminder_day')
-            .setPlaceholder('Select Reminder Day')
+            .setPlaceholder('Seleziona giorno del promemoria')
             .setDisabled(!currentPreferences.enabled)
             .addOptions([
-                { label: 'Monday', value: '1' },
-                { label: 'Tuesday', value: '2' },
-                { label: 'Wednesday', value: '3' },
-                { label: 'Thursday', value: '4' },
-                { label: 'Friday', value: '5' },
-                { label: 'Saturday', value: '6' },
-                { label: 'Sunday', value: '0' }
+                { label: 'Lunedì', value: '1' },
+                { label: 'Martedì', value: '2' },
+                { label: 'Mercoledì', value: '3' },
+                { label: 'Giovedì', value: '4' },
+                { label: 'Venerdì', value: '5' },
+                { label: 'Sabato', value: '6' },
+                { label: 'Domenica', value: '0' }
             ]);
 
         // Create hour select menu (0-23)
         const hourSelect = new StringSelectMenuBuilder()
             .setCustomId('reminder_hour')
-            .setPlaceholder('Select Reminder Hour')
+            .setPlaceholder('Seleziona ora del promemoria')
             .setDisabled(!currentPreferences.enabled)
             .addOptions(
                 Array.from({length: 24}, (_, i) => ({
@@ -89,13 +89,13 @@ module.exports = {
 
         // Create embed
         const embed = new EmbedBuilder()
-            .setTitle('Reservation Reminder Settings')
+            .setTitle('Impostazioni promemoria prenotazioni')
             .setDescription(
-                `Current Settings:\n` +
-                `Enabled: ${currentPreferences.enabled ? 'Yes' : 'No'}\n` +
-                `Reminder Type: ${currentPreferences.type}\n` +
-                `Reminder Day: ${currentPreferences.day ? ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][currentPreferences.day] : 'Not Set'}\n` +
-                `Reminder Hour: ${currentPreferences.hour !== null ? `${currentPreferences.hour}:00` : 'Not Set'}`
+                `Impostazioni correnti:\n` +
+                `Attivo: ${currentPreferences.enabled ? 'Sì' : 'No'}\n` +
+                `Tipo di promemoria: ${currentPreferences.type}\n` +
+                `Giorno del promemoria: ${currentPreferences.day !== null ? ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'][currentPreferences.day] : 'Non impostato'}\n` +
+                `Ora del promemoria: ${currentPreferences.hour !== null ? `${currentPreferences.hour}:00` : 'Non impostato'}`
             )
             .setColor(0x0099FF);
 
@@ -142,39 +142,39 @@ module.exports = {
             // Update the embed and components
             const updatedEmbed = EmbedBuilder.from(embed)
                 .setDescription(
-                    `Current Settings:\n` +
-                    `Enabled: ${updatedPreferences.enabled ? 'Yes' : 'No'}\n` +
-                    `Reminder Type: ${updatedPreferences.type}\n` +
-                    `Reminder Day: ${updatedPreferences.day !== null ? ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][updatedPreferences.day] : 'Not Set'}\n` +
-                    `Reminder Hour: ${updatedPreferences.hour !== null ? `${updatedPreferences.hour}:00` : 'Not Set'}`
+                    `Impostazioni correnti:\n` +
+                    `Attivo: ${updatedPreferences.enabled ? 'Sì' : 'No'}\n` +
+                    `Tipo di promemoria: ${updatedPreferences.type}\n` +
+                    `Giorno del promemoria: ${updatedPreferences.day !== null ? ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'][updatedPreferences.day] : 'Non impostato'}\n` +
+                    `Ora del promemoria: ${updatedPreferences.hour !== null ? `${updatedPreferences.hour}:00` : 'Non impostato'}`
                 );
 
             // Recreate components with updated state
             const updatedEnableButton = new ButtonBuilder()
                 .setCustomId('toggle_reminders')
-                .setLabel(updatedPreferences.enabled ? 'Disable Reminders' : 'Enable Reminders')
+                .setLabel(updatedPreferences.enabled ? 'Disattiva promemoria' : 'Attiva promemoria')
                 .setStyle(updatedPreferences.enabled ? ButtonStyle.Danger : ButtonStyle.Success);
 
             const updatedTypeSelect = StringSelectMenuBuilder.from(reminderTypeSelect)
                 .setDisabled(!updatedPreferences.enabled)
                 .setOptions([
                     {
-                        label: 'No Reminders',
+                        label: 'Nessun promemoria',
                         value: 'none',
                         default: updatedPreferences.type === 'none'
                     },
                     {
-                        label: 'Remind if No Reservations',
+                        label: 'Ricorda se nessuna prenotazione',
                         value: 'unreserved',
                         default: updatedPreferences.type === 'unreserved'
                     },
                     {
-                        label: 'Show Current Reservations',
+                        label: 'Mostra prenotazioni correnti',
                         value: 'current',
                         default: updatedPreferences.type === 'current'
                     },
                     {
-                        label: 'Both Types of Reminders',
+                        label: 'Entrambi i tipi di promemoria',
                         value: 'both',
                         default: updatedPreferences.type === 'both'
                     }

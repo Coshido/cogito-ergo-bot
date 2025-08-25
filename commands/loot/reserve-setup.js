@@ -8,22 +8,22 @@ const CONFIG_PATH = path.join(__dirname, '..', '..', 'database', 'config.json');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-setup')
-        .setDescription('Set up raid leader and raider roles')
+        .setDescription('Configura i ruoli di Raid Leader e Raider')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .addRoleOption(option => 
             option.setName('raid_leader_role')
-                .setDescription('Select the Raid Leader role')
+                .setDescription('Seleziona il ruolo Raid Leader')
                 .setRequired(true))
         .addRoleOption(option => 
             option.setName('raider_role')
-                .setDescription('Select the Raider role')
+                .setDescription('Seleziona il ruolo Raider')
                 .setRequired(true)),
 
     async execute(interaction) {
         // Check admin or authorized user permissions
         if (!isAdminOrAuthorizedUser(interaction)) {
             return interaction.reply({
-                content: 'You do not have permission to use this command.',
+                content: 'Non hai il permesso di usare questo comando.',
                 ephemeral: true
             });
         }
@@ -70,13 +70,13 @@ module.exports = {
             fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
 
             await interaction.reply({
-                content: `Raid Leader role set to ${raidLeaderRole.name} and Raider role set to ${raiderRole.name}`,
+                content: `Ruolo Raid Leader impostato su ${raidLeaderRole.name} e ruolo Raider impostato su ${raiderRole.name}`,
                 ephemeral: false
             });
         } catch (error) {
             console.error('Error writing config file:', error);
             await interaction.reply({
-                content: `Error setting up roles: ${error.message}`,
+                content: `Errore durante la configurazione dei ruoli: ${error.message}`,
                 ephemeral: true
             });
         }

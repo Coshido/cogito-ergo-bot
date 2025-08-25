@@ -11,7 +11,7 @@ module.exports = {
             } catch (error) {
                 console.error('Help interaction error:', error);
                 await interaction.reply({
-                    content: 'There was an error processing your help request.',
+                    content: 'Si è verificato un errore durante l\'elaborazione della tua richiesta di aiuto.',
                     ephemeral: true
                 });
             }
