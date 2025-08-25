@@ -126,10 +126,40 @@ function isEquipment(item) {
     return false;
 }
 
+// Try to load optional token->classes mapping from database/token-classes.json
+async function loadTokenClassesMap() {
+    try {
+        const filePath = path.join(__dirname, '..', 'database', 'token-classes.json');
+        const content = await fs.readFile(filePath, 'utf8');
+        const json = JSON.parse(content);
+        // Expecting shape: { byId: { "12345": ["Class1", ...] }, byName: { "token name lowercase": ["Class1", ...] } }
+        return json || {};
+    } catch (_) {
+        return {};
+    }
+}
+
+function resolveTokenClasses(item, tokenMap) {
+    if (!item) return undefined;
+    const byId = tokenMap.byId || {};
+    const byName = tokenMap.byName || {};
+    const fromId = byId[item.id?.toString()];
+    if (fromId && Array.isArray(fromId) && fromId.length) return fromId;
+    const lower = (item.name || '').toLowerCase();
+    const fromName = byName[lower];
+    if (fromName && Array.isArray(fromName) && fromName.length) return fromName;
+    return undefined;
+}
+
 async function processItemResponse(item, accessToken) {
     try {
         // Skip non-equipment items
         if (!isEquipment(item)) {
+            return null;
+        }
+
+        // Exclude cosmetic subclass items globally (e.g., cloaks labeled as Cosmetic)
+        if (item.item_subclass && (item.item_subclass.name === 'Cosmetic' || item.item_subclass.name === 'Cosmetico')) {
             return null;
         }
 
@@ -145,14 +175,44 @@ async function processItemResponse(item, accessToken) {
 
         const iconUrl = mediaResponse?.data?.assets?.[0]?.value;
 
+        // Build safe type string
+        let typeString = 'Varie';
+        const invName = typeof item.inventory_type === 'object' ? item.inventory_type?.name : item.inventory_type;
+        const subName = typeof item.item_subclass === 'object' ? item.item_subclass?.name : item.item_subclass;
+
+        if (item.itemType === 'token') {
+            typeString = 'Token';
+        } else if (invName || subName) {
+            typeString = `${invName || ''} ${subName || ''}`.trim();
+        }
+
+        // Attach token classes if applicable
+        let tokenClasses;
+        if (item.itemType === 'token') {
+            // 1) Try to read classes directly from the API payload
+            try {
+                const links = item?.preview_item?.requirements?.playable_classes?.links;
+                if (Array.isArray(links) && links.length) {
+                    tokenClasses = links.map(l => l?.name).filter(Boolean);
+                }
+            } catch (_) { /* ignore */ }
+
+            // 2) Fallback to optional local mapping file if API did not provide classes
+            if (!tokenClasses || tokenClasses.length === 0) {
+                const tokenMap = await loadTokenClassesMap();
+                tokenClasses = resolveTokenClasses(item, tokenMap);
+            }
+        }
+
         return {
             id: item.id.toString(),
             name: item.name,
-            type: `${item.inventory_type.name} ${item.item_subclass.name}`,
+            type: typeString,
             ilvl: item.level,
             icon: iconUrl,
             wowhead_url: `https://www.wowhead.com/item=${item.id}`,
-            image_url: iconUrl
+            image_url: iconUrl,
+            ...(tokenClasses ? { tokenClasses } : {})
         };
     } catch (error) {
         console.error(`Error processing item ${item.id}:`, error);
@@ -293,13 +353,30 @@ async function fetchRaidData(accessToken, raidName = 'Manaforge Omega') {
 
             // Get loot table for this encounter
             if (encounterDetails.data.items) {
+                // Deduplicate item IDs before fetching (avoid duplicate API calls and duplicate loot entries)
+                const seenItemIds = new Set();
                 for (const item of encounterDetails.data.items) {
-                    console.log(`Fetching item data: ${item.item.id}`);
-                    const lootItem = await fetchItemData(item.item.id, accessToken);
+                    const itemId = item?.item?.id;
+                    if (!itemId) continue;
+                    if (seenItemIds.has(itemId)) {
+                        console.log(`Skipping duplicate item ${itemId} for boss ${encounter.name}`);
+                        continue;
+                    }
+                    seenItemIds.add(itemId);
+
+                    console.log(`Fetching item data: ${itemId}`);
+                    const lootItem = await fetchItemData(itemId, accessToken);
                     if (lootItem) {
                         bossData.loot.push(lootItem);
                     }
                 }
+
+                // Extra safety: ensure no duplicate IDs slipped through
+                const uniqueById = new Map();
+                for (const li of bossData.loot) {
+                    if (!uniqueById.has(li.id)) uniqueById.set(li.id, li);
+                }
+                bossData.loot = Array.from(uniqueById.values());
             }
 
             raid.bosses.push(bossData);

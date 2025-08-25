@@ -30,13 +30,29 @@ function getRandomItem(arr) {
 
 // Generate reservations
 function generateReservations() {
+    // Read desired count from CLI: node scripts/generate-mock-reserves.js 25
+    const rawArg = process.argv[2];
+    let count = parseInt(rawArg, 10);
+    if (Number.isNaN(count) || count <= 0) count = 20;
+
     const currentWeek = getCurrentWeekMonday();
     const weeklyReservations = {};
 
-    // Shuffle and slice character names to get 20 unique characters
-    const selectedCharacters = characterNames
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 20);
+    // Build enough character names and usernames to satisfy count
+    const baseChars = [...characterNames].sort(() => 0.5 - Math.random());
+    const baseUsers = [...usernames].sort(() => 0.5 - Math.random());
+
+    const selectedCharacters = Array.from({ length: count }, (_, i) => {
+        const name = baseChars[i % baseChars.length];
+        // Add a suffix when we wrap to keep them distinguishable
+        const suffix = Math.floor(i / baseChars.length);
+        return suffix > 0 ? `${name}_${suffix + 1}` : name;
+    });
+    const selectedUsernames = Array.from({ length: count }, (_, i) => {
+        const name = baseUsers[i % baseUsers.length];
+        const suffix = Math.floor(i / baseUsers.length);
+        return suffix > 0 ? `${name}${suffix + 1}` : name;
+    });
 
     selectedCharacters.forEach((characterName, index) => {
         // Select a random boss
@@ -50,7 +66,7 @@ function generateReservations() {
 
         weeklyReservations[userId] = {
             character_name: characterName,
-            discord_username: usernames[index],
+            discord_username: selectedUsernames[index],
             items: [{
                 boss: boss.name,
                 name: item.name

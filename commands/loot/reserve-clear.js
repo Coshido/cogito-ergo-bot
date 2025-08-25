@@ -6,13 +6,13 @@ const { isRaidLeader } = require('../../utils/permission-utils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-clear')
-        .setDescription('Clear ALL reservations across ALL weeks (Raid Leaders only)'),
+        .setDescription('Cancella tutte le reserve salvate, il processo è irreversibile.'),
 
     async execute(interaction) {
         // Check if the user is a Raid Leader
         if (!await isRaidLeader(interaction.member)) {
             await interaction.reply({
-                content: 'You do not have permission to clear reservations. Only Raid Leaders can use this command.',
+                content: 'Non hai i permessi per cancellare tutte le reserve. Solo i Raid Leaders possono eseguire questo comando.',
                 ephemeral: true
             });
             return;

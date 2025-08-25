@@ -5,7 +5,7 @@ const path = require('path');
 const ImageComposer = require('../../utils/image-composer');
 const { AttachmentBuilder } = require('discord.js');
 const { getCurrentWeekMonday, loadReservations, saveReservations, ensureCurrentWeekReservations } = require('../../utils/reservation-utils');
-const { createItemSelectMenu } = require('../../utils/discord-utils');
+const { createItemSelectMenu, formatItemNameWithClasses } = require('../../utils/discord-utils');
 const { isRaider } = require('../../utils/permission-utils');
 
 module.exports = {
@@ -44,7 +44,7 @@ module.exports = {
             const attachment = new AttachmentBuilder(reservationImage, { name: 'current-reservations.png' });
 
             const wowheadLinks = userData.items
-                .map((item, index) => `${index + 1}- [${item.name}](${item.wowhead_url})`)
+                .map((item, index) => `${index + 1}- [${formatItemNameWithClasses(item)}](${item.wowhead_url})`)
                 .join('\n');
 
             const embed = new EmbedBuilder()
@@ -194,7 +194,7 @@ module.exports = {
 
                     // Create WowHead links list
                     const wowheadLinks = selectedBoss.loot
-                        .map((item, index) => `${index + 1}- [${item.name}](${item.wowhead_url})`)
+                        .map((item, index) => `${index + 1}- [${formatItemNameWithClasses(item)}](${item.wowhead_url})`)
                         .join('\n');
 
                     const lootEmbed = new EmbedBuilder()
@@ -252,6 +252,7 @@ module.exports = {
                         ilvl: selectedItem.ilvl,
                         icon: selectedItem.icon,
                         wowhead_url: selectedItem.wowhead_url,
+                        ...(selectedItem.tokenClasses ? { tokenClasses: selectedItem.tokenClasses } : {}),
                         character_name: userState.characterName
                     });
 
@@ -265,7 +266,7 @@ module.exports = {
                             .setColor(0x0099FF)
                             .setTitle(`${raidData.raid} - Second Item Selection`)
                             .setDescription('Select a boss for your second item.\n\nFirst selection:\n' +
-                                `- ${selectedItem.name} from ${userState.currentBoss.name}`)
+                                `- ${formatItemNameWithClasses(selectedItem)} from ${userState.currentBoss.name}`)
                             .setFooter({ text: `Step ${userState.currentStep} of 3: Boss Selection` });
 
                         // Recreate the original boss selection rows
@@ -295,7 +296,7 @@ module.exports = {
                             .setDescription(
                                 `Please review and confirm your selections for character **${userState.characterName}**:\n\n` +
                                 userState.selectedItems.map((item, index) => 
-                                    `${index + 1}. ${item.name} from ${item.boss}`
+                                    `${index + 1}. ${formatItemNameWithClasses(item)} from ${item.boss}`
                                 ).join('\n')
                             )
                             .setFooter({ text: 'Step 3 of 3: Confirmation' });
@@ -369,7 +370,8 @@ module.exports = {
                                 type: item.type,
                                 ilvl: item.ilvl,
                                 icon: item.icon,
-                                wowhead_url: item.wowhead_url
+                                wowhead_url: item.wowhead_url,
+                                ...(item.tokenClasses ? { tokenClasses: item.tokenClasses } : {})
                             }))
                         };
 
@@ -390,7 +392,7 @@ module.exports = {
                             .setDescription(
                                 `Your items have been reserved for this week for character **${userState.characterName}**!\n\n` +
                                 `**Link su WowHead**\n${userState.selectedItems.map((item, index) => 
-                                    `${index + 1}- [${item.name}](${item.wowhead_url})`
+                                    `${index + 1}- [${formatItemNameWithClasses(item)}](${item.wowhead_url})`
                                 ).join('\n')}`
                             );
 

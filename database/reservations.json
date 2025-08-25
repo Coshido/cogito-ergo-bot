@@ -1,3 +1,611 @@
 {
-  "weekly_reservations": {}
+  "weekly_reservations": {
+    "2025-08-24": {
+      "user_1": {
+        "character_name": "Nyx",
+        "discord_username": "BloodMoon",
+        "items": [
+          {
+            "boss": "I Cacciatori d'Anime",
+            "name": "Marchio Maledetto Anelante Truce"
+          }
+        ]
+      },
+      "user_2": {
+        "character_name": "Nova",
+        "discord_username": "DarkRider",
+        "items": [
+          {
+            "boss": "Tessiforgia Araz",
+            "name": "Meraviglia della Tecnomanzia"
+          }
+        ]
+      },
+      "user_3": {
+        "character_name": "Zara",
+        "discord_username": "SilentStrike",
+        "items": [
+          {
+            "boss": "Loom'ithar",
+            "name": "Calcatane Allacciati"
+          }
+        ]
+      },
+      "user_4": {
+        "character_name": "Zen",
+        "discord_username": "FireHeart",
+        "items": [
+          {
+            "boss": "Dimensius il Divoratore",
+            "name": "Polsiere Foderate del Tempo Compresso"
+          }
+        ]
+      },
+      "user_5": {
+        "character_name": "Raven",
+        "discord_username": "MysticWarden",
+        "items": [
+          {
+            "boss": "I Cacciatori d'Anime",
+            "name": "Orizzonte degli Eventi"
+          }
+        ]
+      },
+      "user_6": {
+        "character_name": "Aria",
+        "discord_username": "CrimsonTide",
+        "items": [
+          {
+            "boss": "Vincolatrice d'Anime Naazindhri",
+            "name": "Legami Eterei Freschi"
+          }
+        ]
+      },
+      "user_7": {
+        "character_name": "Vex",
+        "discord_username": "SilverArrow",
+        "items": [
+          {
+            "boss": "Fractillus",
+            "name": "Nucleo del Vuoto Adamantino"
+          }
+        ]
+      },
+      "user_8": {
+        "character_name": "Eldrin",
+        "discord_username": "IronFist",
+        "items": [
+          {
+            "boss": "Fractillus",
+            "name": "Gambali Foderati di Schegge Fuse"
+          }
+        ]
+      },
+      "user_9": {
+        "character_name": "Iris",
+        "discord_username": "DragonSlayer",
+        "items": [
+          {
+            "boss": "Fractillus",
+            "name": "Kris di Vuotovitreo"
+          }
+        ]
+      },
+      "user_10": {
+        "character_name": "Ash",
+        "discord_username": "WindRider",
+        "items": [
+          {
+            "boss": "Sentinella del Plesso",
+            "name": "Alabarda Raggiante dell'Annientamento"
+          }
+        ]
+      },
+      "user_11": {
+        "character_name": "Rowan",
+        "discord_username": "EchoReaper",
+        "items": [
+          {
+            "boss": "Vincolatrice d'Anime Naazindhri",
+            "name": "Crisalide delle Anime Recise"
+          }
+        ]
+      },
+      "user_12": {
+        "character_name": "Lyra",
+        "discord_username": "ShadowWalker",
+        "items": [
+          {
+            "boss": "Sentinella del Plesso",
+            "name": "Filtro d'Impurità Irradiato"
+          }
+        ]
+      },
+      "user_13": {
+        "character_name": "Kael",
+        "discord_username": "EarthShaker",
+        "items": [
+          {
+            "boss": "Loom'ithar",
+            "name": "Calcatane Allacciati"
+          }
+        ]
+      },
+      "user_14": {
+        "character_name": "Soren",
+        "discord_username": "NightWhisper",
+        "items": [
+          {
+            "boss": "Vincolatrice d'Anime Naazindhri",
+            "name": "Artigli da Addestramento Svincolati"
+          }
+        ]
+      },
+      "user_15": {
+        "character_name": "Kai",
+        "discord_username": "RuneMaster",
+        "items": [
+          {
+            "boss": "Dimensius il Divoratore",
+            "name": "Artigli della Resistenza Fallita"
+          }
+        ]
+      },
+      "user_16": {
+        "character_name": "Ember",
+        "discord_username": "SoulBinder",
+        "items": [
+          {
+            "boss": "Dimensius il Divoratore",
+            "name": "Mazza Ferrata Ergosferica"
+          }
+        ]
+      },
+      "user_17": {
+        "character_name": "Thorin",
+        "discord_username": "MoonLight",
+        "items": [
+          {
+            "boss": "Sentinella del Plesso",
+            "name": "Gonnellino del Setaccio"
+          }
+        ]
+      },
+      "user_18": {
+        "character_name": "Dax",
+        "discord_username": "StarBlade",
+        "items": [
+          {
+            "boss": "Sentinella del Plesso",
+            "name": "Alabarda Raggiante dell'Annientamento"
+          }
+        ]
+      },
+      "user_19": {
+        "character_name": "Rune",
+        "discord_username": "StormCaller",
+        "items": [
+          {
+            "boss": "Vincolatrice d'Anime Naazindhri",
+            "name": "Mantofatuo della Vincolatrice d'Anime"
+          }
+        ]
+      },
+      "user_20": {
+        "character_name": "Luna",
+        "discord_username": "LightBringer",
+        "items": [
+          {
+            "boss": "Vincolatrice d'Anime Naazindhri",
+            "name": "Artigli del Fuso della Morte"
+          }
+        ]
+      },
+      "user_21": {
+        "character_name": "Nyx_2",
+        "discord_username": "BloodMoon2",
+        "items": [
+          {
+            "boss": "I Cacciatori d'Anime",
+            "name": "Fibbia della Libertà Furiosa"
+          }
+        ]
+      },
+      "user_22": {
+        "character_name": "Nova_2",
+        "discord_username": "DarkRider2",
+        "items": [
+          {
+            "boss": "Re del Nexus Salhadaar",
+            "name": "Lama del Sovrano del Vuotovitreo"
+          }
+        ]
+      },
+      "user_23": {
+        "character_name": "Zara_2",
+        "discord_username": "SilentStrike2",
+        "items": [
+          {
+            "boss": "Sentinella del Plesso",
+            "name": "Plessomartello Velocizzato"
+          }
+        ]
+      },
+      "user_24": {
+        "character_name": "Zen_2",
+        "discord_username": "FireHeart2",
+        "items": [
+          {
+            "boss": "Tessiforgia Araz",
+            "name": "Sciabola Suprema Fotonica"
+          }
+        ]
+      },
+      "user_25": {
+        "character_name": "Raven_2",
+        "discord_username": "MysticWarden2",
+        "items": [
+          {
+            "boss": "Re del Nexus Salhadaar",
+            "name": "Fauci del Vuoto"
+          }
+        ]
+      },
+      "user_26": {
+        "character_name": "Aria_2",
+        "discord_username": "CrimsonTide2",
+        "items": [
+          {
+            "boss": "Re del Nexus Salhadaar",
+            "name": "Coprigambe della Guardia dell'Ombra d'Élite"
+          }
+        ]
+      },
+      "user_27": {
+        "character_name": "Vex_2",
+        "discord_username": "SilverArrow2",
+        "items": [
+          {
+            "boss": "Tessiforgia Araz",
+            "name": "Sciabola Suprema Fotonica"
+          }
+        ]
+      },
+      "user_28": {
+        "character_name": "Eldrin_2",
+        "discord_username": "IronFist2",
+        "items": [
+          {
+            "boss": "Loom'ithar",
+            "name": "Spalletti Predestinati"
+          }
+        ]
+      },
+      "user_29": {
+        "character_name": "Iris_2",
+        "discord_username": "DragonSlayer2",
+        "items": [
+          {
+            "boss": "Fractillus",
+            "name": "Calcadune Cinetici"
+          }
+        ]
+      },
+      "user_30": {
+        "character_name": "Ash_2",
+        "discord_username": "WindRider2",
+        "items": [
+          {
+            "boss": "Re del Nexus Salhadaar",
+            "name": "Cintura Terrificante del Mietitore"
+          }
+        ]
+      },
+      "user_31": {
+        "character_name": "Rowan_2",
+        "discord_username": "EchoReaper2",
+        "items": [
+          {
+            "boss": "Fractillus",
+            "name": "Bracciali di Vetro Congiunto"
+          }
+        ]
+      },
+      "user_32": {
+        "character_name": "Lyra_2",
+        "discord_username": "ShadowWalker2",
+        "items": [
+          {
+            "boss": "Re del Nexus Salhadaar",
+            "name": "Grancalzari della Servitù Sfregiata"
+          }
+        ]
+      },
+      "user_33": {
+        "character_name": "Kael_2",
+        "discord_username": "EarthShaker2",
+        "items": [
+          {
+            "boss": "I Cacciatori d'Anime",
+            "name": "Lame Fasiche Collassanti"
+          }
+        ]
+      },
+      "user_34": {
+        "character_name": "Soren_2",
+        "discord_username": "NightWhisper2",
+        "items": [
+          {
+            "boss": "Dimensius il Divoratore",
+            "name": "Mazza Ferrata Ergosferica"
+          }
+        ]
+      },
+      "user_35": {
+        "character_name": "Kai_2",
+        "discord_username": "RuneMaster2",
+        "items": [
+          {
+            "boss": "Sentinella del Plesso",
+            "name": "Plessomartello di Serie"
+          }
+        ]
+      },
+      "user_36": {
+        "character_name": "Ember_2",
+        "discord_username": "SoulBinder2",
+        "items": [
+          {
+            "boss": "Sentinella del Plesso",
+            "name": "Plessomartello di Serie"
+          }
+        ]
+      },
+      "user_37": {
+        "character_name": "Thorin_2",
+        "discord_username": "MoonLight2",
+        "items": [
+          {
+            "boss": "Re del Nexus Salhadaar",
+            "name": "Velo del Tiranno del Crepuscolo"
+          }
+        ]
+      },
+      "user_38": {
+        "character_name": "Dax_2",
+        "discord_username": "StarBlade2",
+        "items": [
+          {
+            "boss": "Tessiforgia Araz",
+            "name": "Meraviglia della Tecnomanzia"
+          }
+        ]
+      },
+      "user_39": {
+        "character_name": "Rune_2",
+        "discord_username": "StormCaller2",
+        "items": [
+          {
+            "boss": "Re del Nexus Salhadaar",
+            "name": "Aculeo Fatuo Vendicativo"
+          }
+        ]
+      },
+      "user_40": {
+        "character_name": "Luna_2",
+        "discord_username": "LightBringer2",
+        "items": [
+          {
+            "boss": "Loom'ithar",
+            "name": "Protezione della Bestia Tessente"
+          }
+        ]
+      },
+      "user_41": {
+        "character_name": "Nyx_3",
+        "discord_username": "BloodMoon3",
+        "items": [
+          {
+            "boss": "I Cacciatori d'Anime",
+            "name": "Sigillo della Caccia Cosmica"
+          }
+        ]
+      },
+      "user_42": {
+        "character_name": "Nova_3",
+        "discord_username": "DarkRider3",
+        "items": [
+          {
+            "boss": "Dimensius il Divoratore",
+            "name": "Vera dell'Anima Infranta"
+          }
+        ]
+      },
+      "user_43": {
+        "character_name": "Zara_3",
+        "discord_username": "SilentStrike3",
+        "items": [
+          {
+            "boss": "Fractillus",
+            "name": "Prisma Fatuo Inflessibile"
+          }
+        ]
+      },
+      "user_44": {
+        "character_name": "Zen_3",
+        "discord_username": "FireHeart3",
+        "items": [
+          {
+            "boss": "Vincolatrice d'Anime Naazindhri",
+            "name": "Frusta Mistica di Naazindhri"
+          }
+        ]
+      },
+      "user_45": {
+        "character_name": "Raven_3",
+        "discord_username": "MysticWarden3",
+        "items": [
+          {
+            "boss": "Fractillus",
+            "name": "Bracciali di Vetro Congiunto"
+          }
+        ]
+      },
+      "user_46": {
+        "character_name": "Aria_3",
+        "discord_username": "CrimsonTide3",
+        "items": [
+          {
+            "boss": "Vincolatrice d'Anime Naazindhri",
+            "name": "Abito della Riunione Spirituale"
+          }
+        ]
+      },
+      "user_47": {
+        "character_name": "Vex_3",
+        "discord_username": "SilverArrow3",
+        "items": [
+          {
+            "boss": "Loom'ithar",
+            "name": "Calcatane Allacciati"
+          }
+        ]
+      },
+      "user_48": {
+        "character_name": "Eldrin_3",
+        "discord_username": "IronFist3",
+        "items": [
+          {
+            "boss": "Tessiforgia Araz",
+            "name": "Sciabola Suprema Fotonica"
+          }
+        ]
+      },
+      "user_49": {
+        "character_name": "Iris_3",
+        "discord_username": "DragonSlayer3",
+        "items": [
+          {
+            "boss": "Fractillus",
+            "name": "Morso delle Distese Astrali"
+          }
+        ]
+      },
+      "user_50": {
+        "character_name": "Ash_3",
+        "discord_username": "WindRider3",
+        "items": [
+          {
+            "boss": "Vincolatrice d'Anime Naazindhri",
+            "name": "Abito della Riunione Spirituale"
+          }
+        ]
+      },
+      "user_51": {
+        "character_name": "Rowan_3",
+        "discord_username": "EchoReaper3",
+        "items": [
+          {
+            "boss": "I Cacciatori d'Anime",
+            "name": "Calzari a Piastre dell'Intruso"
+          }
+        ]
+      },
+      "user_52": {
+        "character_name": "Lyra_3",
+        "discord_username": "ShadowWalker3",
+        "items": [
+          {
+            "boss": "Tessiforgia Araz",
+            "name": "Meraviglia della Tecnomanzia"
+          }
+        ]
+      },
+      "user_53": {
+        "character_name": "Kael_3",
+        "discord_username": "EarthShaker3",
+        "items": [
+          {
+            "boss": "Fractillus",
+            "name": "Lanciacorrente Lacerato"
+          }
+        ]
+      },
+      "user_54": {
+        "character_name": "Soren_3",
+        "discord_username": "NightWhisper3",
+        "items": [
+          {
+            "boss": "Re del Nexus Salhadaar",
+            "name": "Aculeo Fatuo Vendicativo"
+          }
+        ]
+      },
+      "user_55": {
+        "character_name": "Kai_3",
+        "discord_username": "RuneMaster3",
+        "items": [
+          {
+            "boss": "Sentinella del Plesso",
+            "name": "Stivali dell'Espulsione Sterilizzata"
+          }
+        ]
+      },
+      "user_56": {
+        "character_name": "Ember_3",
+        "discord_username": "SoulBinder3",
+        "items": [
+          {
+            "boss": "Loom'ithar",
+            "name": "Calcatane Allacciati"
+          }
+        ]
+      },
+      "user_57": {
+        "character_name": "Thorin_3",
+        "discord_username": "MoonLight3",
+        "items": [
+          {
+            "boss": "Loom'ithar",
+            "name": "Cinta Vitale Colossale"
+          }
+        ]
+      },
+      "user_58": {
+        "character_name": "Dax_3",
+        "discord_username": "StarBlade3",
+        "items": [
+          {
+            "boss": "Dimensius il Divoratore",
+            "name": "Polsiere Foderate del Tempo Compresso"
+          }
+        ]
+      },
+      "user_59": {
+        "character_name": "Rune_3",
+        "discord_username": "StormCaller3",
+        "items": [
+          {
+            "boss": "Dimensius il Divoratore",
+            "name": "Cordone della Singolarità"
+          }
+        ]
+      },
+      "user_60": {
+        "character_name": "Luna_3",
+        "discord_username": "LightBringer3",
+        "items": [
+          {
+            "boss": "Sentinella del Plesso",
+            "name": "Plessomartello Velocizzato"
+          }
+        ]
+      },
+      "127455315636649985": {
+        "character_name": null,
+        "discord_username": null,
+        "items": []
+      }
+    }
+  }
 }

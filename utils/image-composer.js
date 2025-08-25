@@ -170,6 +170,107 @@ class ImageComposer {
         return canvas.toBuffer();
     }
 
+    /**
+     * Create a single combined image for all bosses' reservations.
+     * sections: Array<{ bossName: string, items: Array<{ name: string, image_url?: string, reservers: Array<{username: string, characterName: string}> }> }>
+     */
+    static async createAllReservationsImage(sections) {
+        if (!fontRegistered) {
+            throw new Error('Unable to register font. Cannot generate image.');
+        }
+
+        const ICON = 64;
+        const PADDING = 24;
+        const TEXT_COL_WIDTH = 900;
+        const LINE_H = 36;
+        const BOSS_HEADER_H = 64 + PADDING; // title + spacing
+
+        // Pre-measure to compute canvas height
+        const measureCanvas = createCanvas(10, 10);
+        const mctx = measureCanvas.getContext('2d');
+        const wrap = (font, text) => {
+            mctx.font = font;
+            const words = String(text || '').split(' ');
+            const lines = [];
+            let cur = words[0] || '';
+            for (let i = 1; i < words.length; i++) {
+                const w = words[i];
+                if (mctx.measureText(cur + ' ' + w).width < TEXT_COL_WIDTH) cur += ' ' + w; else { lines.push(cur); cur = w; }
+            }
+            if (cur) lines.push(cur);
+            return lines.length || 1;
+        };
+
+        let totalHeight = PADDING; // top padding
+        sections.forEach(sec => {
+            if (!sec.items || sec.items.length === 0) return;
+            totalHeight += BOSS_HEADER_H;
+            sec.items.forEach(item => {
+                const nameLines = wrap('bold 28px "DejaVu Sans"', item.name);
+                const reserverCount = (item.reservers || []).length;
+                const reserverHeight = reserverCount * LINE_H;
+                const blockHeight = Math.max(ICON, nameLines * LINE_H) + reserverHeight + PADDING;
+                totalHeight += blockHeight + PADDING; // item block + spacing
+            });
+            totalHeight += PADDING; // extra spacing after boss
+        });
+
+        const width = PADDING + ICON + PADDING + TEXT_COL_WIDTH + PADDING;
+        const height = Math.max(totalHeight, 200);
+
+        const canvas = createCanvas(width, height);
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = '#2f3136';
+        ctx.fillRect(0, 0, width, height);
+
+        let y = PADDING;
+        for (const sec of sections) {
+            if (!sec.items || sec.items.length === 0) continue;
+
+            // Boss header
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 40px "DejaVu Sans"';
+            ctx.fillText(String(sec.bossName || '').toUpperCase(), PADDING, y + 40);
+            y += BOSS_HEADER_H;
+
+            for (const item of sec.items) {
+                // Icon
+                try {
+                    const img = await this.safeLoadImage(item.image_url || item.icon);
+                    ctx.drawImage(img, PADDING, y, ICON, ICON);
+                } catch {}
+
+                // Texts
+                let textX = PADDING + ICON + PADDING;
+                let textY = y + 28;
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 28px "DejaVu Sans"';
+                const nameLines = this.wrapText(ctx, String(item.name || ''), TEXT_COL_WIDTH);
+                nameLines.forEach(line => { ctx.fillText(line, textX, textY); textY += LINE_H; });
+
+                const reservers = item.reservers || [];
+                if (reservers.length > 0) {
+                    ctx.font = '24px "DejaVu Sans"';
+                    reservers.forEach(r => {
+                        const line = `- ${r.username} (${r.characterName || 'Unknown'})`;
+                        ctx.fillText(line, textX, textY);
+                        textY += LINE_H;
+                    });
+                }
+
+                // Advance y for next item
+                y = Math.max(y + ICON + PADDING, textY + PADDING);
+            }
+
+            y += PADDING; // spacing after boss
+        }
+
+        return canvas.toBuffer();
+    }
+
     static async createReservationImage(items) {
         if (!fontRegistered) {
             throw new Error('Unable to register font. Cannot generate image.');
@@ -298,6 +399,100 @@ class ImageComposer {
         }
 
         return null;
+    }
+
+    /**
+     * Create a reservation summary image grouped by a single boss.
+     * items: Array<{ name: string, image_url?: string, reservers: Array<{username: string, characterName: string}> }>
+     */
+    static async createBossReservationsImage(bossName, items) {
+        if (!fontRegistered) {
+            throw new Error('Unable to register font. Cannot generate image.');
+        }
+
+        // Layout constants for this image type
+        const ICON = 64;
+        const PADDING = 24;
+        const TEXT_COL_WIDTH = 900;
+        const LINE_H = 36;
+        const ITEM_BLOCK_MIN_H = ICON + PADDING; // at least icon height
+
+        // Estimate height: per item (name + reservers), no boss header
+        let totalHeight = PADDING; // top padding
+
+        // We measure text roughly by counting lines after wrapping
+        // Prepare a temp canvas ctx for measurement
+        const measureCanvas = createCanvas(10, 10);
+        const mctx = measureCanvas.getContext('2d');
+        mctx.font = 'bold 32px "DejaVu Sans"';
+
+        // Helper to wrap lines approximately
+        const wrap = (font, text) => {
+            mctx.font = font;
+            const words = String(text || '').split(' ');
+            const lines = [];
+            let cur = words[0] || '';
+            for (let i = 1; i < words.length; i++) {
+                const w = words[i];
+                if (mctx.measureText(cur + ' ' + w).width < TEXT_COL_WIDTH) cur += ' ' + w; else { lines.push(cur); cur = w; }
+            }
+            if (cur) lines.push(cur);
+            return lines.length || 1;
+        };
+
+        items.forEach(item => {
+            const nameLineCount = wrap('bold 28px "DejaVu Sans"', item.name);
+            const reserverLines = (item.reservers || []).length; // one line per reserver, same as render
+            const contentHeight = (nameLineCount + reserverLines) * LINE_H;
+            const blockHeight = Math.max(ITEM_BLOCK_MIN_H, contentHeight) + PADDING; // include inner padding
+            totalHeight += blockHeight + PADDING; // spacing between items
+        });
+
+        const width = PADDING + ICON + PADDING + TEXT_COL_WIDTH + PADDING;
+        const height = Math.max(totalHeight, PADDING * 2 + ICON);
+
+        const canvas = createCanvas(width, height);
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = '#2f3136';
+        ctx.fillRect(0, 0, width, height);
+
+        // Start below top padding, no boss header text inside image
+        ctx.fillStyle = '#FFFFFF';
+        let y = PADDING;
+
+        for (const item of items) {
+            // Icon
+            try {
+                const img = await this.safeLoadImage(item.image_url || item.icon);
+                ctx.drawImage(img, PADDING, y, ICON, ICON);
+            } catch {}
+
+            // Texts
+            let textX = PADDING + ICON + PADDING;
+            let textY = y + 28;
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 28px "DejaVu Sans"';
+            const nameLines = this.wrapText(ctx, String(item.name || ''), TEXT_COL_WIDTH);
+            nameLines.forEach(line => { ctx.fillText(line, textX, textY); textY += LINE_H; });
+
+            const reservers = item.reservers || [];
+            if (reservers.length > 0) {
+                ctx.font = '24px "DejaVu Sans"';
+                reservers.forEach(r => {
+                    const line = `- ${r.username} (${r.characterName || 'Unknown'})`;
+                    ctx.fillText(line, textX, textY);
+                    textY += LINE_H;
+                });
+            }
+
+            // Next block: ensure at least ICON+padding space, or enough for all text + padding
+            y = Math.max(y + ICON + PADDING * 2, textY + PADDING);
+        }
+
+        return canvas.toBuffer();
     }
 }
 
