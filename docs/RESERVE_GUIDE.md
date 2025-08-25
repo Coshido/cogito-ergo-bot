@@ -18,7 +18,7 @@ Before using reservations, an admin must configure:
 ### 2. Reservation Management
 Key Commands:
 - `/reserve`: Make a new item reservation
-- `/reserve-list`: View current reservations
+- `/reserve-list`: View current reservations (Raid Leaders only)
 - `/reserve-edit`: Modify existing reservations
 - `/reserve-clear`: Clear all reservations (Raid Leaders only)
 
@@ -33,7 +33,6 @@ Key Commands:
 ### Raider Commands
 ```
 /reserve             Make a new item reservation
-/reserve-list        View current reservations
 /reserve-edit        Modify existing reservations
 /reserve-reminder    Configure reservation reminders
 ```
@@ -41,8 +40,22 @@ Key Commands:
 ### Raid Leader Commands
 ```
 /reserve-setup       Configure reservation roles
+/reserve-list        View current reservations (images by default; see options below)
 /reserve-clear       Clear all reservations for the week
 ```
+
+### Reserve List
+`/reserve-list [format]` — Raid Leaders only
+
+- Options:
+  * `format`: `images` (default) or `text`
+- Behavior:
+  * Default is images per boss; large outputs are split across multiple messages.
+  * Image mode defers the reply to avoid timeouts; both modes reply ephemerally.
+  * Cosmetic items are excluded automatically.
+- Examples:
+  * `/reserve-list` → images per boss (default)
+  * `/reserve-list format:text` → single embedded text summary
 
 ## Reservation Process
 1. Use `/reserve` to select:

@@ -8,32 +8,7 @@ This guide will walk you through the initial configuration of the Discord bot, c
 - Bot invited to the server with necessary permissions
 - Roles created for different bot functionalities
 
-## 1. Tournament Management Setup
-### Roles
-- Create roles:
-  * Tournament Manager Role
-  * Tournament Participant Role
-
-### Commands
-```
-/t-config set-manager-role     # Set tournament manager role
-/t-config set-tournament-role  # Set tournament participant role
-/t-config set-channel          # Set dedicated tournament channel
-```
-
-## 2. League Management Setup
-### Roles
-- Create roles:
-  * League Manager Role
-  * League Participant Role
-
-### Commands
-```
-/league-role-setup manager     # Set league manager role
-/league-role-setup participant # Set league participant role
-```
-
-## 3. Loot Reservation Setup
+## 1. Loot Reservation Setup
 ### Roles
 - Create roles:
   * Raid Leader Role
@@ -41,11 +16,20 @@ This guide will walk you through the initial configuration of the Discord bot, c
 
 ### Commands
 ```
-/reserve-setup raid-leader-role # Set raid leader role
-/reserve-setup raider-role      # Set raider role
+/reserve-setup raid-leader-role # Set raid leader role (ADMIN ONLY)
+/reserve-setup raider-role      # Set raider role (ADMIN ONLY)
 ```
 
-## 4. Birthday Tracking Setup
+### Reserve Commands and Permissions
+- Reserve listing and management commands are restricted to Raid Leaders at runtime (via `isRaidLeader`).
+- To also HIDE these commands from non–Raid Leaders in the Discord UI, configure Server Integrations (recommended):
+  1. Server Settings → Integrations → your bot → Commands
+  2. For each reserve command (e.g., `reserve-list`, `reserve-generate`, `reserve-clear`):
+     - Set "Who can use" to specific roles → select only your Raid Leader role
+  3. For setup commands (`reserve-setup`, `reserve set-channel`), allow only Administrators
+
+
+## 2. Birthday Tracking Setup
 ### Channels
 - Create a dedicated channel for birthday announcements
 
@@ -54,53 +38,29 @@ This guide will walk you through the initial configuration of the Discord bot, c
 /birthday-config channel # Set birthday announcement channel
 ```
 
-## 5. General Bot Configuration
+## 3. General Bot Configuration
 
 ### Recommended Role Hierarchy
 1. Administrator (highest)
 2. Raid Leaders
-3. Tournament Managers
-4. League Managers
-5. Raiders/Participants
-6. Members (lowest)
+3. Raiders
+4. Members (lowest)
 
 ### Permission Considerations
 - Ensure bot has:
-  * Manage Roles permission
-  * Manage Channels permission
-  * Send Messages permission
+  * Manage Roles
+  * Manage Channels
+  * Send Messages
   * Read Message History
   * Add Reactions
+  * Attach Files (for image mode)
 
-## 6. Environment Configuration
+## 4. Environment Configuration
 - Set up `.env` file with:
   * `BOT_TOKEN`
   * `CLIENT_ID`
   * `GUILD_ID`
 
-## 7. Dedicated Channels Strategy
-
-### Recommended Channel Setup
-1. **Tournament Management Channel**
-   - Purpose: All tournament-related commands and announcements
-   - Recommended Name: `#tournament-management`
-   - Access: Administrators and Tournament Managers
-   - Commands to run in this channel:
-     * `/t-config set-manager-role`
-     * `/t-config set-tournament-role`
-     * `/t-create`
-     * `/t-start`
-     * `/t-end`
-
-2. **League Management Channel**
-   - Purpose: All league-related commands and announcements
-   - Recommended Name: `#league-management`
-   - Access: Administrators and League Managers
-   - Commands to run in this channel:
-     * `/league-role-setup manager`
-     * `/league-role-setup participant`
-     * `/league-setup`
-     * `/league-match-report`
 
 ### Channel Visibility Recommendations
 - Create these channels as private
