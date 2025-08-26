@@ -13,8 +13,7 @@
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.7",
     "lua-format": "^1.5.2",
-    "node-cron": "^3.0.3",
-    "node-weakauras-parser": "github:Zireael-N/node-weakauras-parser"
+    "node-cron": "^3.0.3"
   },
   "devDependencies": {
     "wrangler": "^3.86.0"
