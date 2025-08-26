@@ -6,13 +6,13 @@ const { getCurrentWeekMonday, loadReservations } = require('../../utils/reservat
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-reminder')
-        .setDescription('Configura i promemoria delle tue prenotazioni'),
+        .setDescription('Configura i promemoria delle tue reserve'),
 
     async execute(interaction) {
         // Check if user is a raider
         if (!await isRaider(interaction.member)) {
             return interaction.reply({
-                content: 'Solo i Raiders possono configurare i promemoria delle prenotazioni.',
+                content: 'Solo i Raiders possono configurare i promemoria delle reserve.',
                 ephemeral: true
             });
         }
@@ -38,12 +38,12 @@ module.exports = {
                     default: currentPreferences.type === 'none'
                 },
                 {
-                    label: 'Ricorda se nessuna prenotazione',
+                    label: 'Ricorda se nessuna reserve',
                     value: 'unreserved',
                     default: currentPreferences.type === 'unreserved'
                 },
                 {
-                    label: 'Mostra prenotazioni correnti',
+                    label: 'Mostra reserve correnti',
                     value: 'current',
                     default: currentPreferences.type === 'current'
                 },
@@ -89,7 +89,7 @@ module.exports = {
 
         // Create embed
         const embed = new EmbedBuilder()
-            .setTitle('Impostazioni promemoria prenotazioni')
+            .setTitle('Impostazioni promemoria reserve')
             .setDescription(
                 `Impostazioni correnti:\n` +
                 `Attivo: ${currentPreferences.enabled ? 'Sì' : 'No'}\n` +
@@ -164,12 +164,12 @@ module.exports = {
                         default: updatedPreferences.type === 'none'
                     },
                     {
-                        label: 'Ricorda se nessuna prenotazione',
+                        label: 'Ricorda se nessuna reserve',
                         value: 'unreserved',
                         default: updatedPreferences.type === 'unreserved'
                     },
                     {
-                        label: 'Mostra prenotazioni correnti',
+                        label: 'Mostra reserve correnti',
                         value: 'current',
                         default: updatedPreferences.type === 'current'
                     },

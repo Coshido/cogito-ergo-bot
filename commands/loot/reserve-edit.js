@@ -49,13 +49,13 @@ module.exports = {
         const itemButtons = userData.items.map((item, index) => 
             new ButtonBuilder()
                 .setCustomId(`edit_item_${index}`)
-                .setLabel(`Sostituisci Oggetto ${index + 1}`)
+                .setLabel(`Sostituisci oggetto ${index + 1}`)
                 .setStyle(ButtonStyle.Primary)
         );
 
         const characterButton = new ButtonBuilder()
             .setCustomId('edit_character_name')
-            .setLabel('Modifica Nome Personaggio')
+            .setLabel('Modifica nome personaggio')
             .setStyle(ButtonStyle.Secondary);
 
         const buttonRow1 = new ActionRowBuilder().addComponents(itemButtons);
@@ -63,7 +63,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
-            .setTitle('Le Tue Reserve Attuali')
+            .setTitle('Le tue reserve attuali')
             .setImage('attachment://current-reservations.png')
             .setDescription(
                 `Reserve correnti per il personaggio **${userData.character_name}**\n` +
@@ -95,17 +95,15 @@ module.exports = {
 
         collector.on('collect', async (i) => {
             try {
-                await i.deferUpdate();
-
                 if (i.customId === 'edit_character_name') {
                     // Create a modal for character name input
                     const modal = new ModalBuilder()
                         .setCustomId('change_character_name')
-                        .setTitle('Modifica Nome Personaggio');
+                        .setTitle('Modifica nome personaggio');
 
                     const characterNameInput = new TextInputBuilder()
                         .setCustomId('new_character_name')
-                        .setLabel('Nuovo Nome Personaggio')
+                        .setLabel('Nuovo nome personaggio')
                         .setStyle(TextInputStyle.Short)
                         .setPlaceholder(userData.character_name)
                         .setRequired(true);
@@ -151,8 +149,13 @@ module.exports = {
                         components: [buttonRow1, buttonRow2],
                         files: [attachment]
                     });
+                    return; // Do not continue processing this interaction
                 }
-                else if (i.customId.startsWith('edit_item_')) {
+
+                // For all other interactions, defer the update as we will edit the original message
+                await i.deferUpdate();
+
+                if (i.customId.startsWith('edit_item_')) {
                     const itemIndex = parseInt(i.customId.split('_')[2]);
                     editState.itemIndex = itemIndex;  // Store in editState instead of i.editItemIndex
                     
@@ -164,7 +167,7 @@ module.exports = {
                             raidData.bosses.map(boss => ({
                                 label: boss.name,
                                 value: boss.id.toString(),
-                                description: `Seleziona bottino da ${boss.name}`
+                                description: `Seleziona loot da ${boss.name}`
                             }))
                         );
 
@@ -174,10 +177,10 @@ module.exports = {
                     const embed = new EmbedBuilder()
                         .setColor(0x0099FF)
                         .setTitle(`${raidData.raid} - Sostituisci Oggetto ${itemIndex + 1}`)
-                        .setDescription('Seleziona un boss per visualizzare il suo bottino.')
+                        .setDescription('Seleziona un boss per visualizzare il suo loot.')
                         .setFooter({ text: 'Passo 1 di 2: Selezione Boss' });
 
-                    await interaction.editReply({
+                    await i.editReply({
                         embeds: [embed],
                         components: [row],
                         files: []
@@ -214,7 +217,7 @@ module.exports = {
                         .setStyle(ButtonStyle.Secondary);
                     const buttonRow = new ActionRowBuilder().addComponents(backToBossesButton);
 
-                    await interaction.editReply({
+                    await i.editReply({
                         embeds: [lootEmbed],
                         files: [attachment],
                         components: [selectRow, buttonRow]
@@ -229,7 +232,7 @@ module.exports = {
                             raidData.bosses.map(boss => ({
                                 label: boss.name,
                                 value: boss.id.toString(),
-                                description: `Seleziona bottino da ${boss.name}`
+                                description: `Seleziona loot da ${boss.name}`
                             }))
                         );
 
@@ -239,10 +242,10 @@ module.exports = {
                     const embed = new EmbedBuilder()
                         .setColor(0x0099FF)
                         .setTitle(`${raidData.raid} - Sostituisci Oggetto ${editState.itemIndex + 1}`)
-                        .setDescription('Seleziona un boss per visualizzare il suo bottino.')
+                        .setDescription('Seleziona un boss per visualizzare il suo loot.')
                         .setFooter({ text: 'Passo 1 di 2: Selezione Boss' });
 
-                    await interaction.editReply({
+                    await i.editReply({
                         embeds: [embed],
                         components: [row],
                         files: []
@@ -291,7 +294,7 @@ module.exports = {
                             'Seleziona cosa vuoi modificare:'
                         );
 
-                    await interaction.editReply({
+                    await i.editReply({
                         embeds: [embed],
                         components: [buttonRow1, buttonRow2],
                         files: [attachment]
@@ -317,7 +320,7 @@ module.exports = {
                             ).join('\n')}`
                         );
 
-                    await interaction.editReply({
+                    await i.editReply({
                         embeds: [finalConfirmEmbed],
                         files: [finalAttachment],
                         components: []
@@ -360,7 +363,7 @@ module.exports = {
                             'Seleziona cosa vuoi modificare:'
                         );
 
-                    await interaction.editReply({
+                    await i.editReply({
                         embeds: [embed],
                         components: [buttonRow1, buttonRow2],
                         files: [attachment]

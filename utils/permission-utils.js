@@ -14,7 +14,18 @@ function loadConfig() {
 
 function isRaidLeader(member) {
     const config = loadConfig();
-    return member.roles.cache.has(config.raidLeaderRoleId);
+    // Support multiple roles and user allowlist
+    const roleIds = Array.isArray(config.raidLeaderRoleIds)
+        ? config.raidLeaderRoleIds
+        : (config.raidLeaderRoleId ? [config.raidLeaderRoleId] : []);
+    const allowUserIds = Array.isArray(config.raidLeaderUserIds)
+        ? config.raidLeaderUserIds
+        : [];
+
+    const hasLeaderRole = roleIds.some(id => member.roles.cache.has(id));
+    const isAllowedUser = allowUserIds.includes(member.id);
+
+    return hasLeaderRole || isAllowedUser;
 }
 
 function isRaider(member) {

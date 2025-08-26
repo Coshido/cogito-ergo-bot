@@ -15,9 +15,14 @@ This guide will walk you through the initial configuration of the Discord bot, c
   * Raider Role
 
 ### Commands
+Use the setup subcommands (ADMIN ONLY):
 ```
-/reserve-setup raid-leader-role # Set raid leader role (ADMIN ONLY)
-/reserve-setup raider-role      # Set raider role (ADMIN ONLY)
+/reserve-setup roles raid_leader_role:@RaidLeader  # optional
+/reserve-setup roles raider_role:@Raider           # optional
+
+/reserve-setup user-add user:@Member               # grant RL-equivalent perms to a user
+/reserve-setup user-remove user:@Member            # revoke
+/reserve-setup user-list                           # list allowlisted users
 ```
 
 ### Reserve Commands and Permissions
@@ -27,7 +32,6 @@ This guide will walk you through the initial configuration of the Discord bot, c
   2. For each reserve command (e.g., `reserve-list`, `reserve-generate`, `reserve-clear`):
      - Set "Who can use" to specific roles → select only your Raid Leader role
   3. For setup commands (`reserve-setup`, `reserve set-channel`), allow only Administrators
-
 
 ## 2. Birthday Tracking Setup
 ### Channels
@@ -61,7 +65,6 @@ This guide will walk you through the initial configuration of the Discord bot, c
   * `CLIENT_ID`
   * `GUILD_ID`
 
-
 ### Channel Visibility Recommendations
 - Create these channels as private
 - Limit access to administrators and specific management roles
@@ -79,11 +82,38 @@ This guide will walk you through the initial configuration of the Discord bot, c
 3. Communicate channel purpose to server administrators
 4. Configure bot to recognize these channels for specific commands
 
+## Slash Command Deployment (Guild vs Global)
+- Guild deploy (fast for testing):
+  ```bash
+  node --no-warnings deploy-commands.js
+  ```
+  Also runs automatically in `npm run dev` before starting the bot.
+
+- Global deploy (for production):
+  ```bash
+  node --no-warnings deploy-commands.js --global
+  ```
+  Note: Global updates can take minutes (up to ~1 hour) to propagate to all clients.
+
+### Avoiding duplicate commands
+If you deploy both GLOBAL and GUILD, the client may show duplicates temporarily. You can clear one scope:
+
+- Clear GLOBAL commands:
+  ```bash
+  node --no-warnings deploy-commands.js --clear-global
+  ```
+- Clear GUILD commands (uses `GUILD_ID` from .env):
+  ```bash
+  node --no-warnings deploy-commands.js --clear-guild
+  ```
+After clearing or switching scopes, hard-reload Discord (Ctrl+R) if duplicates still appear.
+
 ## Troubleshooting
 - Verify bot permissions
 - Check role hierarchies
 - Ensure bot has necessary intents enabled
 - Restart bot after configuration changes
+- Duplicates in slash commands after deploying globally: clear the other scope using the flags above, then hard-reload Discord.
 
 ## Best Practices
 - Create roles specifically for bot functions

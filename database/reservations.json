@@ -602,30 +602,53 @@
         ]
       },
       "127455315636649985": {
-        "character_name": "erge",
+        "character_name": "Coshido",
         "items": [
-          {
-            "id": "242394",
-            "name": "Arcanucleo Eradicante",
-            "boss": "Sentinella del Plesso",
-            "type": "Monile Varie",
-            "ilvl": 662,
-            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_obliterationcannon.jpg",
-            "wowhead_url": "https://www.wowhead.com/item=242394"
-          },
           {
             "id": "237598",
             "name": "Marchio Maledetto Anelante Mistico",
-            "boss": "I Cacciatori d'Anime",
             "type": "Token",
             "ilvl": 662,
             "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_purple.jpg",
             "wowhead_url": "https://www.wowhead.com/item=237598",
+            "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_etherealenergystoragesphere_purple.jpg",
             "tokenClasses": [
               "Cacciatore",
               "Druido",
               "Mago"
             ]
+          },
+          {
+            "id": "237730",
+            "name": "Guglia di Vuotovitreo",
+            "type": "Due mani Bastone",
+            "ilvl": 662,
+            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_etherealraid_d_02.jpg",
+            "wowhead_url": "https://www.wowhead.com/item=237730",
+            "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_staff_2h_etherealraid_d_02.jpg"
+          }
+        ]
+      },
+      "816486930149539851": {
+        "character_name": "Callicore",
+        "items": [
+          {
+            "id": "242402",
+            "name": "Forgia Rituale di Araz",
+            "boss": "Tessiforgia Araz",
+            "type": "Monile Varie",
+            "ilvl": 662,
+            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_trinkettechnomancer_ritualengine.jpg",
+            "wowhead_url": "https://www.wowhead.com/item=242402"
+          },
+          {
+            "id": "242402",
+            "name": "Forgia Rituale di Araz",
+            "type": "Monile Varie",
+            "ilvl": 662,
+            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_trinkettechnomancer_ritualengine.jpg",
+            "wowhead_url": "https://www.wowhead.com/item=242402",
+            "image_url": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_trinkettechnomancer_ritualengine.jpg"
           }
         ]
       }

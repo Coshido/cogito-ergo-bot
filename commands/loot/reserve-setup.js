@@ -8,77 +8,154 @@ const CONFIG_PATH = path.join(__dirname, '..', '..', 'database', 'config.json');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve-setup')
-        .setDescription('Configura i ruoli di Raid Leader e Raider')
+        .setDescription('Configura Reserve: ruoli RL/Raider e allowlist utenti')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-        .addRoleOption(option => 
-            option.setName('raid_leader_role')
-                .setDescription('Seleziona il ruolo Raid Leader')
-                .setRequired(true))
-        .addRoleOption(option => 
-            option.setName('raider_role')
-                .setDescription('Seleziona il ruolo Raider')
-                .setRequired(true)),
+        // Subcommand: roles (both options optional)
+        .addSubcommand(sub =>
+            sub
+                .setName('roles')
+                .setDescription('Imposta/aggiorna i ruoli di Raid Leader e Raider (opzionali)')
+                .addRoleOption(option =>
+                    option
+                        .setName('raid_leader_role')
+                        .setDescription('Ruolo Raid Leader')
+                        .setRequired(false)
+                )
+                .addRoleOption(option =>
+                    option
+                        .setName('raider_role')
+                        .setDescription('Ruolo Raider')
+                        .setRequired(false)
+                )
+        )
+        // Subcommand: user (manage allowlist)
+        .addSubcommand(sub =>
+            sub
+                .setName('user')
+                .setDescription('Gestisci allowlist Raid Leader: aggiungi/rimuovi o mostra elenco')
+                .addUserOption(option =>
+                    option
+                        .setName('add')
+                        .setDescription('Utente da aggiungere (o rimuovere se remove=true)')
+                        .setRequired(false)
+                )
+                .addBooleanOption(option =>
+                    option
+                        .setName('remove')
+                        .setDescription('Se true, rimuove l\'utente specificato invece di aggiungerlo')
+                        .setRequired(false)
+                )
+        ),
 
     async execute(interaction) {
-        // Check admin or authorized user permissions
+        // Permission check
         if (!isAdminOrAuthorizedUser(interaction)) {
             return interaction.reply({
-                content: 'Non hai il permesso di usare questo comando.',
-                ephemeral: true
+                content: 'Non hai i permessi per eseguire questo comando.',
+                ephemeral: true,
             });
         }
 
-        // Get the selected roles
-        const raidLeaderRole = interaction.options.getRole('raid_leader_role');
-        const raiderRole = interaction.options.getRole('raider_role');
-
-        // Read existing config
+        // Load config
         let config = {};
         try {
-            config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) || {};
-        } catch (error) {
-            console.error('Error reading config file:', error);
-            
-            // Ensure the directory exists
-            const configDir = path.dirname(CONFIG_PATH);
-            if (!fs.existsSync(configDir)) {
-                fs.mkdirSync(configDir, { recursive: true });
+            if (fs.existsSync(CONFIG_PATH)) {
+                const raw = fs.readFileSync(CONFIG_PATH, 'utf8');
+                config = JSON.parse(raw || '{}');
             }
-            
-            // Create a default config file
-            config = {
-                raidLeaderRoleId: null,
-                raiderRoleId: null
-            };
-            fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
+        } catch (e) {
+            console.error('Errore lettura config.json:', e);
+            config = {};
+        }
+        // Defaults
+        config.raidLeaderUserIds = Array.isArray(config.raidLeaderUserIds) ? config.raidLeaderUserIds : [];
+
+        const sub = interaction.options.getSubcommand();
+
+        if (sub === 'roles') {
+            const raidLeaderRole = interaction.options.getRole('raid_leader_role');
+            const raiderRole = interaction.options.getRole('raider_role');
+            const changes = [];
+
+            if (raidLeaderRole) {
+                config.raidLeaderRoleId = raidLeaderRole.id;
+                changes.push(`Raid Leader -> ${raidLeaderRole.name}`);
+            }
+            if (raiderRole) {
+                config.raiderRoleId = raiderRole.id;
+                changes.push(`Raider -> ${raiderRole.name}`);
+            }
+
+            if (changes.length === 0) {
+                return interaction.reply({
+                    content: 'Nessun ruolo aggiornato (nessuna opzione fornita).',
+                    ephemeral: true,
+                });
+            }
+
+            try {
+                fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2), 'utf8');
+            } catch (e) {
+                console.error('Errore salvataggio config.json:', e);
+                return interaction.reply({ content: 'Errore nel salvataggio della configurazione.', ephemeral: true });
+            }
+
+            return interaction.reply({ content: `Ruoli aggiornati:\n- ${changes.join('\n- ')}`, ephemeral: true });
         }
 
-        // Ensure config has all necessary properties
-        config = {
-            ...config,
-            raidLeaderRoleId: null,
-            raiderRoleId: null,
-            ...config
-        };
+        if (sub === 'user') {
+            const user = interaction.options.getUser('add');
+            const remove = interaction.options.getBoolean('remove') || false;
 
-        // Update roles in config
-        config.raidLeaderRoleId = raidLeaderRole.id;
-        config.raiderRoleId = raiderRole.id;
+            // List allowlist if no user provided
+            if (!user) {
+                if (config.raidLeaderUserIds.length === 0) {
+                    return interaction.reply({ content: 'Nessun utente in allowlist Raid Leader.', ephemeral: true });
+                }
+                try {
+                    const names = await Promise.all(
+                        config.raidLeaderUserIds.map(async id => {
+                            try {
+                                const u = await interaction.client.users.fetch(id);
+                                return `${u.tag} (${id})`;
+                            } catch {
+                                return `(sconosciuto) (${id})`;
+                            }
+                        })
+                    );
+                    return interaction.reply({ content: `Allowlist Raid Leader:\n- ${names.join('\n- ')}` , ephemeral: true });
+                } catch (e) {
+                    console.error('Errore durante il fetch degli utenti allowlist:', e);
+                    return interaction.reply({ content: 'Impossibile recuperare la lista utenti.', ephemeral: true });
+                }
+            }
 
-        // Write updated config
-        try {
-            fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2));
+            // Add or remove
+            const list = new Set(Array.from(config.raidLeaderUserIds));
+            let msg;
+            if (remove) {
+                const had = list.delete(user.id);
+                config.raidLeaderUserIds = Array.from(list);
+                msg = had
+                    ? `Utente rimosso dall'allowlist: ${user.tag} (${user.id})`
+                    : `Utente non presente in allowlist: ${user.tag} (${user.id})`;
+            } else {
+                if (!list.has(user.id)) list.add(user.id);
+                config.raidLeaderUserIds = Array.from(list);
+                msg = `Utente aggiunto all'allowlist: ${user.tag} (${user.id})`;
+            }
 
-            await interaction.reply({
-                content: `Ruolo Raid Leader impostato su ${raidLeaderRole.name} e ruolo Raider impostato su ${raiderRole.name}`,
-                ephemeral: false
-            });
-        } catch (error) {
-            console.error('Error writing config file:', error);
-            await interaction.reply({
-                content: `Errore durante la configurazione dei ruoli: ${error.message}`,
-                ephemeral: true
-            });
+            try {
+                fs.writeFileSync(CONFIG_PATH, JSON.stringify(config, null, 2), 'utf8');
+            } catch (e) {
+                console.error('Errore salvataggio config.json:', e);
+                return interaction.reply({ content: 'Errore nel salvataggio della configurazione.', ephemeral: true });
+            }
+
+            return interaction.reply({ content: msg, ephemeral: true });
         }
+
+        // Fallback (should not happen)
+        return interaction.reply({ content: 'Sotto-comando non riconosciuto.', ephemeral: true });
     }
 };

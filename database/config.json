@@ -10,6 +10,9 @@
     "startedAt": "2025-02-03T16:09:07.722Z",
     "startedBy": "127455315636649985"
   },
-  "raidLeaderRoleId": "159691067401306113",
-  "raiderRoleId": "159691067401306113"
+  "raidLeaderRoleId": "1240930136942055475",
+  "raiderRoleId": "1200462522545885276",
+  "raidLeaderUserIds": [
+    "127455315636649985"
+  ]
 }

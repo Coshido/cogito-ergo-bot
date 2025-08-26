@@ -7,12 +7,23 @@ console.log('Starting command deployment process');
 
 // Flags
 const isGlobal = process.argv.includes('--global');
-console.log('Deployment mode:', isGlobal ? 'GLOBAL' : 'GUILD');
+const clearGlobal = process.argv.includes('--clear-global');
+const clearGuild = process.argv.includes('--clear-guild');
+
+if (clearGlobal && clearGuild) {
+    console.error('Cannot use --clear-global and --clear-guild together.');
+    process.exit(1);
+}
+
+if (clearGlobal) console.log('Deployment mode: CLEAR GLOBAL');
+else if (clearGuild) console.log('Deployment mode: CLEAR GUILD');
+else console.log('Deployment mode:', isGlobal ? 'GLOBAL' : 'GUILD');
 
 // Validate environment variables (GUILD_ID required only for guild deploys)
-const requiredEnvVars = isGlobal
-  ? ['CLIENT_ID', 'BOT_TOKEN']
-  : ['CLIENT_ID', 'GUILD_ID', 'BOT_TOKEN'];
+const needsGuild = (!isGlobal) || clearGuild;
+const requiredEnvVars = needsGuild
+  ? ['CLIENT_ID', 'GUILD_ID', 'BOT_TOKEN']
+  : ['CLIENT_ID', 'BOT_TOKEN'];
 
 const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
@@ -25,7 +36,7 @@ const clientId = process.env.CLIENT_ID;
 const guildId = process.env.GUILD_ID;
 const token = process.env.BOT_TOKEN;
 
-const commands = [];
+let commands = [];
 
 // Dynamically load commands with detailed error handling
 const commandFolders = fs.readdirSync(path.join(__dirname, 'commands'));
@@ -64,6 +75,26 @@ const rest = new REST().setToken(token);
 
 async function deployCommands() {
     try {
+        // Clear scopes if requested
+        if (clearGlobal) {
+            console.log('Clearing GLOBAL application (/) commands (setting empty list)');
+            const data = await rest.put(
+                Routes.applicationCommands(clientId),
+                { body: [] }
+            );
+            console.log(`Successfully cleared ${Array.isArray(data) ? data.length : 0} GLOBAL commands`);
+            return data;
+        }
+        if (clearGuild) {
+            console.log(`Clearing application (/) commands for guild ${guildId} (setting empty list)`);
+            const data = await rest.put(
+                Routes.applicationGuildCommands(clientId, guildId),
+                { body: [] }
+            );
+            console.log(`Successfully cleared ${Array.isArray(data) ? data.length : 0} GUILD commands`);
+            return data;
+        }
+
         if (isGlobal) {
             console.log(`Deploying ${commands.length} GLOBAL application (/) commands`);
             console.log('Commands:', commands.map(cmd => cmd.name).join(', '));

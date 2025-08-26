@@ -67,7 +67,7 @@ module.exports = {
         // If no features are available, send a message
         if (availableFeatures.length === 0) {
             return interaction.reply({
-                content: 'Non hai i permessi per accedere a nessuna funzionalità del bot.',
+                content: 'Non hai i permessi per accedere alle funzionalità del bot.',
                 ephemeral: true
             });
         }
@@ -134,8 +134,8 @@ module.exports = {
             const helpEmbeds = {
                 'reserve_help': () => new EmbedBuilder()
                     .setColor(0x9B59B6)
-                    .setTitle('🎲 Prenotazione Bottini')
-                    .setDescription('Sistema di prenotazione oggetti per i raid')
+                    .setTitle('🎲 Loot Reservation')
+                    .setDescription('Sistema di reserve per i raid')
                     .addFields(
                         { 
                             name: 'Comandi Gestione', 
@@ -150,7 +150,7 @@ module.exports = {
                 'birthday_help': () => new EmbedBuilder()
                     .setColor(0xE67E22)
                     .setTitle('🎂 Compleanni')
-                    .setDescription('Traccia e celebra i compleanni del server')
+                    .setDescription('Traccia e celebra i compleanni degli utenti del server')
                     .addFields(
                         { 
                             name: 'Comandi Admin', 

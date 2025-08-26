@@ -11,13 +11,13 @@ const { isRaider } = require('../../utils/permission-utils');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('reserve')
-        .setDescription('Prenota oggetti dal raid corrente'),
+        .setDescription('Riserva gli oggetti dal raid corrente'),
 
     async execute(interaction) {
         // Check if user is a raider
         if (!await isRaider(interaction.member)) {
             return interaction.reply({
-                content: 'Solo i Raiders possono prenotare oggetti.',
+                content: 'Solo i Raiders possono riservare gli oggetti.',
                 ephemeral: true
             });
         }
@@ -49,10 +49,10 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor(0xFF0000)  // Red color to indicate can't add more
-                .setTitle('Numero Massimo di Prenotazioni Raggiunto')
+                .setTitle('Numero massimo di reserve raggiunto')
                 .setImage('attachment://current-reservations.png')
                 .setDescription(
-                    `Hai già prenotato 2 oggetti questa settimana per il personaggio **${userData.character_name}**!\n\n` +
+                    `Hai già riservato 2 oggetti questa settimana per il personaggio **${userData.character_name}**!\n\n` +
                     `**Link su WowHead**\n${wowheadLinks}`
                 );
 
@@ -99,8 +99,8 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
-            .setTitle(`${raidData.raid} - Prenotazione Bottini`)
-            .setDescription(`Per iniziare, imposta il nome del tuo personaggio, poi seleziona un boss per vedere il suo bottino.\nPuoi prenotare fino a 2 oggetti a settimana.\nTi restano ${2 - userData.items.length} prenotazioni.`)
+            .setTitle(`${raidData.raid} - Reserve Loot`)
+            .setDescription(`Per iniziare, imposta il nome del tuo personaggio, poi seleziona un boss per vedere il suo loot.\nPuoi riservare fino a 2 oggetti a settimana.\nTi restano ${2 - userData.items.length} prenotazioni.`)
             .setFooter({ text: `Passo ${userState.currentStep} di 3: Selezione Personaggio` });
 
         const initialMessage = await interaction.editReply({
@@ -201,7 +201,7 @@ module.exports = {
                         .setColor(0x0099FF)
                         .setTitle(`${selectedBoss.name}`)
                         .setDescription(
-                            `**Bottino**\n\n` +
+                            `**Loot Table**\n\n` +
                             `**Link su WowHead**\n${wowheadLinks}`
                         )
                         .setImage('attachment://loot-table.png')
@@ -213,7 +213,7 @@ module.exports = {
                     // Add back button
                     const backButton = new ButtonBuilder()
                         .setCustomId('back_to_bosses')
-                        .setLabel('← Seleziona un Altro Boss')
+                        .setLabel('← Seleziona un altro Boss')
                         .setStyle(ButtonStyle.Secondary);
 
                     // Create two rows: one for the select menu, one for the back button
@@ -277,7 +277,7 @@ module.exports = {
                                 raidData.bosses.map(boss => ({
                                     label: boss.name,
                                     value: boss.id.toString(),
-                                    description: `Seleziona bottino da ${boss.name}`
+                                    description: `Seleziona loot da ${boss.name}`
                                 }))
                             );
                         const selectRow = new ActionRowBuilder().addComponents(bossSelect);
@@ -292,7 +292,7 @@ module.exports = {
                         userState.currentStep = 3;
                         const confirmEmbed = new EmbedBuilder()
                             .setColor(0x0099FF)
-                            .setTitle('Conferma le Tue Prenotazioni')
+                            .setTitle('Conferma le tue Reserve')
                             .setDescription(
                                 `Controlla e conferma le tue selezioni per il personaggio **${userState.characterName}**:\n\n` +
                                 userState.selectedItems.map((item, index) => 
@@ -303,7 +303,7 @@ module.exports = {
 
                         const confirmButton = new ButtonBuilder()
                             .setCustomId('confirm_reservation')
-                            .setLabel('Conferma Prenotazioni')
+                            .setLabel('Conferma Reserve')
                             .setStyle(ButtonStyle.Success);
 
                         const cancelButton = new ButtonBuilder()
@@ -347,7 +347,7 @@ module.exports = {
                             new EmbedBuilder()
                                 .setColor(0x0099FF)
                                 .setTitle(`${raidData.raid} - Selezione Boss`)
-                                .setDescription('Seleziona un boss per la tua prenotazione.')
+                                .setDescription('Seleziona un boss per la tua reserve.')
                                 .setFooter({ text: `Passo ${userState.currentStep} di 3: Selezione Boss` })
                         ],
                         components: [selectRow],
@@ -387,10 +387,10 @@ module.exports = {
 
                         const finalEmbed = new EmbedBuilder()
                             .setColor(0x00FF00)
-                            .setTitle('Prenotazioni Confermate!')
+                            .setTitle('Reserve Confermate!')
                             .setImage('attachment://reservations.png')
                             .setDescription(
-                                `I tuoi oggetti sono stati prenotati per questa settimana per il personaggio **${userState.characterName}**!\n\n` +
+                                `I tuoi oggetti sono stati riservati per questa settimana per il personaggio **${userState.characterName}**!\n\n` +
                                 `**Link su WowHead**\n${userState.selectedItems.map((item, index) => 
                                     `${index + 1}- [${formatItemNameWithClasses(item)}](${item.wowhead_url})`
                                 ).join('\n')}`
@@ -406,7 +406,7 @@ module.exports = {
                     } catch (saveError) {
                         console.error('Error saving reservations:', saveError);
                         await i.reply({
-                            content: `Impossibile salvare le prenotazioni: ${saveError.message}`,
+                            content: `Impossibile salvare le reserve: ${saveError.message}`,
                             ephemeral: true
                         });
                     }
@@ -416,8 +416,8 @@ module.exports = {
 
                     const cancelEmbed = new EmbedBuilder()
                         .setColor(0xFF0000)
-                        .setTitle('Prenotazioni Annullate')
-                        .setDescription('Le tue prenotazioni sono state annullate.');
+                        .setTitle('Reserve annullate')
+                        .setDescription('Le tue reserve sono state annullate.');
 
                     await i.update({
                         embeds: [cancelEmbed],

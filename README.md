@@ -74,6 +74,50 @@ See `docs/INITIAL_SETUP_GUIDE.md` for:
 - `scripts/generate-mock-reserves.js` — Generate test reservations for development.
 - `scripts/test-api.js` — Quick connectivity test against Blizzard APIs.
 
+## Deploying slash commands (Guild vs Global)
+- __Guild deploy (fast for testing)__
+  - Default in `npm run dev` (runs guild deploy then starts the bot)
+  - Or manual:
+    ```bash
+    node --no-warnings deploy-commands.js
+    ```
+- __Global deploy (for production)__
+  ```bash
+  node --no-warnings deploy-commands.js --global
+  ```
+  Note: Global changes can take minutes (up to ~1h) to propagate in clients.
+
+### Clearing commands
+- If you deploy both GLOBAL and GUILD, clients can temporarily show duplicates.
+- You can clear a scope with provided flags:
+  - Clear GLOBAL commands:
+    ```bash
+    node --no-warnings deploy-commands.js --clear-global
+    ```
+  - Clear GUILD commands for your `GUILD_ID`:
+    ```bash
+    node --no-warnings deploy-commands.js --clear-guild
+    ```
+After clearing or switching scopes, hard-reload Discord (Ctrl+R) if commands still appear duplicated.
+
+## Reserve permissions management
+- Runtime checks use `utils/permission-utils.js`:
+  - Raid leader authorization if user has any configured Raid Leader role, or is in the allowlist `raidLeaderUserIds`.
+- Admins can configure via `/reserve-setup` subcommands:
+  - `roles` — set/update roles (each option is optional):
+    ```
+    /reserve-setup roles raid_leader_role:@RaidLeader
+    /reserve-setup roles raider_role:@Raider
+    ```
+  - `user-add` — add a user to Raid Leader allowlist:
+    ```
+    /reserve-setup user-add user:@Member
+    ```
+  - `user-remove` — remove a user from allowlist:
+    ```
+    /reserve-setup user-remove user:@Member
+    ```
+  - `user-list` — show allowlisted users.
 
 ## License
 MIT
