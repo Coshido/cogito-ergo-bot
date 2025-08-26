@@ -8,6 +8,7 @@ const {
     PermissionFlagsBits
 } = require('discord.js');
 // Tournament and League features removed
+const config = require('../../database/state/config.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -18,51 +19,55 @@ module.exports = {
         // Check user roles and permissions
         const member = interaction.member;
 
+        // Determine roles/visibility
+        const isRaidLeader = !!(
+            (config.raidLeaderRoleId && member.roles?.cache?.has(config.raidLeaderRoleId)) ||
+            (Array.isArray(config.raidLeaderUserIds) && config.raidLeaderUserIds.includes(member.user.id))
+        );
+        const isRaider = !!(config.raiderRoleId && member.roles?.cache?.has(config.raiderRoleId));
+
         // Determine available features and commands
         const availableFeatures = [];
         const featureCommands = {};
 
-        // Reservation Feature (placeholder, you'll need to implement this)
-        const isReserveManager = member.permissions.has(PermissionFlagsBits.ManageRoles);
-        if (isReserveManager) {
+        // Reservation Feature
+        if (isRaider || isRaidLeader) {
             availableFeatures.push({
                 value: 'reserve_help',
                 label: 'Loot Reservation',
                 emoji: '🎲'
             });
             featureCommands['reserve_help'] = {
-                managerCommands: [
-                    '`/reserve-setup raid-leader-role`',
-                    '`/reserve-setup raider-role`',
-                    '`/reserve-clear`',
-                    '`/reserve-list`'
-                ],
+                managerCommands: isRaidLeader ? [
+                    '`/reserve-setup roles` — Configura i ruoli Raid Leader/Raider',
+                    '`/reserve-setup user` — Gestisci l\'allowlist dei Raid Leader',
+                    '`/reserve-clear` — Cancella tutte le reserve salvate',
+                    '`/reserve-list` — Mostra tutte le reserve della settimana',
+                    '`/reserve-generate` — Genera una WeakAura dalle reserve attuali'
+                ] : [],
                 participantCommands: [
-                    '`/reserve`',
-                    '`/reserve-edit`',
-                    '`/reserve-reminder`'
+                    '`/reserve` — Riserva fino a 2 oggetti dal raid corrente',
+                    '`/reserve-edit` — Modifica le tue reserve della settimana',
+                    '`/reserve-reminder` — Configura i promemoria delle tue reserve'
                 ]
             };
         }
 
-        // Birthday Feature (assuming admin-only)
-        if (member.permissions.has(PermissionFlagsBits.Administrator)) {
-            availableFeatures.push({
-                value: 'birthday_help',
-                label: 'Birthday Tracking',
-                emoji: '🎂'
-            });
-            featureCommands['birthday_help'] = {
-                adminCommands: [
-                    '`/birthday-config channel`'
-                ],
-                userCommands: [
-                    '`/birthday set`',
-                    '`/birthday list`',
-                    '`/birthday remove`'
-                ]
-            };
-        }
+        // Birthday Feature (always listed; leader-only commands shown only to Raid Leaders)
+        availableFeatures.push({
+            value: 'birthday_help',
+            label: 'Birthday Tracking',
+            emoji: '🎂'
+        });
+        featureCommands['birthday_help'] = {
+            adminCommands: isRaidLeader ? [
+                '`/birthday-set-channel` — Imposta il canale per gli annunci di compleanno'
+            ] : [],
+            userCommands: [
+                '`/birthday-set` — Imposta il tuo compleanno',
+                '`/birthday-remove` — Rimuovi il tuo compleanno'
+            ]
+        };
 
         // If no features are available, send a message
         if (availableFeatures.length === 0) {
@@ -132,35 +137,47 @@ module.exports = {
 
             // Create feature-specific help embeds
             const helpEmbeds = {
-                'reserve_help': () => new EmbedBuilder()
-                    .setColor(0x9B59B6)
-                    .setTitle('🎲 Loot Reservation')
-                    .setDescription('Sistema di reserve per i raid')
-                    .addFields(
-                        { 
-                            name: 'Comandi Gestione', 
-                            value: featureCommands['reserve_help'].managerCommands.join('\n') || 'Nessun comando di gestione disponibile'
-                        },
-                        { 
-                            name: 'Comandi Partecipanti', 
-                            value: featureCommands['reserve_help'].participantCommands.join('\n') || 'Nessun comando per i partecipanti disponibile'
-                        }
-                    ),
+                'reserve_help': () => {
+                    const fields = [];
+                    if (featureCommands['reserve_help'].managerCommands.length) {
+                        fields.push({
+                            name: 'Comandi Gestione',
+                            value: featureCommands['reserve_help'].managerCommands.join('\n')
+                        });
+                    }
+                    if (featureCommands['reserve_help'].participantCommands.length) {
+                        fields.push({
+                            name: 'Comandi Partecipanti',
+                            value: featureCommands['reserve_help'].participantCommands.join('\n')
+                        });
+                    }
+                    return new EmbedBuilder()
+                        .setColor(0x9B59B6)
+                        .setTitle('🎲 Loot Reservation')
+                        .setDescription('Sistema di reserve per i raid')
+                        .addFields(fields);
+                },
 
-                'birthday_help': () => new EmbedBuilder()
-                    .setColor(0xE67E22)
-                    .setTitle('🎂 Compleanni')
-                    .setDescription('Traccia e celebra i compleanni degli utenti del server')
-                    .addFields(
-                        { 
-                            name: 'Comandi Admin', 
-                            value: featureCommands['birthday_help'].adminCommands.join('\n') || 'Nessun comando admin disponibile'
-                        },
-                        { 
-                            name: 'Comandi Utente', 
-                            value: featureCommands['birthday_help'].userCommands.join('\n') || 'Nessun comando utente disponibile'
-                        }
-                    )
+                'birthday_help': () => {
+                    const fields = [];
+                    if (featureCommands['birthday_help'].adminCommands.length) {
+                        fields.push({
+                            name: 'Comandi Raid Leader',
+                            value: featureCommands['birthday_help'].adminCommands.join('\n')
+                        });
+                    }
+                    if (featureCommands['birthday_help'].userCommands.length) {
+                        fields.push({
+                            name: 'Comandi Utente',
+                            value: featureCommands['birthday_help'].userCommands.join('\n')
+                        });
+                    }
+                    return new EmbedBuilder()
+                        .setColor(0xE67E22)
+                        .setTitle('🎂 Compleanni')
+                        .setDescription('Traccia e celebra i compleanni degli utenti del server')
+                        .addFields(fields);
+                }
             };
 
             const embed = helpEmbeds[selectInteraction.values[0]]();
