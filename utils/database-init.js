@@ -47,8 +47,8 @@ async function initializeDatabaseFiles(databasePath) {
     console.time('Database Initialization');
     console.log(`Starting comprehensive database file initialization in ${databasePath}`);
 
-    // Specific path for raid loot file
-    const raidLootPath = path.join(databasePath, 'raid-loot.json');
+    // Specific path for raid loot file (versioned, not in state)
+    const raidLootPath = path.resolve(__dirname, '../database/raid-loot.json');
     
     try {
         // Check if file exists and has content
@@ -57,7 +57,7 @@ async function initializeDatabaseFiles(databasePath) {
             existingData = await fs.readFile(raidLootPath, 'utf8').trim();
         } catch (readError) {
             // File doesn't exist; log and proceed. We no longer seed hardcoded data.
-            console.warn('raid-loot.json not found. Skipping loot image pre-generation. You can generate it via scripts/fetch-raid-data.js');
+            console.warn('raid-loot.json not found in repo database/. Skipping loot image pre-generation. You can generate it via scripts/fetch-raid-data.js');
             existingData = '';
         }
 

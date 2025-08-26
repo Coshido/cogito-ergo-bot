@@ -2,7 +2,12 @@ const fs = require('fs').promises;
 const path = require('path');
 
 class UserPreferences {
-    static PREFERENCES_PATH = path.join(__dirname, '../database/user-preferences.json');
+    static get PREFERENCES_PATH() {
+        const dataDir = process.env.DATABASE_PATH
+            ? path.resolve(process.env.DATABASE_PATH)
+            : path.join(__dirname, '../database');
+        return path.join(dataDir, 'user-preferences.json');
+    }
 
     static async loadPreferences() {
         try {
@@ -18,6 +23,9 @@ class UserPreferences {
     }
 
     static async savePreferences(preferences) {
+        // Ensure parent directory exists
+        const dir = path.dirname(this.PREFERENCES_PATH);
+        try { await fs.mkdir(dir, { recursive: true }); } catch {}
         await fs.writeFile(this.PREFERENCES_PATH, JSON.stringify(preferences, null, 2));
     }
 

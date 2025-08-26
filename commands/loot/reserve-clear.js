@@ -20,7 +20,10 @@ module.exports = {
 
         try {
             // Path to the reservations file
-            const reservationsPath = path.join(__dirname, '../../database/reservations.json');
+            const dataDir = process.env.DATABASE_PATH
+                ? path.resolve(process.env.DATABASE_PATH)
+                : path.join(__dirname, '../../database');
+            const reservationsPath = path.join(dataDir, 'reservations.json');
 
             // Read the current reservations fresh from disk
             const raw = await fs.readFile(reservationsPath, 'utf8').catch(() => '{"weekly_reservations":{}}');
@@ -40,7 +43,7 @@ module.exports = {
                 .setFooter({ text: 'Azione eseguibile solo da un Raid Leader' });
 
             // Reply with the confirmation
-            await interaction.reply({ embeds: [embed] });
+            await interaction.reply({ embeds: [embed], ephemeral: true });
 
         } catch (error) {
             console.error('Error clearing reservations:', error);

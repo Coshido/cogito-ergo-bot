@@ -30,7 +30,10 @@ module.exports = {
         }
 
         try {
-            const dbPath = path.join(__dirname, '../../database/birthday-data.json');
+            const dataDir = process.env.DATABASE_PATH
+                ? path.resolve(process.env.DATABASE_PATH)
+                : path.join(__dirname, '../../database');
+            const dbPath = path.join(dataDir, 'birthday-data.json');
             const data = JSON.parse(await fs.readFile(dbPath, 'utf8'));
 
             // Ensure birthdays object exists

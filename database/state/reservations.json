@@ -1,0 +1,29 @@
+{
+  "weekly_reservations": {
+    "2025-08-24": {
+      "127455315636649985": {
+        "character_name": "Coshido",
+        "items": [
+          {
+            "id": "242394",
+            "name": "Arcanucleo Eradicante",
+            "boss": "Sentinella del Plesso",
+            "type": "Monile Varie",
+            "ilvl": 662,
+            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_obliterationcannon.jpg",
+            "wowhead_url": "https://www.wowhead.com/item=242394"
+          },
+          {
+            "id": "242391",
+            "name": "Abbraccio della Vincolatrice d'Anime",
+            "boss": "Vincolatrice d'Anime Naazindhri",
+            "type": "Monile Varie",
+            "ilvl": 662,
+            "icon": "https://render.worldofwarcraft.com/eu/icons/56/inv_112_raidtrinkets_manaforge_tanktrinket1.jpg",
+            "wowhead_url": "https://www.wowhead.com/item=242391"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -28,21 +28,24 @@ module.exports = {
         }
 
         try {
-            const dbPath = path.join(__dirname, '../../database/birthday-data.json');
+            const dataDir = process.env.DATABASE_PATH
+                ? path.resolve(process.env.DATABASE_PATH)
+                : path.join(__dirname, '../../database');
+            const dbPath = path.join(dataDir, 'birthday-data.json');
             
             // Read existing data or create new
-            let data = { birthdays: {}, settings: {} };
+            let data = { birthdays: {}, channels: {} };
             if (await fs.access(dbPath).then(() => true).catch(() => false)) {
                 data = JSON.parse(await fs.readFile(dbPath, 'utf8'));
             }
 
-            // Ensure settings object exists
-            if (!data.settings) {
-                data.settings = {};
+            // Ensure channels object exists
+            if (!data.channels) {
+                data.channels = {};
             }
 
-            // Update birthday channel
-            data.settings.announcementChannelId = channel.id;
+            // Update birthday channel for this guild
+            data.channels[interaction.guildId] = channel.id;
 
             // Write updated data
             await fs.writeFile(dbPath, JSON.stringify(data, null, 2));

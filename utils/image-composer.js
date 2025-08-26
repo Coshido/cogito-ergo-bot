@@ -255,7 +255,7 @@ class ImageComposer {
                 if (reservers.length > 0) {
                     ctx.font = '24px "DejaVu Sans"';
                     reservers.forEach(r => {
-                        const line = `- ${r.username} (${r.characterName || 'Unknown'})`;
+                        const line = `- ${r.characterName || 'Unknown'} (${r.username})`;
                         ctx.fillText(line, textX, textY);
                         textY += LINE_H;
                     });
@@ -283,9 +283,39 @@ class ImageComposer {
         const textWidth = this.TEXT_WIDTH;
         const lineHeight = this.LINE_HEIGHT;
 
+        // Measure to determine needed height (reduce font size and allow dynamic height)
+        const measureCanvas = createCanvas(10, 10);
+        const mctx = measureCanvas.getContext('2d');
+        const wrap = (font, text) => {
+            mctx.font = font;
+            const words = String(text || '').split(' ');
+            let lines = [];
+            let cur = words[0] || '';
+            for (let i = 1; i < words.length; i++) {
+                const w = words[i];
+                if (mctx.measureText(cur + ' ' + w).width < (textWidth - padding)) cur += ' ' + w; else { lines.push(cur); cur = w; }
+            }
+            if (cur) lines.push(cur);
+            return lines.length;
+        };
+
+        // Slightly larger fonts (similar to earlier), but keep dynamic height to avoid clipping
+        const nameFont = 'bold 42px "DejaVu Sans"';
+        const metaFont = '37px "DejaVu Sans"';
+
+        let maxBlockHeight = itemSize; // at least icon height
+        for (const it of items) {
+            const nameLineCount = wrap(nameFont, it.name);
+            const bossLines = wrap(metaFont, `Boss: ${it.boss}`);
+            const typeLines = wrap(metaFont, `Tipo: ${this.formatItemType(it.type)}`);
+            const totalTextLines = nameLineCount + bossLines + typeLines;
+            const needed = 48 + totalTextLines * lineHeight + 12; // a bit more top/bottom padding for readability
+            maxBlockHeight = Math.max(maxBlockHeight, needed);
+        }
+
         const canvas = createCanvas(
             2 * (itemSize + textWidth + padding) + padding,
-            itemSize + 2 * padding
+            maxBlockHeight + 2 * padding
         );
         const ctx = canvas.getContext('2d');
 
@@ -305,15 +335,15 @@ class ImageComposer {
                 const textX = x + itemSize + padding;
                 let textY = y + 40;
 
-                ctx.font = 'bold 42px "DejaVu Sans"';
+                ctx.font = nameFont;
                 const nameLines = this.wrapText(ctx, items[i].name, textWidth - padding);
                 nameLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
                     textY += lineHeight;
                 });
 
-                ctx.font = '37px "DejaVu Sans"';
-                const bossLines = this.wrapText(ctx, `From: ${items[i].boss}`, textWidth - padding);
+                ctx.font = metaFont;
+                const bossLines = this.wrapText(ctx, `Boss: ${items[i].boss}`, textWidth - padding);
                 bossLines.forEach(line => {
                     ctx.fillText(line, textX, textY);
                     textY += lineHeight;
@@ -482,7 +512,7 @@ class ImageComposer {
             if (reservers.length > 0) {
                 ctx.font = '24px "DejaVu Sans"';
                 reservers.forEach(r => {
-                    const line = `- ${r.username} (${r.characterName || 'Unknown'})`;
+                    const line = `- ${r.characterName || 'Unknown'} (${r.username})`;
                     ctx.fillText(line, textX, textY);
                     textY += LINE_H;
                 });

@@ -1,6 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
+// Resolve data directory from env or default to ../database
+function getDataDir() {
+    return process.env.DATABASE_PATH
+        ? path.resolve(process.env.DATABASE_PATH)
+        : path.join(__dirname, '../database');
+}
+
+function getReservationsPath() {
+    return path.join(getDataDir(), 'reservations.json');
+}
+
 function getCurrentWeekMonday() {
     const now = new Date();
     const monday = new Date(now);
@@ -10,7 +21,7 @@ function getCurrentWeekMonday() {
 }
 
 function loadReservations() {
-    const reservationsPath = path.join(__dirname, '../database/reservations.json');
+    const reservationsPath = getReservationsPath();
     if (!fs.existsSync(reservationsPath)) {
         return { weekly_reservations: {} };
     }
@@ -18,7 +29,14 @@ function loadReservations() {
 }
 
 function saveReservations(reservations) {
-    const reservationsPath = path.join(__dirname, '../database/reservations.json');
+    const reservationsPath = getReservationsPath();
+
+    // Ensure parent directory exists
+    const dir = path.dirname(reservationsPath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+
     fs.writeFileSync(reservationsPath, JSON.stringify(reservations, null, 2));
 }
 

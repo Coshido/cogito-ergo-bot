@@ -2,8 +2,18 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
+function getDataDir() {
+    return process.env.DATABASE_PATH
+        ? path.resolve(process.env.DATABASE_PATH)
+        : path.join(__dirname, '..', 'database');
+}
+
+function getConfigPath() {
+    return path.join(getDataDir(), 'config.json');
+}
+
 function loadConfig() {
-    const configPath = path.join(__dirname, '..', 'database', 'config.json');
+    const configPath = getConfigPath();
     try {
         return JSON.parse(fs.readFileSync(configPath, 'utf8'));
     } catch (error) {

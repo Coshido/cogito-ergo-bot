@@ -6,7 +6,12 @@ const UserPreferences = require('../utils/user-preferences');
 const { getCurrentWeekMonday, loadReservations } = require('../utils/reservation-utils');
 
 // Config loader for role IDs
-const CONFIG_PATH = path.join(__dirname, '..', 'database', 'config.json');
+const CONFIG_PATH = (function() {
+    const dataDir = process.env.DATABASE_PATH
+        ? path.resolve(process.env.DATABASE_PATH)
+        : path.join(__dirname, '..', 'database');
+    return path.join(dataDir, 'config.json');
+})();
 function loadConfig() {
     try {
         return JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8')) || {};
@@ -38,7 +43,7 @@ class ReminderService {
             return;
         }
         if (!raiderRoleId) {
-            console.warn('ReminderService: raiderRoleId missing in database/config.json. Skipping reminder run.');
+            console.warn('ReminderService: raiderRoleId missing in config.json. Skipping reminder run.');
             return;
         }
 
